@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 
 class UserDataProvider {
   final sessionDataProvider = SessionDataProvider();
+
+  //Sign Up
   Future<bool> signUp(
       {required String email,
       required String password,
@@ -19,6 +21,7 @@ class UserDataProvider {
     return isSuscces;
   }
 
+  //Login
   Future<bool> logInWithEmailAndPassword({
     required String email,
     required String password,
@@ -33,6 +36,7 @@ class UserDataProvider {
     return isSuscces;
   }
 
+  //Log out
   Future<void> logOut() async {
     try {
       await sessionDataProvider.deleteRegToken();
@@ -41,6 +45,7 @@ class UserDataProvider {
     }
   }
 
+  //Login
   Future<bool> signInWithEmailAndPassword(
       {String? email, String? password}) async {
     var token = await sessionDataProvider.readToken();
@@ -74,6 +79,7 @@ class UserDataProvider {
     return false;
   }
 
+  //Signup
   Future<bool> createUserWithNAmeEmailAndPassword(
       {String? email, String? password, String? fullName}) async {
     Map userData = {
@@ -98,7 +104,10 @@ class UserDataProvider {
 
       if (response.statusCode == 200) {
         var token = body['access_token'];
+        var expires = body['expires_in'];
         sessionDataProvider.setRegtoken(token);
+        sessionDataProvider.setToeknExpires(expires);
+        
 
         return true;
       } else {
@@ -111,6 +120,7 @@ class UserDataProvider {
     return false;
   }
 
+  //Forgot Password post
   Future<bool> forgotPasswordPost(String email, Function closure) async {
     Map userEmail = {'email': email};
 
@@ -123,34 +133,169 @@ class UserDataProvider {
         body: jsonEncode(userEmail),
       );
       var data = jsonDecode(response.body);
-      closure(data['success']);
-      // if (response.statusCode == 200) {
-      //   return true;
-      // } else {
-      //   print("failed");
-      //   return false;
-      // }
+      var message = data['message'];
+      if (response.statusCode == 200 && message.contains('passwords.sent')) {
+        closure(true);
+      }
     } catch (e) {
       print(e);
     }
     return false;
   }
 
-  void sendCode(String email, Function closure) async {
-    Map userEmail = {'email': email};
+  //Send Code for password_resset
+  void sendCode(String code, Function closure) async {
+    Map smsCode = {'code': code};
     try {
       final response = await http.post(
         Uri.parse(Api.checkCode),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
-        body: json.encode(userEmail),
+        body: json.encode(smsCode),
       );
+      var body = json.decode(response.body);
+      //var responseCode = body['code'];
+      var message = body['message'];
       print(response.body);
-      var data = jsonDecode(response.body);
-      closure(data['succes']);
+      if (response.statusCode == 200 &&
+          message.toString().contains('Password reset code is valid')) {
+        closure(true);
+      } else {
+        closure(false);
+      }
     } catch (error) {
       print(error);
     }
+  }
+
+  //Password Resset
+  Future<bool> passwordReset(
+      {required String code,
+      required String password,
+      required String passwordConfirm,
+      Function? closure}) async {
+    Map resetPassword = {
+      'code': code,
+      'password': password,
+      'password_confirmation': passwordConfirm
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(Api.resetPassword),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(resetPassword),
+      );
+
+      if (response.statusCode == 200) {
+        closure!(true);
+      } else {
+        closure!(false);
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  //Fetch User Info
+  Future<bool> fetchUserInfo() async {
+    var token = await sessionDataProvider.readToken();
+
+    try {
+      var response = await http.get(
+        Uri.parse(Api.userInfo),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'bearer $token'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('success');
+        return true;
+      } else {
+        print("failed");
+        return false;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  //Contact Form
+  Future<bool> userContactForm(Map parameters) async {
+    try {
+      var response = await http.post(
+        Uri.parse(Api.contactform),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(parameters),
+      );
+      var success = json.decode(response.body)['success'];
+      if (response.statusCode == 200 && success == true) {
+        print('success');
+        return true;
+      } else {
+        print("failed");
+        return false;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  //Save Favorite
+  Future<bool> saveFavorite(Map parameters) async {
+    try {
+      var response = await http.post(
+        Uri.parse(Api.saveFavorite),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(parameters),
+      );
+      var success = json.decode(response.body)['success'];
+      if (response.statusCode == 200 && success == true) {
+        print('success');
+        return true;
+      } else {
+        print("failed");
+        return false;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  //Delete Favorite
+  Future<bool> deleteFavorite(Map parameters) async {
+    try {
+      var response = await http.delete(
+        Uri.parse(Api.contactform),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(parameters),
+      );
+      var success = json.decode(response.body)['success'];
+      if (response.statusCode == 200 && success == true) {
+        print('success');
+        return true;
+      } else {
+        print("failed");
+        return false;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
   }
 }

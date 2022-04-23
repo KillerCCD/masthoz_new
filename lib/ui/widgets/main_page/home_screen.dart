@@ -18,20 +18,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   BottomIcons icons = BottomIcons.initall;
-  int _currentIndex = 0;
+  bool isAccount = false;
   bool isHome = false;
+  bool isItalian = false;
   bool isLibrary = false;
   bool isSearch = false;
-  bool isItalian = false;
-  bool isAccount = false;
-
-  final pages = const [
+  final pages = [
     HomePage(),
     LibraryPage(),
     SearchPage(),
     ItalianPage(),
     AccountPage(),
   ];
+
+  int _currentIndex = 0;
 
   tirgleColor() {
     return icons == BottomIcons.library
@@ -45,15 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     : false || icons == BottomIcons.account
                         ? Palette.textLineOrBackGroundColor
                         : null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Palette.textLineOrBackGroundColor,
-        body: pages[_currentIndex],
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: buildMyNavBar(context));
   }
 
   SizedBox buildMyNavBar(BuildContext context) {
@@ -262,5 +253,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Palette.textLineOrBackGroundColor,
+        body: pages[_currentIndex],
+        resizeToAvoidBottomInset: false,
+        bottomNavigationBar: buildMyNavBar(context));
   }
 }

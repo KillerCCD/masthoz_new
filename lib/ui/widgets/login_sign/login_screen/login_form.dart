@@ -28,9 +28,9 @@ class _LoginFormState extends State<LoginForm> {
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
           // Navigator.of(context).pop();
-          print('cik');
+          print('cik login Success');
         } else if (state.status.isSubmissionFailure) {
-          print('dadas');
+          print('cik isSubmissionFailure');
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -207,6 +207,7 @@ class _LoginButton extends StatefulWidget {
 
 class _LoginButtonState extends State<_LoginButton> {
   bool _isActive = false;
+
   void isActive() {
     setState(() {
       _isActive = !_isActive;
@@ -285,6 +286,7 @@ class _LoginButtonState extends State<_LoginButton> {
 
 class _ForgotButton extends StatelessWidget {
   const _ForgotButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TextButton(

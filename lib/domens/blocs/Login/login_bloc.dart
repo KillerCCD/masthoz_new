@@ -2,13 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
 import 'package:mashtoz_flutter/domens/blocs/Login/login_state.dart';
-import 'package:mashtoz_flutter/domens/models/email.dart';
-import 'package:mashtoz_flutter/domens/models/passowrd.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/email.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/passowrd.dart';
 import '../../repository/user_data_provider.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final UserDataProvider _userDataProvider;
   LoginCubit(this._userDataProvider) : super(const LoginState());
+
+  final UserDataProvider _userDataProvider;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);

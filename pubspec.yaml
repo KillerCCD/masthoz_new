@@ -50,6 +50,15 @@ dependencies:
   google_fonts: ^2.3.1
   tab_indicator_styler: ^2.0.0
   pin_code_fields: ^7.3.0
+  word_break_text: ^0.1.0
+  youtube_player_flutter: ^8.0.0
+  photo_view:
+    git:
+      url: https://github.com/bluefireteam/photo_view
+      ref: master
+  jsonml: ^0.1.9
+  
+  
   
   
 
@@ -75,7 +84,7 @@ flutter:
         - asset: assets/fonts/ArshaluyseArtU-Bold.ttf
           style: normal
           weight: 700
-    - family: Grapalat
+    - family: GHEAGpalat
       fonts:
         - asset: assets/fonts/GHEAGpalatBld.otf
         - asset: assets/fonts/GHEAGrapalatBlit.otf

@@ -3,7 +3,6 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/forgot_screen/verify_code_screen.dart/verify_code_screen.dart';
 
-
 class ForgotForm extends StatefulWidget {
   const ForgotForm({Key? key}) : super(key: key);
 
@@ -12,10 +11,9 @@ class ForgotForm extends StatefulWidget {
 }
 
 class _ForgotFormState extends State<ForgotForm> {
-  final userDataProvder = UserDataProvider();
-
-  final formKey = GlobalKey<FormState>();
   final controller = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final userDataProvder = UserDataProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class _ForgotFormState extends State<ForgotForm> {
                 children: [
                   SizedBox(height: 40.0),
                   TextFormField(
-                    // controller: controller,
+                    controller: controller,
                     cursorColor: Palette.cursor,
                     style: TextStyle(color: Palette.textLineOrBackGroundColor),
                     decoration: InputDecoration(
@@ -64,6 +62,13 @@ class _ForgotFormState extends State<ForgotForm> {
                       width: 47,
                       child: RawMaterialButton(
                         onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => VerifyCodeScreen(
+                          //             userEmail: '',
+                          //           )),
+                          // );
                           if (formKey.currentState!.validate()) {
                             final _email = controller.text;
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -72,17 +77,12 @@ class _ForgotFormState extends State<ForgotForm> {
                             userDataProvder.forgotPasswordPost(_email,
                                 (success) {
                               if (success == true) {
-                                userDataProvder.sendCode(_email, (sucess) {
-                                  if (success == true) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => VerifyCodeScreen(
-                                                userEmail: _email,
-                                              )),
-                                    );
-                                  }
-                                });
+                                print('Forgot_screen');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => VerifyCodeScreen()),
+                                );
                               }
                             });
                           }

@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_state.dart';
+import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
 
 import '../../buttons/facebook_gmail_buttons.dart';
 
@@ -23,7 +24,7 @@ class SignupForm extends StatelessWidget {
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
           // Navigator.of(context).pop();
-          print('cik');
+          print('cik isSubmissionSuccess');
         } else if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -321,14 +322,36 @@ class _ComplexButton extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  CoupleButtons(),
-                ],
+                children: const [_SignUpButton(), CoupleButtons()],
               ),
             ),
           ),
         )
       ],
+    );
+  }
+}
+
+class _SignUpButton extends StatelessWidget {
+  const _SignUpButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        print('grancvel hima');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+      },
+      child: const Text(
+        'Մուտք գործել',
+        style: TextStyle(
+          fontSize: 16,
+          fontFamily: 'Grapalat',
+          color: Color.fromRGBO(255, 255, 255, 1),
+        ),
+      ),
+      style: TextButton.styleFrom(padding: const EdgeInsets.only(right: 40)),
     );
   }
 }

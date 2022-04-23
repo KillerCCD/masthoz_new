@@ -1,14 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_state.dart';
-import 'package:mashtoz_flutter/domens/models/email.dart';
-import 'package:mashtoz_flutter/domens/models/full_name.dart';
-import 'package:mashtoz_flutter/domens/models/passowrd.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/full_name.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/passowrd.dart';
+import '../../models/user_input_data_validation/email.dart';
 import '../../repository/user_data_provider.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  final UserDataProvider _userDataProvider;
   RegisterCubit(this._userDataProvider) : super(const RegisterState());
+
+  final UserDataProvider _userDataProvider;
+
   void fullaNameChanged(String value) {
     final fullName = FullName.dirty(value);
     print(fullName);

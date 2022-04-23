@@ -1,20 +1,24 @@
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/email.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/passowrd.dart';
 
-import 'package:mashtoz_flutter/domens/models/email.dart';
-import 'package:mashtoz_flutter/domens/models/passowrd.dart';
 
 class LoginState extends Equatable {
-  final Email email;
-  final Password password;
-  final FormzStatus status;
-  final String? errorMessage;
   const LoginState({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.status = FormzStatus.pure,
     this.errorMessage,
   });
+
+  final Email email;
+  final String? errorMessage;
+  final Password password;
+  final FormzStatus status;
+
+  @override
+  List<Object?> get props => [email, password, status, errorMessage];
 
   LoginState copyWith({
     Email? email,
@@ -30,7 +34,4 @@ class LoginState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
-
-  @override
-  List<Object?> get props => [email, password, status, errorMessage];
 }

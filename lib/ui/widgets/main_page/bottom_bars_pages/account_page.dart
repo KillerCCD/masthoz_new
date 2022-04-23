@@ -4,7 +4,6 @@ import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.
 
 import '../../../../config/palette.dart';
 import '../../helper_widgets/actions_widgets.dart';
-import '../../helper_widgets/text_widgets.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -17,25 +16,23 @@ class AccountPage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight: 73,
-              backgroundColor: Palette.textLineOrBackGroundColor,
-              pinned: false,
-              floating: true,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-              flexibleSpace: ActionsHelper(
-                leftPadding: 50,
-                // botomPadding: 0,
-                // topPadding: 30,
+              title: ActionsHelper(
+                //botomPadding: 55,
                 text: 'Իմ հաշիվը',
                 fontFamily: 'Grapalat',
+                rightPadding: 10.0,
                 fontSize: 20,
                 laterSpacing: 1,
                 fontWeight: FontWeight.bold,
                 color: Palette.appBarTitleColor,
+                buttonShow: true,
               ),
+              expandedHeight: 73,
+              backgroundColor: Palette.textLineOrBackGroundColor,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
             ),
             SliverToBoxAdapter(
               child: Center(

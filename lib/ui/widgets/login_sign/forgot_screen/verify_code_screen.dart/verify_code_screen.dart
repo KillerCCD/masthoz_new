@@ -2,36 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
+import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
+import 'package:mashtoz_flutter/ui/widgets/login_sign/forgot_screen/resset_password_screen/resset_password_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
-  final String userEmail;
-
-  const VerifyCodeScreen({Key? key, this.userEmail = ''}) : super(key: key);
+  const VerifyCodeScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<VerifyCodeScreen> createState() =>
-      _VerifyCodeScreenState(userEmail: userEmail);
+  State<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
 }
 
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
-  String userEmail;
-
-  var smsCode;
-  bool hasError = false;
-
   String currentText = "";
-
-  final textController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   StreamController<ErrorAnimationType>? errorController;
+  bool hasError = false;
+  var smsCode;
+  final textController = TextEditingController();
+  final userDataProvder = UserDataProvider();
 
-  @override
-  void initState() {
-    errorController = StreamController<ErrorAnimationType>();
-
-    super.initState();
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -40,7 +32,13 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     super.dispose();
   }
 
-  _VerifyCodeScreenState({required this.userEmail});
+  @override
+  void initState() {
+    errorController = StreamController<ErrorAnimationType>();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -152,7 +150,26 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                           width: 47,
                           child: RawMaterialButton(
                             onPressed: () {
-                              _formKey.currentState!.validate();
+                              if (_formKey.currentState!.validate()) {
+                                final smsCode = textController.text;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Processing Data')),
+                                );
+                                userDataProvder.sendCode(smsCode, (success) {
+                                  if (success == true) {
+                                    print('Forgot_screen');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RessetPasswordScreen(
+                                                smsCode: smsCode,
+                                              )),
+                                    );
+                                  }
+                                });
+                              }
                               if (currentText.length != 6) {
                                 errorController!.add(ErrorAnimationType
                                     .shake); // Triggering error shake animation

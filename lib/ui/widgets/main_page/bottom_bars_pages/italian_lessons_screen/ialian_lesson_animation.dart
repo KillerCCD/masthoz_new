@@ -1,17 +1,15 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import '../../../../../domens/models/book.dart';
-
-
+import '../../../../../domens/models/book_data/book.dart';
 
 class ITLesson extends StatefulWidget {
-  final IalianLesson italianLesson;
-  final bool isOdd;
   const ITLesson({Key? key, required this.isOdd, required this.italianLesson})
       : super(key: key);
+
+  final bool isOdd;
+  final IalianLesson italianLesson;
 
   @override
   _ItalianLessonState createState() =>
@@ -21,19 +19,25 @@ class ITLesson extends StatefulWidget {
 
 class _ItalianLessonState extends State<ITLesson>
     with TickerProviderStateMixin {
-  final IalianLesson italianLesson;
-  final bool isOdd;
-
   _ItalianLessonState({required this.italianLesson, required this.isOdd});
 
-  late AnimationController _controller;
-  late Animation sizeRibbonAnimation, sizeNumberAnimation, sizeImageAnimation;
+  final bool isOdd;
+  final IalianLesson italianLesson;
   bool selected = true;
+  late Animation sizeRibbonAnimation, sizeNumberAnimation, sizeImageAnimation;
+
+  late AnimationController _controller;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
+        vsync: this, duration: const Duration(milliseconds: 200));
 
     sizeRibbonAnimation =
         Tween<double>(begin: 0.0, end: 304.0).animate(_controller);
@@ -46,12 +50,6 @@ class _ItalianLessonState extends State<ITLesson>
     });
     _controller.forward();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override

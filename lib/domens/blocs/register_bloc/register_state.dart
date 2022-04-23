@@ -1,17 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
-import 'package:mashtoz_flutter/domens/models/email.dart';
-import 'package:mashtoz_flutter/domens/models/full_name.dart';
-import 'package:mashtoz_flutter/domens/models/passowrd.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/email.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/full_name.dart';
+import 'package:mashtoz_flutter/domens/models/user_input_data_validation/passowrd.dart';
 
 class RegisterState extends Equatable {
-  final FullName fullName;
-  final Email email;
-  final Password password;
-  final FormzStatus status;
-  final String? errorMessage;
- 
   const RegisterState({
     this.fullName = const FullName.pure(),
     this.email = const Email.pure(),
@@ -19,6 +13,15 @@ class RegisterState extends Equatable {
     this.status = FormzStatus.pure,
     this.errorMessage,
   });
+
+  final Email email;
+  final String? errorMessage;
+  final FullName fullName;
+  final Password password;
+  final FormzStatus status;
+
+  @override
+  List<Object?> get props => [fullName,email, password, status, errorMessage];
 
   RegisterState copyWith({
     FullName? fullName,
@@ -36,7 +39,4 @@ class RegisterState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
-
-  @override
-  List<Object?> get props => [fullName,email, password, status, errorMessage];
 }

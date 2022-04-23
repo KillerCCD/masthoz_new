@@ -41,11 +41,13 @@ class Api {
 
 //Dialect APIs
   static String get dialectCharacters => api_url + '/dialectsCharacters';
+
   static dialectBYCharacters(caracters) => api_url + '/dialects/$caracters';
 
 //Encyclopedia APIs
   static String get encyclopediasCharacters =>
       api_url + '/encyclopediasCharacters';
+
   static encyclopediasByCharacters(character) =>
       api_url + '/encyclopedias/$character';
 
@@ -76,4 +78,7 @@ class Api {
 
   static armenianDictionaryByCharacters(character) =>
       api_url + '/armenians/$character';
+
+  //Words of Day APIs
+  static String get wordsOfDay => api_url + '/wordsofday';
 }
