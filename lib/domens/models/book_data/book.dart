@@ -1,36 +1,64 @@
 import 'package:flutter/material.dart';
 
 class Book {
+  final int id;
   final String title;
-  final String bookName;
-  final String imageUrl;
-  final String body;
+  final String author;
+  final String urlImage;
+
   const Book({
-    required this.body,
-    required this.bookName,
+    required this.id,
+    required this.author,
     required this.title,
-    required this.imageUrl,
+    required this.urlImage,
   });
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'title': title,
-  //     'imageUrl': imageUrl,
-  //   };
-  // }
+  factory Book.fromJson(Map<String, dynamic> json) => Book(
+        id: json['id'],
+        author: json['author'],
+        title: json['title'],
+        urlImage: json['urlImage'],
+      );
 
-  // factory Book.fromJson(Map<String, dynamic> json) {
-  //   return Book(
-  //     bookName: json['bookName'],
-  //     title: json['title'],
-  //     imageUrl: json['imageUrl'],
-  //   );
-  // }
-
-  // String toJson() => json.encode(toMap());
-
-  //factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'author': author,
+        'urlImage': urlImage,
+      };
 }
+// class Book {
+//   final String title;
+//   final String bookName;
+//   final String imageUrl;
+//   final String body;
+//   const Book({
+//     required this.body,
+//     required this.bookName,
+//     required this.title,
+//     required this.imageUrl,
+//   });
+
+//   // Map<String, dynamic> toMap() {
+//   //   return {
+//   //     'title': title,
+//   //     'imageUrl': imageUrl,
+//   //   };
+//   // }
+
+//   factory Book.fromJson(Map<String, dynamic> json) {
+//     return Book(
+//       bookName: json['bookName'],
+//       title: json['title'],
+//       imageUrl: json['imageUrl'],
+//       body: json['body']
+//     );
+//   }
+
+//   // String toJson() => json.encode(toMap());
+
+//   //factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
+// }
 
 class IalianLesson {
   final int id;
@@ -58,6 +86,7 @@ class Gellerys {
   final String resource;
   final bool isSvg;
 }
+
 class GalleryExampleItemThumbnail extends StatelessWidget {
   const GalleryExampleItemThumbnail({
     Key? key,

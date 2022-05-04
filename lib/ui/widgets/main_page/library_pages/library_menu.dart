@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
+import 'package:mashtoz_flutter/globals.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
+import 'package:provider/provider.dart';
 
-import '../../helper_widgets/actions_widgets.dart';
+import 'book_inherited_widget.dart';
 import 'books_page.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -23,7 +26,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   void initState() {
-    categoryFutureList = bookDataProvider.getCategoryLists();
+    categoryFutureList = bookDataProvider.getCategoryLists(Api.categoryListUrl);
     super.initState();
   }
 
@@ -33,87 +36,106 @@ class _LibraryPageState extends State<LibraryPage> {
       backgroundColor: Palette.libraryBacgroundColor,
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
+        preferredSize: const Size.fromHeight(73),
         child: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Color.fromRGBO(25, 4, 18, 1),
           ),
           elevation: 0,
+          title: Text(
+            'Գրադարան',
+            style: TextStyle(
+                fontFamily: 'GHEAGrapalat',
+                fontSize: 23,
+                letterSpacing: 1,
+                fontWeight: FontWeight.bold,
+                color: Palette.textLineOrBackGroundColor),
+          ),
           automaticallyImplyLeading: false,
           backgroundColor: Palette.barColor,
-          flexibleSpace: const Padding(
-            padding: EdgeInsets.only(),
-            child: ActionsHelper(
-              leftPadding: 20,
-              topPadding: 30,
-              text: 'Գրադարան',
-              fontFamily: 'Grapalat',
-              fontSize: 23,
-              laterSpacing: 1,
-              fontWeight: FontWeight.bold,
-              color: Palette.textLineOrBackGroundColor,
-            ),
-          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
+              ),
+              child: MenuShow(),
+            )
+          ],
         ),
       ),
-      body: FutureBuilder<List<BookCategory>>(
-        future: categoryFutureList,
-        builder: (context, snapshot) {
-          var categoryList = snapshot.data;
-          if (snapshot.hasData) {
-            return Scrollbar(
-                thickness: 3,
-                radius: const Radius.circular(12),
-                isAlwaysShown: true,
-                showTrackOnHover: true,
-                child: ListView.builder(
-                  itemCount: categoryList!.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 50,
-                      width: 500,
-                      padding: const EdgeInsets.only(right: 0),
-                      child: ListTile(
-                        trailing: Text(
-                          '${categoryList[index].categoryTitle}',
-                          style: TextStyle(
-                            color: Palette.textLineOrBackGroundColor,
-                            fontSize: 15,
-                            fontFamily: 'Grapalat',
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            isColorAvtive = !isColorAvtive;
-                            print(categoryList[index].id);
-                          });
+      body: Padding(
+        padding: const EdgeInsets.only(right: 16.0),
+        child: FutureBuilder<List<BookCategory>>(
+          future: categoryFutureList,
+          builder: (context, snapshot) {
+            var categoryList = snapshot.data;
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Scrollbar(
+                        thickness: 3,
+                        radius: const Radius.circular(12),
+                        isAlwaysShown: false,
+                        showTrackOnHover: true,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: categoryList!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.only(right: 0),
+                              child: ListTile(
+                                trailing: SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    '${categoryList[index].categoryTitle}',
+                                    style: TextStyle(
+                                      color: Palette.textLineOrBackGroundColor,
+                                      fontSize: 12,
+                                      fontFamily: 'GHEAGrapalat',
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: 1,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    isColorAvtive = !isColorAvtive;
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BooksScreen(
-                                category: categoryList[index],
-                               
+                                    ;
+                                  });
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => BooksScreen(
+                                        category: categoryList[index],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ));
-          }
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2.0,
-                color: Palette.main,
+                            );
+                          },
+                        )),
+                  ),
+                ],
+              );
+            }
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.0,
+                  color: Palette.main,
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -43,7 +43,7 @@
 //                               color: Palette.textLineOrBackGroundColor)),
 //                       labelText: 'Նոր գաղտնաբառ',
 //                       labelStyle: TextStyle(
-//                         fontFamily: 'Grapalat',
+//                         fontFamily: 'GHEAGrapalat',
 //                         fontSize: 14,
 //                         color: Palette.labelText,
 //                       ),
@@ -70,7 +70,7 @@
 //                               color: Palette.textLineOrBackGroundColor)),
 //                       labelText: 'Կրկնել գաղտնաբառը',
 //                       labelStyle: TextStyle(
-//                         fontFamily: 'Grapalat',
+//                         fontFamily: 'GHEAGrapalat',
 //                         fontSize: 14,
 //                         color: Palette.labelText,
 //                       ),

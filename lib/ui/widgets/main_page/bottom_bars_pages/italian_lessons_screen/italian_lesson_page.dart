@@ -1,13 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/autio_librar_test.dart';
+import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../../../../config/palette.dart';
 import '../../../helper_widgets/actions_widgets.dart';
 import 'dart:math' as math;
+
+import '../../main_menu_pages/audio_library/audio_library.dart';
+import '../../main_menu_pages/italian_lesson/italian_data_show.dart';
 
 class ItalianPage extends StatefulWidget {
   const ItalianPage({Key? key}) : super(key: key);
@@ -22,39 +28,23 @@ class _ItalianPageState extends State<ItalianPage>
   Future<List<Lessons>>? lessonFuture;
   List<Lessons> lessons = [];
 
-  late Animation sizeRibbonAnimation, sizeNumberAnimation, sizeImageAnimation;
-
-  late AnimationController _controller;
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
-  late final TabController _tabController;
-  final int _tabLength = 2;
+
   final bool showPage = false;
   bool isOdd = false;
   @override
   void initState() {
     lessonFuture = bookDataProvider.getLessons();
-    _tabController = TabController(length: _tabLength, vsync: this);
-    super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
 
-    sizeRibbonAnimation =
-        Tween<double>(begin: 0.0, end: 304.0).animate(_controller);
-    sizeNumberAnimation =
-        Tween<double>(begin: 0.0, end: 259).animate(_controller);
-    sizeImageAnimation =
-        Tween<double>(begin: -220.0, end: 16.0).animate(_controller);
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.forward();
+    super.initState();
+
     _loadItems();
   }
 
   Future<void> _loadItems() async {
     List result = await bookDataProvider.getLessons();
     for (var item in result) {
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 800));
 
       lessons.add(item);
 
@@ -64,132 +54,170 @@ class _ItalianPageState extends State<ItalianPage>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _tabLength,
+    return SafeArea(
       child: Scaffold(
-          backgroundColor: Palette.textLineOrBackGroundColor,
-          extendBodyBehindAppBar: true,
-          body: TabBarView(
-              controller: _tabController,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      expandedHeight: 73,
-                      backgroundColor: Palette.textLineOrBackGroundColor,
-                      pinned: false,
-                      floating: true,
-                      elevation: 0,
-                      automaticallyImplyLeading: false,
-                      systemOverlayStyle: SystemUiOverlayStyle(
-                          statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-                      flexibleSpace: ActionsHelper(
-                        leftPadding: 50,
-                        // botomPadding: 0,
-                        // topPadding: 30,
-                        text: 'Իտալերենի դասեր',
-                        fontFamily: 'Grapalat',
-                        fontSize: 20,
-                        laterSpacing: 1,
-                        fontWeight: FontWeight.bold,
-                        color: Palette.appBarTitleColor,
-                      ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        FutureBuilder<List<Lessons>>(
-                          future: lessonFuture,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var listsLesson = snapshot.data;
-                              return AnimatedList(
-                                key: _listKey,
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index,
-                                    animation) {
-                                  final Lessons italianLesson =
-                                      listsLesson![index];
-
-                                  if (index % 2 != 0) {
-                                    return SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0, 0),
-                                        end: const Offset(0, 0),
-                                      ).animate(CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.bounceIn,
-                                          reverseCurve: Curves.bounceOut)),
-                                      child: Transform(
-                                          alignment: Alignment.center,
-                                          transform: Matrix4.rotationY(math.pi),
-                                          child: Container(
-                                            child: ITLesson(
-                                              isOdd: true,
-                                              italianLesson: italianLesson,
-                                            ),
-                                          )),
-                                    );
-                                  } else {
-                                    return SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0, 0),
-                                        end: const Offset(0, 0),
-                                      ).animate(CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.bounceIn,
-                                          reverseCurve: Curves.bounceOut)),
-                                      child: Container(
-                                        child: ITLesson(
-                                          isOdd: false,
-                                          italianLesson: italianLesson,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                initialItemCount: snapshot.data!.length,
-                              );
-                            } else {
-                              return Container(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                      child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                    color: Palette.main,
-                                  )),
-                                ],
-                              ));
-                            }
-                          },
-                        ),
-                      ]),
-                    ),
-                  ],
+        backgroundColor: Palette.textLineOrBackGroundColor,
+        extendBodyBehindAppBar: true,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Իտալերենի դասեր',
+                  style: TextStyle(
+                      fontSize: 20,
+                      letterSpacing: 1,
+                      fontFamily: 'GHEAGrapalat',
+                      fontWeight: FontWeight.bold,
+                      color: Palette.appBarTitleColor),
                 ),
-                //  AudioLibrary(),
-              ])),
+              ),
+              expandedHeight: 53,
+              backgroundColor: Palette.textLineOrBackGroundColor,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0), child: MenuShow()),
+              ],
+            ),
+            // SliverAppBar(
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   pinned: false,
+            //   floating: true,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            //   title: Text(
+            //     'Իտալերենի դասեր',
+            //     style: TextStyle(
+            //         fontSize: 16,
+            //         letterSpacing: 1,
+            //         fontFamily: 'GHEAGrapalat',
+            //         fontWeight: FontWeight.w700,
+            //         color: Palette.appBarTitleColor),
+            //   ),
+            //   actions: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(right: 20.0),
+            //       child: MenuShow(),
+            //     ),
+            //   ],
+            // ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.only(left: 20.0),
+                height: 60,
+                width: 87,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Հին ',
+                        style: TextStyle(
+                            fontFamily: "GHEAGrapalat",
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Palette.main),
+                      ),
+                      SizedBox(width: 5.0),
+                      SvgPicture.asset('assets/images/hin_nor.svg'),
+                      SizedBox(width: 5.0),
+                      Text('Նոր',
+                          style: TextStyle(
+                              fontFamily: "GHEAGrapalat",
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                              color: Palette.main)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                FutureBuilder<List<Lessons>>(
+                  future: lessonFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var listsLesson = snapshot.data;
+                      return AnimatedList(
+                        key: _listKey,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder:
+                            (BuildContext context, int index, animation) {
+                          final Lessons italianLesson = listsLesson![index];
+
+                          if (index % 2 != 0) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0),
+                                end: const Offset(0, 0),
+                              ).animate(CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.bounceIn,
+                                  reverseCurve: Curves.bounceOut)),
+                              child: Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.rotationY(math.pi),
+                                  child: SizedBox(
+                                    child: ITLesson(
+                                      isOdd: true,
+                                      italianLesson: italianLesson,
+                                    ),
+                                  )),
+                            );
+                          } else {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0),
+                                end: const Offset(0, 0),
+                              ).animate(CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.bounceIn,
+                                  reverseCurve: Curves.bounceOut)),
+                              child: SizedBox(
+                                child: ITLesson(
+                                  isOdd: false,
+                                  italianLesson: italianLesson,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        initialItemCount: snapshot.data!.length,
+                      );
+                    } else {
+                      return SizedBox(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                              child: CircularProgressIndicator(
+                            strokeWidth: 2.0,
+                            color: Palette.main,
+                          )),
+                        ],
+                      ));
+                    }
+                  },
+                ),
+              ]),
+            ),
+          ],
+        ),
+      ),
     );
-  }
-
-  void _onTabChanged() {
-    if (_tabController.indexIsChanging) {
-      switch (_tabController.index) {
-        case 0:
-          // handle 0 position
-          print(_tabController.index);
-          break;
-        case 1:
-          print(_tabController.index);
-          // handle 1 position
-
-          break;
-      }
-    }
   }
 }
 
@@ -229,12 +257,11 @@ class _ItalianLessonState extends State<ITLesson>
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
 
-    sizeRibbonAnimation =
-        Tween<double>(begin: 0.0, end: 304.0).animate(_controller);
-    sizeNumberAnimation =
-        Tween<double>(begin: 0.0, end: 259).animate(_controller);
-    sizeImageAnimation =
-        Tween<double>(begin: -220.0, end: 16.0).animate(_controller);
+    // sizeRibbonAnimation =
+    //     Tween<double>(begin: 0.0, end: 304.0).animate(_controller);
+
+    // sizeImageAnimation =
+    //     Tween<double>(begin: -220.0, end: 16.0).animate(_controller);
     _controller.addListener(() {
       setState(() {});
     });
@@ -244,17 +271,36 @@ class _ItalianLessonState extends State<ITLesson>
 
   @override
   Widget build(BuildContext context) {
+    sizeRibbonAnimation =
+        Tween<double>(begin: 0.0, end: MediaQuery.of(context).size.width - 20)
+            .animate(_controller);
+    sizeNumberAnimation =
+        Tween<double>(begin: 0.0, end: MediaQuery.of(context).size.width / 1.2)
+            .animate(_controller);
+    sizeImageAnimation = Tween<double>(
+            begin: -220.0, end: MediaQuery.of(context).size.width / 30)
+        .animate(_controller);
+
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        print('dadas youtube');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ItaliaLessonShow(
+                      lessons: italianLesson,
+                      isShow: true,
+                    )));
+      },
       child: SizedBox(
-          width: 304,
-          height: 168,
+          width: MediaQuery.of(context).size.width,
+          height: 218,
           child: Stack(children: <Widget>[
             Positioned(
-                top: 36,
+                top: 56,
                 left: 0,
                 child: SizedBox(
-                    width: 304.0,
+                    width: MediaQuery.of(context).size.width,
                     height: 46,
                     child: Stack(children: <Widget>[
                       Positioned(
@@ -279,7 +325,7 @@ class _ItalianLessonState extends State<ITLesson>
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(
                                       color: Colors.white,
-                                      fontFamily: 'GHEA Grapalat',
+                                      fontFamily: 'GHEA GHEAGrapalat',
                                       fontSize: 20,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.normal,
@@ -290,7 +336,7 @@ class _ItalianLessonState extends State<ITLesson>
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'GHEA Grapalat',
+                                    fontFamily: 'GHEA GHEAGrapalat',
                                     fontSize: 20,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.normal,
@@ -302,15 +348,19 @@ class _ItalianLessonState extends State<ITLesson>
                 top: 0,
                 left: sizeImageAnimation.value,
                 child: SizedBox(
-                  width: 220,
-                  height: 118,
+                  width: MediaQuery.of(context).size.width > 300
+                      ? MediaQuery.of(context).size.width / 1.3
+                      : 300,
+                  height: 150,
                   child: Stack(children: <Widget>[
                     Positioned(
                         top: 0,
                         left: 0,
                         child: Container(
-                            width: 220,
-                            height: 118,
+                            width: MediaQuery.of(context).size.width > 300
+                                ? MediaQuery.of(context).size.width / 1.3
+                                : 300,
+                            height: 150,
                             decoration: BoxDecoration(
                               color: const Color.fromRGBO(255, 255, 255, 1),
                               border: Border.all(
@@ -322,8 +372,10 @@ class _ItalianLessonState extends State<ITLesson>
                         top: 4,
                         left: 4,
                         child: Container(
-                          width: 212,
-                          height: 110,
+                          width: MediaQuery.of(context).size.width > 300
+                              ? MediaQuery.of(context).size.width / 1.34
+                              : 300,
+                          height: 142,
                           child: CachedNetworkImage(
                             imageUrl: italianLesson.image!,
                             fit: BoxFit.cover,
@@ -332,7 +384,7 @@ class _ItalianLessonState extends State<ITLesson>
                   ]),
                 )),
             Positioned(
-                top: 128,
+                top: 158,
                 left: 16,
                 child: isOdd
                     ? Transform(
@@ -345,10 +397,10 @@ class _ItalianLessonState extends State<ITLesson>
                             width: 300,
                             child: Text(
                               italianLesson.title!,
-                              textAlign: TextAlign.left,
+                              textAlign: TextAlign.justify,
                               style: const TextStyle(
                                   color: Color.fromRGBO(84, 112, 126, 1),
-                                  fontFamily: 'GHEA Grapalat',
+                                  fontFamily: 'GHEA GHEAGrapalat',
                                   fontSize: 12,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.normal,
@@ -367,10 +419,10 @@ class _ItalianLessonState extends State<ITLesson>
                             width: 300,
                             child: Text(
                               italianLesson.title!,
-                              textAlign: TextAlign.left,
+                              textAlign: TextAlign.justify,
                               style: const TextStyle(
                                   color: Color.fromRGBO(84, 112, 126, 1),
-                                  fontFamily: 'GHEA Grapalat',
+                                  fontFamily: 'GHEA GHEAGrapalat',
                                   fontSize: 12,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.normal,

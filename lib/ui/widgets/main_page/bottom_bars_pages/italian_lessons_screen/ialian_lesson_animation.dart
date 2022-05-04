@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -87,7 +86,7 @@ class _ItalianLessonState extends State<ITLesson>
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'GHEA Grapalat',
+                                    fontFamily: 'GHEA GHEAGrapalat',
                                     fontSize: 20,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.normal,
@@ -98,7 +97,7 @@ class _ItalianLessonState extends State<ITLesson>
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'GHEA Grapalat',
+                                  fontFamily: 'GHEA GHEAGrapalat',
                                   fontSize: 20,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.normal,
@@ -155,7 +154,7 @@ class _ItalianLessonState extends State<ITLesson>
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               color: Color.fromRGBO(84, 112, 126, 1),
-                              fontFamily: 'GHEA Grapalat',
+                              fontFamily: 'GHEA GHEAGrapalat',
                               fontSize: 12,
                               letterSpacing: 0,
                               fontWeight: FontWeight.normal,
@@ -174,7 +173,7 @@ class _ItalianLessonState extends State<ITLesson>
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               color: Color.fromRGBO(84, 112, 126, 1),
-                              fontFamily: 'GHEA Grapalat',
+                              fontFamily: 'GHEA GHEAGrapalat',
                               fontSize: 12,
                               letterSpacing: 0,
                               fontWeight: FontWeight.normal,

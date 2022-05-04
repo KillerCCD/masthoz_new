@@ -7,9 +7,7 @@ import 'package:mashtoz_flutter/domens/blocs/Login/login_state.dart';
 
 import 'package:formz/formz.dart';
 
-import '../../buttons/facebook_gmail_buttons.dart';
 import '../forgot_screen/forgot_screen.dart';
-import '../singup_screen/singup_screen.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -22,8 +20,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    print("width : ${screenSize.width}");
-    print("width : ${screenSize.height}");
+
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
@@ -53,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
                         width: 20,
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
+                              AlwaysStoppedAnimation<Color>(Palette.main),
                         ),
                       )
                     ],
@@ -66,33 +63,25 @@ class _LoginFormState extends State<LoginForm> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: screenSize.height / 15),
-                    const _LoginIput(),
-                    SizedBox(height: screenSize.height / 15),
-                    const PasswordInput(),
-                    SizedBox(height: screenSize.height / 15),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          _ForgotButton(),
-                          _LoginButton(),
-                        ]),
-                  ],
-                ),
-              ),
-
-              // Text(
-              //     'width : ${screenSize.width} , height: ${screenSize.height / 10.6}'),
-              SizedBox(height: screenSize.height * 0.27),
-              _ComplexButton(),
-              SizedBox(height: 25.0),
-            ],
+          physics: NeverScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 20.0, right: 20.0, top: 0.0, bottom: 0.0),
+            child: Column(
+              children: [
+                SizedBox(height: screenSize.height / 10),
+                const _LoginIput(),
+                SizedBox(height: screenSize.height / 19),
+                const PasswordInput(),
+                SizedBox(height: screenSize.height / 15),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Expanded(child: _ForgotButton()),
+                      Expanded(child: _LoginButton()),
+                    ]),
+              ],
+            ),
           ),
         ),
       ),
@@ -121,8 +110,10 @@ class _LoginIput extends StatelessWidget {
                     BorderSide(color: Palette.textLineOrBackGroundColor)),
             labelText: 'էլ. փոստ',
             labelStyle: const TextStyle(
-              fontFamily: 'Grapalat',
+              fontFamily: 'GHEAGrapalat',
               fontSize: 14,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 1,
               color: Palette.labelText,
             ),
             focusColor: Palette.labelText,
@@ -169,9 +160,11 @@ class _PasswordInputState extends State<PasswordInput> {
                       BorderSide(color: Color.fromRGBO(255, 255, 255, 1))),
               labelText: 'Գաղտնաբառ',
               labelStyle: const TextStyle(
-                  fontFamily: 'Grapalat',
+                  fontFamily: 'GHEAGrapalat',
                   fontSize: 14,
-                  color: Color.fromRGBO(189, 189, 189, 1)),
+                  letterSpacing: 1,
+                  color: Color.fromRGBO(189, 189, 189, 1),
+                  fontWeight: FontWeight.w400),
               suffixIcon: Padding(
                 padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 child: InkWell(
@@ -298,62 +291,16 @@ class _ForgotButton extends StatelessWidget {
       child: const Text(
         'Մոռացե՞լ եք գաղտնաբառը',
         style: TextStyle(
-            fontSize: 12, fontFamily: 'Grapalat', color: Palette.main),
+            fontSize: 12,
+            fontFamily: 'GHEAGrapalat',
+            color: Palette.main,
+            letterSpacing: 1,
+            fontWeight: FontWeight.w400),
       ),
       style: TextButton.styleFrom(
         primary: Colors.amber,
         padding: const EdgeInsets.only(right: 40),
       ),
-    );
-  }
-}
-
-class _ComplexButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 60.0,
-            color: Palette.barColor,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  _SignUpButton(),
-                  CoupleButtons(),
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class _SignUpButton extends StatelessWidget {
-  const _SignUpButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        print('grancvel hima');
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SignupScreen()));
-      },
-      child: const Text(
-        'Գրանցվել հիմա',
-        style: TextStyle(
-          fontSize: 16,
-          fontFamily: 'Grapalat',
-          color: Color.fromRGBO(255, 255, 255, 1),
-        ),
-      ),
-      style: TextButton.styleFrom(padding: const EdgeInsets.only(right: 40)),
     );
   }
 }

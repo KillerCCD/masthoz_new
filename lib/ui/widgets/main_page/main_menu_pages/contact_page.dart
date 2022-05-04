@@ -4,6 +4,7 @@ import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 
 import '../../../../config/palette.dart';
 import '../../helper_widgets/actions_widgets.dart';
+import '../../helper_widgets/menuShow.dart';
 
 class Contact extends StatefulWidget {
   const Contact({Key? key}) : super(key: key);
@@ -25,22 +26,26 @@ class _ContactState extends State<Contact> {
       controller: emailController,
       cursorColor: Colors.black,
       decoration: const InputDecoration(
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(
-            color: Colors.black,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
             borderSide: BorderSide(
-              color: Color.fromRGBO(226, 224, 224, 1),
+              color: Colors.black,
             ),
-            borderRadius: BorderRadius.zero),
-        hintText: 'Էլ․ փոստ',
-      ),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Էլ. փոստ',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
       autofocus: false,
       keyboardType: TextInputType.emailAddress,
     );
@@ -51,20 +56,24 @@ class _ContactState extends State<Contact> {
       controller: nameController,
       cursorColor: Colors.black,
       decoration: InputDecoration(
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.zero,
-            borderSide: BorderSide(color: Colors.black)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color.fromRGBO(226, 224, 224, 1),
-            ),
-            borderRadius: BorderRadius.zero),
-        hintText: 'Անուն Ազգանուն',
-      ),
-      autofocus: true,
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.zero,
+              borderSide: BorderSide(color: Colors.black)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Անուն Ազգանուն',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
+      autofocus: false,
       keyboardType: TextInputType.emailAddress,
     );
   }
@@ -76,20 +85,24 @@ class _ContactState extends State<Contact> {
       cursorColor: Colors.black,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color.fromRGBO(226, 224, 224, 1),
-            ),
-            borderRadius: BorderRadius.zero),
-        hintText: 'Հաղորդագրություն',
-      ),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Հաղորդագրություն',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
       autofocus: false,
     );
   }
@@ -124,55 +137,87 @@ class _ContactState extends State<Contact> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Color.fromRGBO(226, 224, 224, 1),
-        body: CustomScrollView(slivers: [
-          SliverAppBar(
-            title: ActionsHelper(
-              //botomPadding: 55,
-              text: 'Կապ',
-              fontFamily: 'Grapalat',
-              rightPadding: 10.0,
-              fontSize: 20,
-              laterSpacing: 1,
-              fontWeight: FontWeight.bold,
-              color: Palette.appBarTitleColor,
+        body: Padding(
+          padding: const EdgeInsets.only(right: 20, left: 20.0),
+          child: CustomScrollView(slivers: [
+            // SliverAppBar(
+            //   title: ActionsHelper(
+            //     //botomPadding: 55,
+            //     text: 'Կապ',
+            //     fontFamily: 'Grapalat',
+            //     rightPadding: 10.0,
+            //     fontSize: 20,
+            //     laterSpacing: 1,
+            //     fontWeight: FontWeight.bold,
+            //     color: Palette.appBarTitleColor,
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Color.fromRGBO(226, 224, 224, 1),
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            // ),
+            SliverAppBar(
+              flexibleSpace: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Կապ',
+                  style: TextStyle(
+                      fontSize: 20,
+                      letterSpacing: 1,
+                      fontFamily: 'GHEAGrapalat',
+                      fontWeight: FontWeight.bold,
+                      color: Palette.appBarTitleColor),
+                ),
+              ),
+              expandedHeight: 73,
+              backgroundColor: Color.fromRGBO(226, 224, 224, 1),
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                MenuShow(),
+              ],
             ),
-            expandedHeight: 73,
-            backgroundColor: Color.fromRGBO(226, 224, 224, 1),
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: Color.fromRGBO(226, 224, 224, 1),
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  const Text(
-                      'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:'),
-                  const SizedBox(height: 20),
-                  FormField(
-                      key: _formKey,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      builder: (FormFieldState state) {
-                        return Column(
-                          children: [
-                            fullName(state),
-                            const SizedBox(height: 30),
-                            email(),
-                            const SizedBox(height: 30),
-                            message(state),
-                            const SizedBox(height: 30),
-                            sendButton(),
-                          ],
-                        );
-                      }),
-                ],
+            SliverToBoxAdapter(
+              child: Container(
+                color: Color.fromRGBO(226, 224, 224, 1),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:',
+                      style: TextStyle(
+                          fontFamily: 'GHEAGrapalat',
+                          fontSize: 12.0,
+                          letterSpacing: 1.0,
+                          fontWeight: FontWeight.w400),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 20),
+                    FormField(
+                        key: _formKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        builder: (FormFieldState state) {
+                          return Column(
+                            children: [
+                              fullName(state),
+                              const SizedBox(height: 30),
+                              email(),
+                              const SizedBox(height: 30),
+                              message(state),
+                              const SizedBox(height: 30),
+                              sendButton(),
+                            ],
+                          );
+                        }),
+                  ],
+                ),
               ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

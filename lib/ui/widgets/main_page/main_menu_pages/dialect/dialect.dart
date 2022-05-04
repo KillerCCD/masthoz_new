@@ -6,6 +6,7 @@ import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 
+import '../../../helper_widgets/menuShow.dart';
 import 'diaelct_by_characters.dart';
 
 class Dialect extends StatefulWidget {
@@ -23,15 +24,14 @@ class _DialectState extends State<Dialect> with SingleTickerProviderStateMixin {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: ActionsHelper(
-                //botomPadding: 55,
-                text: 'Համաբարբառ',
-                fontFamily: 'Grapalat',
-                rightPadding: 10.0,
-                fontSize: 20,
-                laterSpacing: 1,
-                fontWeight: FontWeight.bold,
-                color: Palette.appBarTitleColor,
+              title: Text(
+                'Համաբարբառ',
+                style: TextStyle(
+                    fontSize: 16.0,
+                    letterSpacing: 1,
+                    fontFamily: 'GHEAGrapalat',
+                    fontWeight: FontWeight.w700,
+                    color: Palette.appBarTitleColor),
               ),
               expandedHeight: 73,
               backgroundColor: Palette.textLineOrBackGroundColor,
@@ -39,7 +39,33 @@ class _DialectState extends State<Dialect> with SingleTickerProviderStateMixin {
               automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: MenuShow(),
+                ),
+              ],
             ),
+            // SliverAppBar(
+            //   title: Text(
+            //     'Համաբարբառ',
+            //     style: TextStyle(
+            //         fontSize: 20,
+            //         letterSpacing: 1,
+            //         fontFamily: 'GHEAGrapalat',
+            //         fontWeight: FontWeight.bold,
+            //         color: Palette.appBarTitleColor),
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            //   actions: [
+            //     MenuShow(),
+            //   ],
+            // ),
             SliverFillRemaining(
               hasScrollBody: false,
               child: Column(
@@ -138,8 +164,11 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
             );
           } else {
             return Container(
-              child: Center(child: CircularProgressIndicator()),
-            );
+                child: Center(
+                    child: CircularProgressIndicator(
+              strokeWidth: 2.0,
+              color: Palette.main,
+            )));
           }
         },
       ),

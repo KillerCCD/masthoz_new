@@ -6,6 +6,7 @@ import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 
+import '../../../helper_widgets/menuShow.dart';
 import 'audio_librar_data_show.dart';
 import 'audio_library_by_characters.dart';
 
@@ -29,16 +30,33 @@ class _AudioLibraryState extends State<AudioLibrary>
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
+            // SliverAppBar(
+            //   title: ActionsHelper(
+            //     //botomPadding: 55,
+            //     text: 'Ձայնադարան',
+            //     fontFamily: 'GHEAGrapalat',
+            //     rightPadding: 10.0,
+            //     fontSize: 20,
+            //     laterSpacing: 1,
+            //     fontWeight: FontWeight.bold,
+            //     color: Palette.appBarTitleColor,
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            // ),
             SliverAppBar(
-              title: ActionsHelper(
-                //botomPadding: 55,
-                text: 'Ձայնադարան',
-                fontFamily: 'Grapalat',
-                rightPadding: 10.0,
-                fontSize: 20,
-                laterSpacing: 1,
-                fontWeight: FontWeight.bold,
-                color: Palette.appBarTitleColor,
+              title: Text(
+                'Ձայնադարան',
+                style: TextStyle(
+                    fontSize: 16.0,
+                    letterSpacing: 1,
+                    fontFamily: 'GHEAGrapalat',
+                    fontWeight: FontWeight.w700,
+                    color: Palette.appBarTitleColor),
               ),
               expandedHeight: 73,
               backgroundColor: Palette.textLineOrBackGroundColor,
@@ -46,6 +64,12 @@ class _AudioLibraryState extends State<AudioLibrary>
               automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: MenuShow(),
+                ),
+              ],
             ),
             SliverFillRemaining(
               hasScrollBody: false,
@@ -55,12 +79,15 @@ class _AudioLibraryState extends State<AudioLibrary>
                     color: Color.fromRGBO(246, 246, 246, 1),
                     width: double.infinity,
                     height: 80,
-                    child: Text(
-                      'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
-                      textAlign: TextAlign.center,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 27),
                   Expanded(child: _ArmenianItalian()),
                 ],
               ),
@@ -92,64 +119,65 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FutureBuilder<List<String>?>(
-        future: charctersData,
-        builder: (context, snapshot) {
-          var characters = snapshot.data as List<String>;
+    return FutureBuilder<List<String>?>(
+      future: charctersData,
+      builder: (context, snapshot) {
+        var characters = snapshot.data as List<String>;
 
-          if (snapshot.hasData) {
-            return Scaffold(
-              body: GridView.count(
-                mainAxisSpacing: 30,
-                crossAxisCount: 7,
-                physics: NeverScrollableScrollPhysics(),
-                children: List.generate(wordsArm.length, (index) {
-                  return Center(
-                    child: InkWell(
-                      onTap: characters
-                              .toString()
-                              .toLowerCase()
-                              .contains(wordsArm[index])
-                          ? () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => AudioLibraryByCharacters(
-                                            characters: characters,
-                                            characterByindex: wordsArm[index],
-                                            characterIndex: index,
-                                          )));
-                            }
-                          : null,
-                      child: Text(
-                        '${wordsArm[index]}',
-                        style: TextStyle(
-                          fontFamily: 'ArshaluyseArtU',
-                          fontSize: 25,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
-                          color: characters
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(wordsArm[index])
-                              ? null
-                              : Color.fromRGBO(186, 166, 177, 1),
-                        ),
+        if (snapshot.hasData) {
+          return Scaffold(
+            body: GridView.count(
+              mainAxisSpacing: 30,
+              crossAxisCount: 7,
+              physics: NeverScrollableScrollPhysics(),
+              children: List.generate(wordsArm.length, (index) {
+                return Center(
+                  
+                  child: InkWell(
+                    onTap: characters
+                            .toString()
+                            .toLowerCase()
+                            .contains(wordsArm[index])
+                        ? () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AudioLibraryByCharacters(
+                                          characters: characters,
+                                          characterByindex: wordsArm[index],
+                                          characterIndex: index,
+                                        )));
+                          }
+                        : null,
+                    child: Text(
+                      '${wordsArm[index]}',
+                      style: TextStyle(
+                        fontFamily: 'ArshaluyseArtU',
+                        fontSize: 25,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        color: characters
+                                .toString()
+                                .toLowerCase()
+                                .contains(wordsArm[index])
+                            ? null
+                            : Color.fromRGBO(186, 166, 177, 1),
                       ),
                     ),
-                  );
-                }),
-              ),
-            );
-          } else {
-            return Container(
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-        },
-      ),
+                  ),
+                );
+              }),
+            ),
+          );
+        } else {
+          return Container(
+            child: Center(
+                child: CircularProgressIndicator(
+              color: Palette.main,
+            )),
+          );
+        }
+      },
     );
   }
 }

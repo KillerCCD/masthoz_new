@@ -10,7 +10,7 @@ class Gallery {
   final int? categoryId;
   final String? image;
   final List<Image>? images;
-  
+
   factory Gallery.fromJson(Map<String, dynamic> json) => Gallery(
         id: json["id"] == null ? null : json["id"],
         categoryId: json["category_id"] == null ? null : json["category_id"],

@@ -1,42 +1,42 @@
 import 'models/book_data/book.dart';
 
-const books = [
-  Book(
-      bookName: 'ՍՈՒՐԲ ՀՈԳՈՒՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: 'ՏԵՐ'),
-  Book(
-      bookName: 'ՏԵՐ ՀԻՍՈՒՍ \nՔՐԻՍՏՈՍԻՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: 'ՍՈՒՐԲ'),
-  Book(
-      bookName: 'ՀԻՍՈՒՍԻ ՍՈՒՐԲ \nՍՐՏԻՆ ՆՎԻՐՎԱԾ \nԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: ''),
-  Book(
-      bookName: 'ՍՈՒՐԲ ՊԱՏԱՐԱԳԻ \nԽՈՐՀՐԴԱԾՈՒԹՅՈՒՆ \nՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: 'ԿՈՒՅՍ'),
-  Book(
-      bookName: 'ՍՈՒՐԲ ԿՈՒՅՍ ՄԱՐԻԱՄ \nԱՍՏՎԱԾԱԾՆԻՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: 'ՊԱՏԱՐԱԳԻ'),
-  Book(
-      bookName: 'ՍՈՒՐԲ ՀՈՎՍԵՓ \nԱՍՏՎԱԾԱՀՈՐԸ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
-      body: 'ՀՈՎՍԵՓ'),
-  Book(
-      bookName: 'ՍՈՒՐԲ ՀՈՎՍԵՓ \nԱՍՏՎԱԾԱՀՈՐԸ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
-      title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
-      imageUrl: 'https://picsum.photos/200/300',
-      body: 'ԱՍՏՎԱԾԱԾՆԻՆ'),
-];
+// const books = [
+//   Book(
+//       bookName: 'ՍՈՒՐԲ ՀՈԳՈՒՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: 'ՏԵՐ'),
+//   Book(
+//       bookName: 'ՏԵՐ ՀԻՍՈՒՍ \nՔՐԻՍՏՈՍԻՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: 'ՍՈՒՐԲ'),
+//   Book(
+//       bookName: 'ՀԻՍՈՒՍԻ ՍՈՒՐԲ \nՍՐՏԻՆ ՆՎԻՐՎԱԾ \nԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: ''),
+//   Book(
+//       bookName: 'ՍՈՒՐԲ ՊԱՏԱՐԱԳԻ \nԽՈՐՀՐԴԱԾՈՒԹՅՈՒՆ \nՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: 'ԿՈՒՅՍ'),
+//   Book(
+//       bookName: 'ՍՈՒՐԲ ԿՈՒՅՍ ՄԱՐԻԱՄ \nԱՍՏՎԱԾԱԾՆԻՆ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: 'ՊԱՏԱՐԱԳԻ'),
+//   Book(
+//       bookName: 'ՍՈՒՐԲ ՀՈՎՍԵՓ \nԱՍՏՎԱԾԱՀՈՐԸ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://source.unsplash.com/user/c_v_r/100x100',
+//       body: 'ՀՈՎՍԵՓ'),
+//   Book(
+//       bookName: 'ՍՈՒՐԲ ՀՈՎՍԵՓ \nԱՍՏՎԱԾԱՀՈՐԸ \nՆՎԻՐՎԱԾ ԱՂՈԹՔՆԵՐ',
+//       title: 'ՍՈՒՐԲ ՀՈԳՈՒՆ',
+//       imageUrl: 'https://picsum.photos/200/300',
+//       body: 'ԱՍՏՎԱԾԱԾՆԻՆ'),
+// ];
 String jsonString = '''{  
     
     "book":{

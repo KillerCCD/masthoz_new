@@ -46,7 +46,7 @@ class SignupForm extends StatelessWidget {
                         width: 20,
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
+                              AlwaysStoppedAnimation<Color>(Palette.main),
                         ),
                       )
                     ],
@@ -61,28 +61,19 @@ class SignupForm extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: screenSize.height / 13),
-                    const _FullNameInput(),
-                    SizedBox(height: screenSize.height / 17),
-                    const _EmailIput(),
-                    SizedBox(height: screenSize.height / 17),
-                    const PasswordInput(),
-                    SizedBox(height: screenSize.height / 17),
-                    const Align(
-                        alignment: Alignment.centerRight,
-                        child: _SignupButton()),
-                  ],
-                ),
+              Column(
+                children: [
+                  SizedBox(height: screenSize.height / 13),
+                  const _FullNameInput(),
+                  SizedBox(height: screenSize.height / 19),
+                  const _EmailIput(),
+                  SizedBox(height: screenSize.height / 19),
+                  const PasswordInput(),
+                  SizedBox(height: screenSize.height / 15),
+                  const Align(
+                      alignment: Alignment.centerRight, child: _SignupButton()),
+                ],
               ),
-              SizedBox(
-                height: screenSize.height * 0.21,
-              ),
-              _ComplexButton(),
-              SizedBox(height: 25.0),
             ],
           ),
         ),
@@ -111,7 +102,7 @@ class _EmailIput extends StatelessWidget {
                     BorderSide(color: Palette.textLineOrBackGroundColor)),
             labelText: 'էլ. փոստ',
             labelStyle: const TextStyle(
-              fontFamily: 'Grapalat',
+              fontFamily: 'GHEAGrapalat',
               fontSize: 14,
               color: Palette.labelText,
             ),
@@ -146,7 +137,7 @@ class _FullNameInput extends StatelessWidget {
                     BorderSide(color: Palette.textLineOrBackGroundColor)),
             labelText: 'Անուն Ազգանուն',
             labelStyle: const TextStyle(
-              fontFamily: 'Grapalat',
+              fontFamily: 'GHEAGrapalat',
               fontSize: 14,
               color: Palette.labelText,
             ),
@@ -196,7 +187,7 @@ class _PasswordInputState extends State<PasswordInput> {
                     BorderSide(color: Color.fromRGBO(255, 255, 255, 1))),
             labelText: 'Գաղտնաբառ',
             labelStyle: const TextStyle(
-                fontFamily: 'Grapalat',
+                fontFamily: 'GHEAGrapalat',
                 fontSize: 14,
                 color: Color.fromRGBO(189, 189, 189, 1)),
             suffixIcon: Padding(
@@ -309,49 +300,27 @@ class _SignupButtonState extends State<_SignupButton> {
   }
 }
 
-class _ComplexButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 60.0,
-            color: Palette.barColor,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [_SignUpButton(), CoupleButtons()],
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
+// class _ComplexButton extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Expanded(
+//           child: Container(
+//             height: 60.0,
+//             color: Palette.barColor,
+//             child: Padding(
+//               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: const [SignUpButton(), CoupleButtons()],
+//               ),
+//             ),
+//           ),
+//         )
+//       ],
+//     );
+//   }
+// }
 
-class _SignUpButton extends StatelessWidget {
-  const _SignUpButton({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        print('grancvel hima');
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
-      },
-      child: const Text(
-        'Մուտք գործել',
-        style: TextStyle(
-          fontSize: 16,
-          fontFamily: 'Grapalat',
-          color: Color.fromRGBO(255, 255, 255, 1),
-        ),
-      ),
-      style: TextButton.styleFrom(padding: const EdgeInsets.only(right: 40)),
-    );
-  }
-}

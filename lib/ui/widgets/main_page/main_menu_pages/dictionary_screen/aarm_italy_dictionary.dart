@@ -8,6 +8,7 @@ import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import '../../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
 
 class DictionaryArmItl extends StatefulWidget {
@@ -53,16 +54,39 @@ class _DictionaryArmItlState extends State<DictionaryArmItl>
       body: SafeArea(
         child: CustomScrollView(slivers: [
           SliverAppBar(
-            title: ActionsHelper(
-              //botomPadding: 55,
-              text: isShow ? 'Հայերեն-իտալերեն' : 'Իտալերեն- Հայերեն',
-              fontFamily: 'Grapalat',
-              rightPadding: 10.0,
-              fontSize: 20,
-              laterSpacing: 1,
-              fontWeight: FontWeight.bold,
-              color: Palette.appBarTitleColor,
-              buttonShow: true,
+            flexibleSpace: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 50.0,
+                ),
+                child: Container(
+                  height: 73,
+                  padding: EdgeInsets.only(top: 18),
+                  child: Text(
+                    isShow ? 'Հայերեն-իտալերեն' : 'Իտալերեն- Հայերեն',
+                    style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 1,
+                        fontFamily: 'GHEAGrapalat',
+                        fontWeight: FontWeight.w700,
+                        color: Palette.appBarTitleColor),
+                  ),
+                ),
+              ),
+            ),
+            leading: SizedBox(
+              width: 8,
+              height: 14,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: Palette.appBarTitleColor,
+                ),
+              ),
             ),
             expandedHeight: 73,
             backgroundColor: Palette.textLineOrBackGroundColor,
@@ -70,6 +94,12 @@ class _DictionaryArmItlState extends State<DictionaryArmItl>
             automaticallyImplyLeading: false,
             systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: MenuShow(),
+              ),
+            ],
           ),
           SliverFillRemaining(
             child: DelegateChild(
@@ -142,173 +172,189 @@ class _DelegateChildState extends State<DelegateChild>
   }
 
   Widget buildData() {
-    return FutureBuilder<List<ByCharacters>?>(
-        future: isShow ? charctersDataArmenian : charctersDataItalian,
-        builder: (context, snapshot) {
-          var data = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-                child: Center(
-                    child: CircularProgressIndicator(
-              strokeWidth: 2.0,
-              color: Palette.main,
-            )));
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return const Text('Error');
-            } else if (snapshot.hasData) {
-              return ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: data?.length,
-                itemBuilder: (context, index) {
-                  return ExpansionTile(
-                    title: Text('${data?[index].title}'),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    leading: SvgPicture.asset('assets/images/line24.svg'),
-                    children: [
-                      ListTile(
-                        title: Text('${data?[index].body}'),
-                      )
-                    ],
-                  );
-                },
-              );
+    return Padding(
+      padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+      child: FutureBuilder<List<ByCharacters>?>(
+          future: isShow ? charctersDataArmenian : charctersDataItalian,
+          builder: (context, snapshot) {
+            var data = snapshot.data;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                  child: Center(
+                      child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+                color: Palette.main,
+              )));
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return const Text('Error');
+              } else if (snapshot.hasData) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: data?.length,
+                  itemBuilder: (context, index) {
+                    return ExpansionTile(
+                      title: Text(
+                        '${data?[index].title}',
+                        style: TextStyle(
+                          fontFamily: 'GHEAGrapalat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      leading: SvgPicture.asset('assets/images/line24.svg'),
+                      initiallyExpanded: false,
+                      children: [
+                        ListTile(
+                          title: Text('${data?[index].body}'),
+                        )
+                      ],
+                    );
+                  },
+                );
+              } else {
+                return const Text('Empty data');
+              }
             } else {
-              return const Text('Empty data');
+              return Text('State: ${snapshot.connectionState}');
             }
-          } else {
-            return Text('State: ${snapshot.connectionState}');
-          }
-        });
+          }),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: characterIndex,
-      length: isShow ? wordsArm.length : wordsIt.length,
-      child: Scaffold(
-        appBar: TabBar(
-          indicatorWeight: 2,
-          unselectedLabelColor: const Color.fromRGBO(122, 108, 115, 1),
-          labelColor: const Color.fromRGBO(251, 196, 102, 1),
-          indicatorColor: Colors.amber,
-          indicator: MaterialIndicator(
-            color: Colors.amber,
-            height: 2,
-            topLeftRadius: 0,
-            topRightRadius: 0,
-            bottomLeftRadius: 5,
-            bottomRightRadius: 5,
-            tabPosition: TabPosition.top,
-            paintingStyle: PaintingStyle.fill,
-          ),
-          controller: _tabController,
-          isScrollable: true,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 15),
-          onTap: (index) {
-            print(wordsIt.elementAt(index).toLowerCase());
-            setState(() {
-              isShow
-                  ? characters
-                          .toString()
-                          .toLowerCase()
-                          .contains(wordsArm.elementAt(index))
-                      ? charctersDataArmenian =
-                          bookDataProvider.getDataByCharacters(
-                              Api.armenianDictionaryByCharacters(
-                                  wordsArm.elementAt(index)))
-                      : null
-                  : characters
-                          .toString()
-                          .toLowerCase()
-                          .contains(wordsIt.elementAt(index).toLowerCase())
-                      ? charctersDataItalian =
-                          bookDataProvider
-                              .getDataByCharacters(
-                                  Api.italianDictionaryByCharacters(
-                                      wordsIt.elementAt(index).toLowerCase()))
-                      : null;
-            });
-          },
-          tabs: isShow
-              ? wordsArm.map((tabName) {
-                  return Tab(
-                    child: Text(
-                      tabName,
-                      style: TextStyle(
-                        fontFamily: 'ArshaluyseArtU',
-                        fontSize: 23,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                        color: characters
-                                .toString()
-                                .toLowerCase()
-                                .contains(tabName.toLowerCase())
-                            ? null
-                            : Color.fromRGBO(186, 166, 177, 1),
+        initialIndex: characterIndex,
+        length: isShow ? wordsArm.length : wordsIt.length,
+        child: Scaffold(
+            backgroundColor: Palette.textLineOrBackGroundColor,
+            appBar: PreferredSize(
+                preferredSize: Size(18.0, 50.0),
+                child: Container(
+                    color: Color.fromRGBO(246, 246, 246, 1),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 7.0),
+                      child: TabBar(
+                        indicatorWeight: 2,
+                        unselectedLabelColor:
+                            const Color.fromRGBO(122, 108, 115, 1),
+                        labelColor: const Color.fromRGBO(251, 196, 102, 1),
+                        indicatorColor: Colors.amber,
+                        indicator: MaterialIndicator(
+                          color: Colors.amber,
+                          height: 2,
+                          topLeftRadius: 0,
+                          topRightRadius: 0,
+                          bottomLeftRadius: 5,
+                          bottomRightRadius: 5,
+                          tabPosition: TabPosition.top,
+                          paintingStyle: PaintingStyle.fill,
+                        ),
+                        controller: _tabController,
+                        isScrollable: true,
+                        labelPadding:
+                            const EdgeInsets.symmetric(horizontal: 15),
+                        onTap: (index) {
+                          print(wordsIt.elementAt(index).toLowerCase());
+                          setState(() {
+                            isShow
+                                ? characters
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(wordsArm.elementAt(index))
+                                    ? charctersDataArmenian =
+                                        bookDataProvider.getDataByCharacters(
+                                            Api.armenianDictionaryByCharacters(
+                                                wordsArm.elementAt(index)))
+                                    : null
+                                : characters.toString().toLowerCase().contains(
+                                        wordsIt.elementAt(index).toLowerCase())
+                                    ? charctersDataItalian =
+                                        bookDataProvider.getDataByCharacters(
+                                            Api.italianDictionaryByCharacters(
+                                                wordsIt
+                                                    .elementAt(index)
+                                                    .toLowerCase()))
+                                    : null;
+                          });
+                        },
+                        tabs: isShow
+                            ? wordsArm.map((tabName) {
+                                return Tab(
+                                  child: Text(
+                                    tabName,
+                                    style: TextStyle(
+                                      fontFamily: 'ArshaluyseArtU',
+                                      fontSize: 23,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: characters
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(tabName.toLowerCase())
+                                          ? null
+                                          : Color.fromRGBO(186, 166, 177, 1),
+                                    ),
+                                  ),
+                                );
+                              }).toList()
+                            : wordsIt.map((tabName) {
+                                return Tab(
+                                  child: Text(
+                                    tabName,
+                                    style: TextStyle(
+                                      fontFamily: 'ArshaluyseArtU',
+                                      fontSize: 35,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: characters
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(tabName.toLowerCase())
+                                          ? null
+                                          : Color.fromRGBO(186, 166, 177, 1),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                       ),
-                    ),
-                  );
-                }).toList()
-              : wordsIt.map((tabName) {
-                  return Tab(
-                    child: Text(
-                      tabName,
-                      style: TextStyle(
-                        fontFamily: 'ArshaluyseArtU',
-                        fontSize: 35,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                        color: characters
-                                .toString()
-                                .toLowerCase()
-                                .contains(tabName.toLowerCase())
-                            ? null
-                            : Color.fromRGBO(186, 166, 177, 1),
-                      ),
-                    ),
-                  );
-                }).toList(),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: isShow
-              ? wordsArm
-                  .map(
-                    (e) => characters
-                            .toString()
-                            .toLowerCase()
-                            .contains(e.toLowerCase())
-                        ? buildData()
-                        : Container(
-                            child: Center(
-                              child: Text('Empty data'),
-                            ),
-                          ),
-                  )
-                  .toList()
-              : wordsIt
-                  .map(
-                    (e) => characters
-                            .toString()
-                            .toLowerCase()
-                            .contains(e.toLowerCase())
-                        ? buildData()
-                        : Container(
-                            child: Center(
-                                child: CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            color: Palette.main,
-                          ))),
-                  )
-                  .toList(),
-        ),
-
-        //     ))
-      ),
-    );
+                    ))),
+            body: TabBarView(
+                controller: _tabController,
+                children: isShow
+                    ? wordsArm
+                        .map(
+                          (e) => characters
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(e.toLowerCase())
+                              ? buildData()
+                              : Container(
+                                  child: Center(
+                                    child: Text('Empty data'),
+                                  ),
+                                ),
+                        )
+                        .toList()
+                    : wordsIt
+                        .map(
+                          (e) => characters
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(e.toLowerCase())
+                              ? buildData()
+                              : Container(
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                  strokeWidth: 2.0,
+                                  color: Palette.main,
+                                ))),
+                        )
+                        .toList())));
   }
 }
 

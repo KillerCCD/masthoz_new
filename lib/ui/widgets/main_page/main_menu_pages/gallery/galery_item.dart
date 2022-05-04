@@ -9,8 +9,10 @@ import 'package:mashtoz_flutter/domens/fake_book_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/book.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../helper_widgets/actions_widgets.dart';
 
@@ -39,7 +41,8 @@ class _GalleryItemState extends State<GalleryItem> {
 
   Future<List<dynamic>>? galleryFuture;
   final bookDataProvider = BookDataProvider();
-
+  var listCount = 0;
+  var mapCount = 0;
   @override
   void initState() {
     galleryFuture = bookDataProvider.fetchGalleryList();
@@ -50,24 +53,55 @@ class _GalleryItemState extends State<GalleryItem> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: CustomScrollView(slivers: [
-      const SliverAppBar(
-        expandedHeight: 73,
-        backgroundColor: Palette.textLineOrBackGroundColor,
+      //  SliverAppBar(
+      //   expandedHeight: 73,
+      //   backgroundColor: Palette.textLineOrBackGroundColor,
+      //   pinned: false,
+      //   floating: true,
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   systemOverlayStyle:
+      //       SystemUiOverlayStyle(statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+      //   flexibleSpace: ActionsHelper(
+      //     leftPadding: 12,
+      //     text: 'Պատկերադարան',
+      //     fontFamily: 'GHEAGrapalat',
+      //     fontSize: 20,
+      //     laterSpacing: 1,
+      //     fontWeight: FontWeight.bold,
+      //     color: Palette.appBarTitleColor,
+      //   ),
+      // ),
+      SliverAppBar(
+        title: Text(
+          'Պատկերադարան',
+          style: TextStyle(
+              fontSize: 20,
+              letterSpacing: 1,
+              fontFamily: 'GHEAGrapalat',
+              fontWeight: FontWeight.bold,
+              color: Palette.appBarTitleColor),
+        ),
         pinned: false,
         floating: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Palette.appBarTitleColor,
+          ),
+        ),
+        expandedHeight: 73,
+        backgroundColor: Palette.textLineOrBackGroundColor,
         elevation: 0,
         automaticallyImplyLeading: false,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-        flexibleSpace: ActionsHelper(
-          leftPadding: 12,
-          text: 'Պատկերադարան',
-          fontFamily: 'Grapalat',
-          fontSize: 20,
-          laterSpacing: 1,
-          fontWeight: FontWeight.bold,
-          color: Palette.appBarTitleColor,
-        ),
+        actions: [
+          MenuShow(),
+        ],
       ),
       SliverFillRemaining(
         child: FutureBuilder<List<dynamic>>(
@@ -85,18 +119,22 @@ class _GalleryItemState extends State<GalleryItem> {
                 return const Text('Error');
               } else if (snapshot.hasData) {
                 dynamic data = snapshot.data;
-                // inspect(data);
+                Map mapDAta = data.asMap();
+                var valueMap = mapDAta.entries.map((e) => e.value).toSet();
 
+                print(
+                    'is List :$listCount  ---------    is MAp Count :$mapCount ');
                 return ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: data?.length,
                     itemBuilder: (context, index) {
                       dynamic newData = data?[index];
+
                       return ExpansionTile(
                         title: SizedBox(
                           child: Text(
-                            '${newData}',
+                            '{mapDAta}',
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -110,11 +148,12 @@ class _GalleryItemState extends State<GalleryItem> {
                             itemCount: data?.length,
                             itemBuilder: (context, index) {
                               dynamic gallery = data![index];
+
                               //  print(gallery.image);
                               return Text('${gallery}');
                               // return Container(
                               //     padding: const EdgeInsets.symmetric(
-                              //         horizontal: 5.0),
+                              //         horizontal: 5.0),Y
                               //     child: GestureDetector(
                               //       onTap: () {
                               //         open(context, index);

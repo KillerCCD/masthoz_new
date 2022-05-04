@@ -8,6 +8,8 @@ import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/aarm_italy_dictionary.dart';
 
+import '../../../helper_widgets/menuShow.dart';
+
 class Dictionary extends StatefulWidget {
   const Dictionary({Key? key}) : super(key: key);
 
@@ -32,16 +34,54 @@ class _DictionaryState extends State<Dictionary>
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
+            // SliverAppBar(
+            //   title: ActionsHelper(
+            //     //botomPadding: 55,
+            //     text: ,
+            //     fontFamily: 'GHEAGrapalat',
+            //     rightPadding: 10.0,
+            //     fontSize: 20,
+            //     laterSpacing: 1,
+            //     fontWeight: FontWeight.bold,
+            //     color: Palette.appBarTitleColor,
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            // ),
+            //  SliverAppBar(
+            //   title: Text(
+            //    'Բառարան',
+            //     style: TextStyle(
+            //         fontSize: 20,
+            //         letterSpacing: 1,
+            //         fontFamily: 'GHEAGrapalat',
+            //         fontWeight: FontWeight.bold,
+            //         color: Palette.appBarTitleColor),
+            //   ),
+
+            //   expandedHeight: 73,
+            //   backgroundColor: Color.fromRGBO(226, 224, 224, 1),
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            //   actions: [
+            //     MenuShow(),
+            //   ],
+            // ),
             SliverAppBar(
-              title: ActionsHelper(
-                //botomPadding: 55,
-                text: 'Բառարան',
-                fontFamily: 'Grapalat',
-                rightPadding: 10.0,
-                fontSize: 20,
-                laterSpacing: 1,
-                fontWeight: FontWeight.bold,
-                color: Palette.appBarTitleColor,
+              title: Text(
+                'Բառարան',
+                style: TextStyle(
+                    fontSize: 16.0,
+                    letterSpacing: 1,
+                    fontFamily: 'GHEAGrapalat',
+                    fontWeight: FontWeight.w700,
+                    color: Palette.appBarTitleColor),
               ),
               expandedHeight: 73,
               backgroundColor: Palette.textLineOrBackGroundColor,
@@ -49,6 +89,12 @@ class _DictionaryState extends State<Dictionary>
               automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: MenuShow(),
+                ),
+              ],
             ),
             SliverFillRemaining(
               hasScrollBody: false,
@@ -73,7 +119,11 @@ class _DictionaryState extends State<Dictionary>
                             child: Text(
                               'Հայերեն-\nԻտալերեն',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14.0,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'GHEAGrapalat'),
                             ),
                           ),
                         ),
@@ -83,7 +133,11 @@ class _DictionaryState extends State<Dictionary>
                             child: Text(
                               'Իտալերեն-\nՀայերեն',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14.0,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'GHEAGrapalat'),
                             ),
                           ),
                         ),
@@ -181,7 +235,10 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
             );
           } else {
             return Container(
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                  child: CircularProgressIndicator(
+                color: Palette.main,
+              )),
             );
           }
         },

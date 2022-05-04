@@ -36,45 +36,57 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
           1,
         ),
         body: SafeArea(
-          child: Column(
-            children: [
-              // const SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
+          child: Container(
+            padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const SizedBox(height: 39),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(top: 3.5),
                       splashRadius: 0.1,
+                      iconSize: 23,
+                      alignment: Alignment.topCenter,
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_rounded,
-                        color: Palette.textLineOrBackGroundColor,
+                      icon: Padding(
+                        padding: EdgeInsets.only(right: double.infinity),
+                        child: const Icon(
+                          Icons.arrow_back_ios_rounded,
+                          color: Palette.textLineOrBackGroundColor,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 35,
-                    ),
-                    const Text(
-                      'Նոր գաղտնաբառ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 27,
-                          fontFamily: 'Grapalat',
-                          color: Palette.textLineOrBackGroundColor),
+                    Expanded(
+                      child: Container(
+                        height: 47,
+                        padding: const EdgeInsets.only(right: 50.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: const Text(
+                            'Նոր գաղտնաբառ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'GHEAGrapalat',
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w400,
+                                color: Palette.textLineOrBackGroundColor),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Form(
+                const SizedBox(
+                  height: 35,
+                ),
+                Form(
                   key: formKey,
                   child: Column(
                     children: [
@@ -93,8 +105,9 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
                                   color: Palette.textLineOrBackGroundColor)),
                           labelText: 'Նոր գաղտնաբառ',
                           labelStyle: TextStyle(
-                            fontFamily: 'Grapalat',
+                            fontFamily: 'GHEAGrapalat',
                             fontSize: 14,
+                            letterSpacing: 1,
                             color: Palette.labelText,
                           ),
                           focusColor: Palette.labelText,
@@ -121,7 +134,7 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
                                   color: Palette.textLineOrBackGroundColor)),
                           labelText: 'Կրկնել գաղտնաբառը',
                           labelStyle: TextStyle(
-                            fontFamily: 'Grapalat',
+                            fontFamily: 'GHEAGrapalat',
                             fontSize: 14,
                             color: Palette.labelText,
                           ),
@@ -203,8 +216,8 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

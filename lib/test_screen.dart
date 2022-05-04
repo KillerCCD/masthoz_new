@@ -192,7 +192,7 @@
 //               title: ActionsHelper(
 //                 //botomPadding: 55,
 //                 text: 'Բառարան',
-//                 fontFamily: 'Grapalat',
+//                 fontFamily: 'GHEAGrapalat',
 //                 rightPadding: 10.0,
 //                 fontSize: 20,
 //                 laterSpacing: 1,
@@ -519,3 +519,68 @@
 //   'y',
 //   'z',
 // ];
+// import 'package:flutter/material.dart';
+// import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
+// import 'package:mashtoz_flutter/globals.dart';
+// import 'package:provider/provider.dart';
+
+// import 'domens/models/book_data/by_caracters_data.dart';
+
+// class TestNotifire extends StatefulWidget {
+//   const TestNotifire({Key? key}) : super(key: key);
+
+//   @override
+//   State<TestNotifire> createState() => _TestNotifireState();
+// }
+
+// class _TestNotifireState extends State<TestNotifire> {
+//   Future<List<ByCharacters>?>? futureString;
+//   final bookNotifire = BookNotifire();
+//   void bookDAta() {}
+
+//   @override
+//   void initState() {
+//     futureString = bookNotifire
+//         .getDataByCharacters(Api.encyclopediasByCharacters('ա'.toUpperCase()));
+
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           Center(
+//             child: FutureBuilder<List<ByCharacters>?>(
+//                 future: futureString,
+//                 builder: (context, snapshot) {
+//                   if (snapshot.hasData) {
+//                     var data = snapshot.data;
+
+//                     return ListView.builder(
+//                         shrinkWrap: true,
+//                         scrollDirection: Axis.vertical,
+//                         itemCount: data?.length,
+//                         itemBuilder: (context, index) {
+//                           var newDAta = data?[index];
+
+//                           return Text('${newDAta?.title}');
+//                         });
+//                   } else {
+//                     return CircularProgressIndicator();
+//                   }
+//                 }),
+//           ),
+//           // Align(
+//           //   alignment: Alignment.bottomCenter,
+//           //   child: Text(
+//           //     ,
+//           //     style: TextStyle(color: Colors.red),
+//           //   ),
+//           // )
+//         ],
+//       ),
+//     );
+//   }
+// }

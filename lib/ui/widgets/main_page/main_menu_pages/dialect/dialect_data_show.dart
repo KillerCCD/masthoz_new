@@ -9,6 +9,8 @@ import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
+import '../../../helper_widgets/menuShow.dart';
+
 class DialectDataShow extends StatefulWidget {
   final ByCharacters? dataCharacter;
   const DialectDataShow({Key? key, this.dataCharacter}) : super(key: key);
@@ -36,30 +38,79 @@ class _DialectDataShowState extends State<DialectDataShow> {
       body: CustomScrollView(
         scrollDirection: Axis.vertical,
         slivers: [
+          // SliverAppBar(
+          //   title: Text(
+          //     '${dataCharacter?.title}',
+          //     style: TextStyle(
+          //         fontSize: 20,
+          //         letterSpacing: 1,
+          //         fontFamily: 'GHEAGrapalat',
+          //         fontWeight: FontWeight.bold,
+          //         color: Palette.appBarTitleColor),
+          //   ),
+          //   leading: IconButton(
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     },
+          //     icon: Icon(
+          //       Icons.arrow_back_ios_new_outlined,
+          //       color: Palette.appBarTitleColor,
+          //     ),
+          //   ),
+          //   expandedHeight: 73,
+          //   backgroundColor: Color.fromRGBO(226, 224, 224, 1),
+          //   elevation: 0,
+          //   automaticallyImplyLeading: false,
+          //   systemOverlayStyle: SystemUiOverlayStyle(
+          //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+          //   actions: [
+          //     MenuShow(),
+          //   ],
+          // ),
           SliverAppBar(
-            expandedHeight: 73,
-            backgroundColor: Palette.textLineOrBackGroundColor,
+            flexibleSpace: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50.0, top: 5.0),
+                child: Text(
+                  '${dataCharacter?.firstCharacter}',
+                  style: TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1,
+                      fontFamily: 'GHEAGrapalat',
+                      fontWeight: FontWeight.w700,
+                      color: Palette.appBarTitleColor),
+                ),
+              ),
+            ),
             pinned: false,
             floating: true,
+            leading: SizedBox(
+              width: 8,
+              height: 14.0,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: Palette.appBarTitleColor,
+                ),
+              ),
+            ),
+            expandedHeight: 73,
+            backgroundColor: Palette.textLineOrBackGroundColor,
             elevation: 0,
             automaticallyImplyLeading: false,
             systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            flexibleSpace: ActionsHelper(
-              leftPadding: 12,
-              // botomPadding: 0,
-              // topPadding: 30,
-              text: '${dataCharacter?.title}',
-
-              fontFamily: 'Grapalat',
-              fontSize: 20,
-              laterSpacing: 1,
-              fontWeight: FontWeight.bold,
-              color: Palette.appBarTitleColor,
-              buttonShow: true,
-            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: MenuShow(),
+              ),
+            ],
           ),
-
           //!Համաբարբառ
           SliverToBoxAdapter(
             child: ListView.separated(

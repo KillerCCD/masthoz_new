@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:mashtoz_flutter/domens/models/book_data/search_data.dart';
 import 'package:mashtoz_flutter/domens/repository/search_book_data_provider.dart';
-
+import 'dart:math' as math;
+import '../../../../domens/models/book_data/book.dart';
 import '../../helper_widgets/actions_widgets.dart';
+import '../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
 
 class SearchPage extends StatefulWidget {
@@ -24,8 +27,8 @@ class _SearchPageState extends State<SearchPage> {
   String query = '';
   final searchBookProvider = SearchBookProvider();
 
-  var _searchbooks = <Search>[];
-  var _searcjBookforDisplay = <Search>[];
+  var searchbooks = <Book>[];
+  var searcjBookforDisplay = <Search>[];
 
   @override
   void dispose() {
@@ -40,19 +43,19 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future init() async {
-    final books = await searchBookProvider.fetchBooks();
+    final books = await SearchBookProvider.getBooks(query);
 
-    setState(() => this._searchbooks = books);
+    setState(() => this.searchbooks = books);
   }
 
   Future searchBook(String query) async => debounce(() async {
-        final books = await searchBookProvider.fetchBooks();
+        final books = await SearchBookProvider.getBooks(query);
 
         if (!mounted) return;
 
         setState(() {
           this.query = query;
-          this._searchbooks = books;
+          this.searchbooks = books;
         });
       });
 
@@ -74,211 +77,289 @@ class _SearchPageState extends State<SearchPage> {
       child: Scaffold(
           backgroundColor: Palette.searchBackGroundColor,
           extendBodyBehindAppBar: false,
-          body: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 73,
-                backgroundColor: Palette.searchBackGroundColor,
-                pinned: false,
-                floating: true,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-                flexibleSpace: ActionsHelper(
-                  leftPadding: 50,
-                  // botomPadding: 0,
-                  // topPadding: 30,
-                  text: 'Որոնել',
-                  fontFamily: 'Grapalat',
-                  fontSize: 20,
-                  laterSpacing: 1,
-                  fontWeight: FontWeight.bold,
-                  color: Palette.appBarTitleColor,
+          body: Padding(
+            padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+            child: CustomScrollView(
+              slivers: [
+                // SliverAppBar(
+                //   pinned: false,
+                //   floating: true,
+                //   title: Padding(
+                //     padding: const EdgeInsets.only(left: 20),
+                //     child: Text(
+                //       'Որոնել',
+                //       style: TextStyle(
+                //           fontSize: 20,
+                //           letterSpacing: 1,
+                //           fontFamily: 'GHEAGrapalat',
+                //           fontWeight: FontWeight.bold,
+                //           color: Palette.appBarTitleColor),
+                //     ),
+                //   ),
+                //   expandedHeight: 73,
+                //   backgroundColor: Palette.searchBackGroundColor,
+                //   elevation: 0,
+                //   automaticallyImplyLeading: false,
+                //   systemOverlayStyle: SystemUiOverlayStyle(
+                //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+                //   actions: [
+                //     MenuShow(),
+                //   ],
+                // ),
+                SliverAppBar(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Որոնել',
+                      style: TextStyle(
+                          fontSize: 20,
+                          letterSpacing: 1,
+                          fontFamily: 'GHEAGrapalat',
+                          fontWeight: FontWeight.bold,
+                          color: Palette.appBarTitleColor),
+                    ),
+                  ),
+                  expandedHeight: 53,
+                  backgroundColor: Palette.searchBackGroundColor,
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                      statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+                  actions: [
+                    MenuShow(),
+                  ],
                 ),
-              ),
-              SliverFillRemaining(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20.0),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      child: TextField(
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero,
-                                borderSide: BorderSide(color: Colors.black)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(226, 224, 224, 1),
-                                ),
-                                borderRadius: BorderRadius.zero),
-                            hintText: 'Գրել այստեղ․․․',
-                            suffixIcon: SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 5.0),
-                                child: SvgPicture.asset(
-                                  'assets/images/search.svg',
-                                  semanticsLabel: 'search',
-                                  color: Color.fromRGBO(122, 108, 115, 1),
+                // SliverAppBar(
+                //   expandedHeight: 73,
+                //   backgroundColor: Palette.searchBackGroundColor,
+                //   elevation: 0,
+                //   automaticallyImplyLeading: false,
+                //   systemOverlayStyle: SystemUiOverlayStyle(
+                //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+                //   flexibleSpace: ActionsHelper(
+                //     leftPadding: 50,
+                //     // botomPadding: 0,
+                //     // topPadding: 30,
+                //     text: 'Որոնել',
+                //     fontFamily: 'GHEAGrapalat',
+                //     fontSize: 20,
+                //     laterSpacing: 1,
+                //     fontWeight: FontWeight.bold,
+                //     color: Palette.appBarTitleColor,
+                //   ),
+                // ),
+                SliverFillRemaining(
+                  fillOverscroll: true,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20.0),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                        child: TextField(
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.zero),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.zero,
+                                  borderSide: BorderSide(color: Colors.black)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(226, 224, 224, 1),
+                                  ),
+                                  borderRadius: BorderRadius.zero),
+                              hintText: 'Գրել այստեղ․․․',
+                              suffixIcon: SizedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  child: SvgPicture.asset(
+                                    'assets/images/search.svg',
+                                    semanticsLabel: 'search',
+                                    color: Color.fromRGBO(122, 108, 115, 1),
+                                  ),
                                 ),
                               ),
-                            ),
-                            suffixIconConstraints:
-                                BoxConstraints.tightFor(height: 35, width: 36)),
-                        autofocus: false,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: searchBook,
+                              suffixIconConstraints: BoxConstraints.tightFor(
+                                  height: 35, width: 36)),
+                          autofocus: false,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: searchBook,
+                        ),
                       ),
-                    ),
-                    // Expanded(
-                    //     child: ListView.builder(
-                    //         shrinkWrap: true,
-                    //         // scrollDirection: Axis.vertical,
-                    //         itemCount: searchbooks.length,
-                    //         itemBuilder: (context, index) {
-                    //           final book = searchbooks[index];
-                    //           return InkWell(
-                    //             onTap: () {
-                    //               // Navigator.push(context,MaterialPageRoute(builder: (_)=> BookReadScreen(readScreen: )))
-                    //             },
-                    //             child: Padding(
-                    //               padding: const EdgeInsets.all(12.0),
-                    //               child: Container(
-                    //                   width: 288,
-                    //                   height: 180,
-                    //                   child: Stack(children: <Widget>[
-                    //                     Positioned(
-                    //                         top: 0,
-                    //                         left: 0,
-                    //                         child: Container(
-                    //                           width: 116,
-                    //                           height: 160,
-                    //                           child: CachedNetworkImage(
-                    //                             imageUrl: book.imageUrl,
-                    //                             fit: BoxFit.cover,
-                    //                           ),
-                    //                         )),
-                    //                     Positioned(
-                    //                         top: 63,
-                    //                         left: 126,
-                    //                         child: Text(
-                    //                           book.bookName,
-                    //                           textAlign: TextAlign.center,
-                    //                           style: TextStyle(
-                    //                               color: Color.fromRGBO(
-                    //                                   25, 4, 18, 1),
-                    //                               fontFamily: 'GHEA Grapalat',
-                    //                               fontSize: 12,
-                    //                               letterSpacing:
-                    //                                   0 /*percentages not used in flutter. defaulting to zero*/,
-                    //                               fontWeight: FontWeight.normal,
-                    //                               height: 1),
-                    //                         )),
-                    //                     Positioned(
-                    //                         top: 156,
-                    //                         left: 185,
-                    //                         child: Transform.rotate(
-                    //                           angle: 0.1 * (math.pi / 180),
-                    //                           child: SvgPicture.asset(
-                    //                             'assets/images/vector81.svg',
-                    //                             semanticsLabel: 'vector81',
-                    //                             color: Palette.main,
-                    //                           ),
-                    //                         )),
-                    //                     Positioned(
-                    //                         top: 180,
-                    //                         left: 0,
-                    //                         child: Transform.rotate(
-                    //                           angle: 0.000005008956538086317 *
-                    //                               (math.pi / 180),
-                    //                           child: Divider(
-                    //                               color: Color.fromRGBO(
-                    //                                   122, 108, 115, 1),
-                    //                               thickness: 0.5),
-                    //                         )),
-                    //                   ])),
-                    //             ),
-                    //           );
-                    //         })),
-
-                    Expanded(
-                        child: ListView.builder(
-                            itemCount: _searchbooks.length,
-                            itemBuilder: (contex, index) {
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 32.0,
-                                      bottom: 32.0,
-                                      left: 16.0,
-                                      right: 16.0),
+                      SizedBox(height: 20.0),
+                      searchbooks.isNotEmpty
+                          ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Որոնման արդյունքները',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(122, 108, 115, 1),
+                                    fontFamily: "GHEAGrapalat",
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            )
+                          : SizedBox(height: 20.0),
+                      SizedBox(height: 20),
+                      Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: searchbooks.length,
+                              itemBuilder: (context, index) {
+                                final book = searchbooks[index];
+                                return InkWell(
+                                  onTap: () {
+                                    // Navigator.push(context,MaterialPageRoute(builder: (_)=> BookReadScreen(readScreen: )))
+                                  },
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        _searchbooks[index].id.toString(),
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
+                                    children: [
+                                      Container(
+                                          width: 288,
+                                          height: 180,
+                                          child: Stack(children: <Widget>[
+                                            Positioned(
+                                                top: 0,
+                                                left: 0,
+                                                child: Container(
+                                                  width: 116,
+                                                  height: 160,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: book.urlImage,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )),
+                                            Positioned(
+                                                top: 63,
+                                                left: 126,
+                                                child: Text(
+                                                  book.author,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          25, 4, 18, 1),
+                                                      fontFamily:
+                                                          'GHEA GHEAGrapalat',
+                                                      fontSize: 12,
+                                                      letterSpacing:
+                                                          0 /*percentages not used in flutter. defaulting to zero*/,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      height: 1),
+                                                )),
+                                            Positioned(
+                                                top: 156,
+                                                left: 185,
+                                                child: Transform.rotate(
+                                                  angle: 0.1 * (math.pi / 180),
+                                                  child: SvgPicture.asset(
+                                                    'assets/images/vector81.svg',
+                                                    semanticsLabel: 'vector81',
+                                                    color: Palette.main,
+                                                  ),
+                                                )),
+                                            Positioned(
+                                                top: 180,
+                                                left: 0,
+                                                child: Transform.rotate(
+                                                  angle:
+                                                      0.000005008956538086317 *
+                                                          (math.pi / 180),
+                                                  child: Divider(
+                                                      color: Color.fromRGBO(
+                                                          122, 108, 115, 1),
+                                                      thickness: 0.5),
+                                                )),
+                                          ])),
+                                      Divider(
+                                        thickness: 1,
+                                        color: Color.fromRGBO(122, 108, 115, 1),
                                       ),
-                                      Text(
-                                        _searchbooks[index].title!,
-                                        style: TextStyle(
-                                            color: Colors.grey.shade600),
-                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      )
                                     ],
                                   ),
-                                ),
-                              );
-                            }))
-                    // Expanded(
-                    //     child: MyFutureBuilder<List<Search>>(
-                    //         future: booksSearchFuture!,
-                    //         succesWidget: (List<Search> products) {
-                    //           return ListView.separated(
-                    //               itemCount: products.length,
-                    //               separatorBuilder: (context, index) {
-                    //                 return Divider(height: .1);
-                    //               },
-                    //               itemBuilder:
-                    //                   (BuildContext context, int index) {
-                    //                 Search p = products[index];
-                    //                 return Padding(
-                    //                   padding: EdgeInsets.symmetric(
-                    //                       horizontal: 8, vertical: 1),
-                    //                   child: Container(
-                    //                     padding: EdgeInsets.all(8),
-                    //                     decoration: BoxDecoration(
-                    //                       color: Colors.grey.withOpacity(.2),
-                    //                     ),
-                    //                     child: Column(children: [
-                    //                       Row(children: [
-                    //                         Text(' ${p.id}',
-                    //                             style: TextStyle(
-                    //                                 fontWeight:
-                    //                                     FontWeight.w600)),
-                    //                       ]),
-                    //                       Container(
-                    //                         child: Text(
-                    //                           '${p.type}',
-                    //                         ),
-                    //                       ),
-                    //                     ]),
-                    //                   ),
-                    //                 );
-                    //               });
-                    //         }))
-                  ],
-                ),
-              )
-            ],
+                                );
+                              })),
+
+                      // Expanded(
+                      //     child: ListView.builder(
+                      //         itemCount: _searchbooks.length,
+                      //         itemBuilder: (contex, index) {
+                      //           return Card(
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.only(
+                      //                   top: 32.0,
+                      //                   bottom: 32.0,
+                      //                   left: 16.0,
+                      //                   right: 16.0),
+                      //               child: Column(
+                      //                 crossAxisAlignment:
+                      //                     CrossAxisAlignment.start,
+                      //                 children: <Widget>[
+                      //                   Text(
+                      //                     _searchbooks[index].id.toString(),
+                      //                     style: TextStyle(
+                      //                         fontSize: 22,
+                      //                         fontWeight: FontWeight.bold),
+                      //                   ),
+                      //                   Text(
+                      //                     _searchbooks[index].title!,
+                      //                     style: TextStyle(
+                      //                         color: Colors.grey.shade600),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }))
+                      // Expanded(
+                      //     child: MyFutureBuilder<List<Search>>(
+                      //         future: booksSearchFuture!,
+                      //         succesWidget: (List<Search> products) {
+                      //           return ListView.separated(
+                      //               itemCount: products.length,
+                      //               separatorBuilder: (context, index) {
+                      //                 return Divider(height: .1);
+                      //               },
+                      //               itemBuilder:
+                      //                   (BuildContext context, int index) {
+                      //                 Search p = products[index];
+                      //                 return Padding(
+                      //                   padding: EdgeInsets.symmetric(
+                      //                       horizontal: 8, vertical: 1),
+                      //                   child: Container(
+                      //                     padding: EdgeInsets.all(8),
+                      //                     decoration: BoxDecoration(
+                      //                       color: Colors.grey.withOpacity(.2),
+                      //                     ),
+                      //                     child: Column(children: [
+                      //                       Row(children: [
+                      //                         Text(' ${p.id}',
+                      //                             style: TextStyle(
+                      //                                 fontWeight:
+                      //                                     FontWeight.w600)),
+                      //                       ]),
+                      //                       Container(
+                      //                         child: Text(
+                      //                           '${p.type}',
+                      //                         ),
+                      //                       ),
+                      //                     ]),
+                      //                   ),
+                      //                 );
+                      //               });
+                      //         }))
+                    ],
+                  ),
+                )
+              ],
+            ),
           )),
     );
   }

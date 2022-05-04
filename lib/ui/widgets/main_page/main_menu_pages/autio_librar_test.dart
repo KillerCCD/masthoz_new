@@ -7,13 +7,16 @@ import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
+import '../../helper_widgets/menuShow.dart';
+
 class TestBookDataYutubePlayer extends StatefulWidget {
   // final Lessons lessons;
 
   //const TestBookDataYutubePlayerByCharacters({Key? key, required this.lessons}) : super(key: key);
 
   @override
-  State<TestBookDataYutubePlayer> createState() => _TestBookDataYutubePlayerState();
+  State<TestBookDataYutubePlayer> createState() =>
+      _TestBookDataYutubePlayerState();
 }
 
 class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
@@ -35,28 +38,59 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
         scrollDirection: Axis.vertical,
         slivers: [
           SliverAppBar(
-            expandedHeight: 73,
-            backgroundColor: Palette.textLineOrBackGroundColor,
             pinned: false,
             floating: true,
+            title: Text(
+              '{lessons.number}',
+              style: TextStyle(
+                  fontSize: 20,
+                  letterSpacing: 1,
+                  fontFamily: 'GHEAGrapalat',
+                  fontWeight: FontWeight.bold,
+                  color: Palette.appBarTitleColor),
+            ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: Palette.appBarTitleColor,
+              ),
+            ),
+            expandedHeight: 73,
+            backgroundColor: Palette.textLineOrBackGroundColor,
             elevation: 0,
             automaticallyImplyLeading: false,
             systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            flexibleSpace: ActionsHelper(
-              leftPadding: 12,
-              // botomPadding: 0,
-              // topPadding: 30,
-              text: '{lessons.number}',
-
-              fontFamily: 'Grapalat',
-              fontSize: 20,
-              laterSpacing: 1,
-              fontWeight: FontWeight.bold,
-              color: Palette.appBarTitleColor,
-              buttonShow: true,
-            ),
+            actions: [
+              MenuShow(),
+            ],
           ),
+          // SliverAppBar(
+          //   expandedHeight: 73,
+          //   backgroundColor: Palette.textLineOrBackGroundColor,
+          //   pinned: false,
+          //   floating: true,
+          //   elevation: 0,
+          //   automaticallyImplyLeading: false,
+          //   systemOverlayStyle: SystemUiOverlayStyle(
+          //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+          //   flexibleSpace: ActionsHelper(
+          //     leftPadding: 12,
+          //     // botomPadding: 0,
+          //     // topPadding: 30,
+          //     text: '{lessons.number}',
+
+          //     fontFamily: 'GHEAGrapalat',
+          //     fontSize: 20,
+          //     laterSpacing: 1,
+          //     fontWeight: FontWeight.bold,
+          //     color: Palette.appBarTitleColor,
+          //     buttonShow: true,
+          //   ),
+          // ),
           // SliverFillRemaining(
           //   // child: YoutubePlayers(
           //   //   lessons: lessons,
@@ -295,4 +329,3 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
     );
   }
 }
-

@@ -57,6 +57,8 @@ dependencies:
       url: https://github.com/bluefireteam/photo_view
       ref: master
   jsonml: ^0.1.9
+  flutter_screen_wake: ^1.0.2
+  
   
   
   
@@ -84,7 +86,7 @@ flutter:
         - asset: assets/fonts/ArshaluyseArtU-Bold.ttf
           style: normal
           weight: 700
-    - family: GHEAGpalat
+    - family: GHEAGrapalat
       fonts:
         - asset: assets/fonts/GHEAGpalatBld.otf
         - asset: assets/fonts/GHEAGrapalatBlit.otf

@@ -43,69 +43,87 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color.fromRGBO(
-          83,
-          66,
-          76,
-          1,
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              // const SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: const Color.fromRGBO(
+            83,
+            66,
+            76,
+            1,
+          ),
+          body: Container(
+            padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                SizedBox(height: 39.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(top: 3.5),
                       splashRadius: 0.1,
+                      iconSize: 23,
+                      alignment: Alignment.topCenter,
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_rounded,
-                        color: Palette.textLineOrBackGroundColor,
+                      icon: Padding(
+                        padding: EdgeInsets.only(right: double.infinity),
+                        child: const Icon(
+                          Icons.arrow_back_ios_rounded,
+                          color: Palette.textLineOrBackGroundColor,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 35,
-                    ),
-                    const Text(
-                      'Մուտքագրեք կոդը',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 27,
-                          fontFamily: 'Grapalat',
-                          color: Palette.textLineOrBackGroundColor),
+                    Expanded(
+                      child: Container(
+                        height: 47,
+                        padding: const EdgeInsets.only(right: 50.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: const Text(
+                            'Մուտքագրեք կոդը',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'GHEAGrapalat',
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w400,
+                                color: Palette.textLineOrBackGroundColor),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              const Text(
-                'Մուտքագրեք էլ. փոստին ուղարկված \nեցանիշ թիվը',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Grapalat',
-                    color: Palette.textLineOrBackGroundColor),
-              ),
-              SizedBox(height: 50),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Form(
+                const SizedBox(
+                  height: 57,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 70,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Մուտքագրեք էլ. փոստին ուղարկված \nեցանիշ թիվը',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'GHEAGrapalat',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 1,
+                          color: Palette.textLineOrBackGroundColor),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                         child: PinCodeTextField(
                           appContext: context,
                           textStyle: TextStyle(
@@ -146,6 +164,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       ),
                       SizedBox(height: 40.0),
                       Align(
+                        alignment: Alignment.centerRight,
                         child: SizedBox(
                           width: 47,
                           child: RawMaterialButton(
@@ -181,15 +200,17 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                               }
                             },
                             child: Row(
-                              //  mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               // mainAxisSize: MainAxisSize.min,
                               children: const [
-                                SizedBox(
-                                  width: 47,
-                                  height: 50,
-                                  child: Image(
-                                    image: AssetImage(
-                                        "assets/images/login_button.png"),
+                                Align(
+                                  child: SizedBox(
+                                    width: 47,
+                                    height: 50,
+                                    child: Image(
+                                      image: AssetImage(
+                                          "assets/images/login_button.png"),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -200,8 +221,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

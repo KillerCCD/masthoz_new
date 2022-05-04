@@ -6,8 +6,10 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/aarm_italy_dictionary.dart';
 
+import '../../../helper_widgets/menuShow.dart';
 import 'encyclopedia_by_characters.dart';
 
 class Ecyclopedia extends StatefulWidget {
@@ -20,7 +22,7 @@ class Ecyclopedia extends StatefulWidget {
 class _EcyclopediaState extends State<Ecyclopedia>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-
+  final barrItes = HomeScreenState();
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
@@ -34,16 +36,33 @@ class _EcyclopediaState extends State<Ecyclopedia>
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
+            // SliverAppBar(
+            //   title: ActionsHelper(
+            //     //botomPadding: 55,
+            //     text: 'Բառարան',
+            //     fontFamily: 'GHEAGrapalat',
+            //     rightPadding: 10.0,
+            //     fontSize: 20,
+            //     laterSpacing: 1,
+            //     fontWeight: FontWeight.bold,
+            //     color: Palette.appBarTitleColor,
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            // ),
             SliverAppBar(
-              title: ActionsHelper(
-                //botomPadding: 55,
-                text: 'Բառարան',
-                fontFamily: 'Grapalat',
-                rightPadding: 10.0,
-                fontSize: 20,
-                laterSpacing: 1,
-                fontWeight: FontWeight.bold,
-                color: Palette.appBarTitleColor,
+              title: Text(
+                'Հանրագիտարան',
+                style: TextStyle(
+                    fontSize: 16.0,
+                    letterSpacing: 1,
+                    fontFamily: 'GHEAGrapalat',
+                    fontWeight: FontWeight.w700,
+                    color: Palette.appBarTitleColor),
               ),
               expandedHeight: 73,
               backgroundColor: Palette.textLineOrBackGroundColor,
@@ -51,7 +70,44 @@ class _EcyclopediaState extends State<Ecyclopedia>
               automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: MenuShow(),
+                ),
+              ],
             ),
+            // SliverAppBar(
+            //   title: Text(
+            //     'Բառարան',
+            //     style: TextStyle(
+            //         fontSize: 20,
+            //         letterSpacing: 1,
+            //         fontFamily: 'GHEAGrapalat',
+            //         fontWeight: FontWeight.bold,
+            //         color: Palette.appBarTitleColor),
+            //   ),
+            //   pinned: false,
+            //   floating: true,
+            //   leading: IconButton(
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //     },
+            //     icon: Icon(
+            //       Icons.arrow_back_ios_new_outlined,
+            //       color: Palette.appBarTitleColor,
+            //     ),
+            //   ),
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            //   actions: [
+            //     MenuShow(),
+            //   ],
+            // ),
             SliverFillRemaining(
               hasScrollBody: false,
               child: Column(
@@ -60,9 +116,12 @@ class _EcyclopediaState extends State<Ecyclopedia>
                     color: Color.fromRGBO(246, 246, 246, 1),
                     width: double.infinity,
                     height: 80,
-                    child: Text(
-                      'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
-                      textAlign: TextAlign.center,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 50),
@@ -125,7 +184,6 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
                                             characters: characters,
                                             characterByindex: wordsArm[index],
                                             characterIndex: index,
-                                            
                                           )));
                             }
                           : null,
@@ -151,7 +209,10 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
             );
           } else {
             return Container(
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                  child: CircularProgressIndicator(
+                color: Palette.main,
+              )),
             );
           }
         },

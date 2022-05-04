@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/book.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
@@ -18,11 +19,11 @@ class BookDataProvider {
   final sessionDataProvider = SessionDataProvider();
 
   //Fetch Category List
-  Future<List<BookCategory>> getCategoryLists() async {
+  Future<List<BookCategory>> getCategoryLists(String url) async {
     var libraryList = <BookCategory>[];
     //   try {
     var response = await http.get(
-      Uri.parse(Api.categoryListUrl),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -96,11 +97,11 @@ class BookDataProvider {
     var success = body['success'];
     if (success == true) {
       var data = body['data'];
-      List<dynamic> keyGallery = Map.from(data).keys.map((e) => e).toList();
+      // List<dynamic> keyGallery = Map.from(data).keys.map((e) => e).toList();
       //  inspect(keyGallery);
 
-      var newElement = Map.from(data);
-      inspect(newElement);
+      var newElement;
+      //  inspect(newElement);
 
       // newElement.forEach(
       //   (key, value) {
@@ -128,15 +129,20 @@ class BookDataProvider {
 
       //   },
       // );
-      Map.from(newElement).forEach((key, value) {
-        var dataf = MapEntry(
-            key, (value is List) ? print(value) : Gallery.fromJson(value));
-        galleryList.add(dataf);
+      Map.from(data).forEach((key, value) {
+        MapEntry(
+            key,
+            (value is List)
+                ? galleryList.add(MapEntry(key, value))
+                : Map<String, dynamic>.from(value).entries.forEach((element) {
+                    var dataf = MapEntry(key, Gallery.fromJson(element.value));
+                    galleryList.add(dataf);
+                  }));
       });
     } else {
       print("failed");
     }
-    inspect(galleryList);
+    //inspect(galleryList);
     return galleryList;
   }
 
@@ -163,7 +169,7 @@ class BookDataProvider {
   }
 
   //Dialect Character
-  Future<List<String>?> getDialect_Encyclopaedia_Characters(String url) async {
+  Future<List<String>> getDialect_Encyclopaedia_Characters(String url) async {
     var token = await sessionDataProvider.readToken();
 
     var response = await http.get(
@@ -184,7 +190,7 @@ class BookDataProvider {
     } else {
       print("failed");
     }
-    return null;
+    return [];
   }
 
   //Data by characters
