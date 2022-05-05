@@ -57,9 +57,7 @@ class _BooksScreenState extends State<BooksScreen> {
             flexibleSpace: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 50.0,
-                ),
+                padding: const EdgeInsets.only(left: 50.0, top: 20.0),
                 child: Container(
                   height: 73,
                   padding: EdgeInsets.only(top: 18),

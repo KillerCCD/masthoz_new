@@ -74,6 +74,7 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
         autoPlay: false,
         mute: false,
         loop: true,
+        // hideThumbnail: true,
         forceHD: false,
         enableCaption: false,
       ),
@@ -102,114 +103,126 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
           SystemChrome.setPreferredOrientations(DeviceOrientation.values);
         },
         player: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: Palette.main,
-          topActions: <Widget>[
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Text(
-                _controller.metadata.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ),
-          ],
-          onReady: () {
-            _isPlayerReady = true;
-          },
-        ),
-        builder: (context, player) {
-          return Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                height: isShow == true ? 300 : 600,
-                width: 400,
-                child: ListView(
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    player,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _space,
-                        SizedBox(
-                          width: 270,
-                          child: Text(
-                            isShow == true
-                                ? '${lessons?.title} '
-                                : '${dataCharacters?.summary}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12.0,
-                              fontFamily: 'GHEAGrapalat',
-                              letterSpacing: 1,
-                              color: Color.fromRGBO(84, 112, 126, 1),
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+            controller: _controller,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Palette.main,
+            topActions: <Widget>[
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Text(
+                  _controller.metadata.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
-              isShow == true
-                  ? Divider(
-                      color: Color.fromRGBO(226, 224, 224, 1),
-                      height: 15.0,
-                      thickness: 1,
-                    )
-                  : Container(
-                      height: 0.01,
-                    ),
-              isShow == true
-                  ? Container(
-                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                      color: const Color.fromRGBO(246, 246, 246, 1),
-                      width: double.infinity,
-                      height: 49,
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              print('kisvel');
-                            },
-                            child: Row(
-                              children: [
-                                //  const SizedBox(width: 16),
-                                SvgPicture.asset('assets/images/այքըններ.svg'),
-                                const SizedBox(width: 6),
-                                const Text('Կիսվել')
-                              ],
-                            ),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              print('share anel paterin');
-                            },
-                            child: Row(
-                              children: [
-                                SvgPicture.asset('assets/images/վելացնել1.svg'),
-                                const SizedBox(width: 6),
-                                const Text('Պահել'),
-                                //const SizedBox(width: 16),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ))
-                  : Container(
-                      height: 0.01,
-                    ),
             ],
-          );
+            onReady: () {
+              _isPlayerReady = true;
+            }),
+        builder: (context, player) {
+          return isShow == false || isShow == true
+              ? Column(
+                  children: [
+                    isShow == true
+                        ? Container(
+                            color: Palette.textLineOrBackGroundColor,
+                            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                            height: isShow == true ? 300 : 600,
+                            width: 400,
+                            child: ListView(
+                              physics: NeverScrollableScrollPhysics(),
+                              children: [
+                                player,
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    _space,
+                                    SizedBox(
+                                      width: 270,
+                                      child: Text(
+                                        isShow == true
+                                            ? '${lessons?.title} '
+                                            : '${dataCharacters?.summary}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12.0,
+                                          fontFamily: 'GHEAGrapalat',
+                                          letterSpacing: 1,
+                                          color:
+                                              Color.fromRGBO(84, 112, 126, 1),
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0.01,
+                          ),
+                    isShow == true
+                        ? Divider(
+                            color: Color.fromRGBO(226, 224, 224, 1),
+                            height: 15.0,
+                            thickness: 1,
+                          )
+                        : Container(
+                            height: 0.01,
+                          ),
+                    isShow == true
+                        ? Container(
+                            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                            color: Palette.textLineOrBackGroundColor,
+                            width: double.infinity,
+                            height: 49,
+                            child: Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    print('kisvel');
+                                  },
+                                  child: Row(
+                                    children: [
+                                      //  const SizedBox(width: 16),
+                                      SvgPicture.asset(
+                                          'assets/images/այքըններ.svg'),
+                                      const SizedBox(width: 6),
+                                      const Text('Կիսվել')
+                                    ],
+                                  ),
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    print('share anel paterin');
+                                  },
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/images/վելացնել1.svg'),
+                                      const SizedBox(width: 6),
+                                      const Text('Պահել'),
+                                      //const SizedBox(width: 16),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ))
+                        : Container(
+                            height: 0.01,
+                          ),
+                  ],
+                )
+              : Column(
+                  children: [player],
+                );
         });
   }
 }

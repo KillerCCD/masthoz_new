@@ -42,7 +42,9 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
             flexibleSpace: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 45),
+                padding: const EdgeInsets.only(
+                  left: 45,
+                ),
                 child: Text(
                   '0${lessons?.number}',
                   style: TextStyle(
@@ -87,20 +89,11 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
             ],
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    print('dadaspsodfpasdofpasdfjka');
-                  },
-                  child: YoutubePlayers(
-                    lessons: lessons,
-                    isShow: isShow,
-                  ),
-                ),
-              ],
+            child: YoutubePlayers(
+              lessons: lessons,
+              isShow: isShow,
             ),
-          )
+          ),
         ],
       ),
     );
