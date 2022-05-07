@@ -373,7 +373,7 @@ class _ItalianLessonState extends State<ITLesson>
                         left: 4,
                         child: Container(
                           width: MediaQuery.of(context).size.width > 300
-                              ? MediaQuery.of(context).size.width / 1.34
+                              ? MediaQuery.of(context).size.width / 1.33
                               : 300,
                           height: 142,
                           child: CachedNetworkImage(
@@ -385,7 +385,7 @@ class _ItalianLessonState extends State<ITLesson>
                 )),
             Positioned(
                 top: 158,
-                left: 16,
+                left: 20,
                 child: isOdd
                     ? Transform(
                         transform: Matrix4.rotationY(math.pi),
@@ -405,6 +405,7 @@ class _ItalianLessonState extends State<ITLesson>
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6),
+                              maxLines: 2,
                             ),
                           ),
                         ))
@@ -421,12 +422,14 @@ class _ItalianLessonState extends State<ITLesson>
                               italianLesson.title!,
                               textAlign: TextAlign.justify,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(84, 112, 126, 1),
-                                  fontFamily: 'GHEA GHEAGrapalat',
-                                  fontSize: 12,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.6),
+                                color: Color.fromRGBO(84, 112, 126, 1),
+                                fontFamily: 'GHEA GHEAGrapalat',
+                                fontSize: 12,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.normal,
+                                height: 1.6,
+                              ),
+                              maxLines: 2,
                             ),
                           ),
                         ),

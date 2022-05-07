@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
+import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
-import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:provider/provider.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 import '../../../../domens/models/book_data/content_list.dart';
+import '../../helper_widgets/save_show_dialog.dart';
 import 'book_inherited_widget.dart';
 
 class BookReadScreen extends StatefulWidget {
@@ -137,32 +139,15 @@ class _BookPagesState extends State<BookPages> {
   double selectedValue = 0;
   var textSize = <double>[14, 16, 18];
   var items = 1;
-  double brightness = 0.0;
-  // void changeTextSize(int index) {
-  //   textSize.forEach(
-  //     (element) {
-  //       print(element.toInt())
-  //     },
-  //   );
-  //   setState(() {});
-  // }
-  @override
-  void initState() {
-    initPlatformBrightness();
-    super.initState();
-  }
+  double _brightness = 1.0;
 
-  Future<void> initPlatformBrightness() async {
-    double bright;
+  Future<void> setBrightness(double brightness) async {
     try {
-      bright = await FlutterScreenWake.brightness;
-    } on PlatformException {
-      bright = 1.0;
+      await ScreenBrightness().setScreenBrightness(brightness);
+    } catch (e) {
+      debugPrint(e.toString());
+      throw 'Failed to set brightness';
     }
-    if (!mounted) return;
-    setState(() {
-      brightness = bright;
-    });
   }
 
   Widget hideMenuAppBar() {
@@ -291,63 +276,84 @@ class _BookPagesState extends State<BookPages> {
                             ? Color.fromRGBO(31, 31, 31, 0.5)
                             : Palette.textLineOrBackGroundColor,
                         height: 80,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: InkWell(
-                                onTap: () => setState(() {
-                                  isYoutubeActive = !isYoutubeActive;
-                                  isSettings = false;
-                                  isShare = false;
-                                }),
-                                child: SvgPicture.asset(
-                                  'assets/images/youtube.svg',
-                                  color: isYoutubeActive
-                                      ? Palette.whenTapedButton
-                                      : null,
-                                  fit: BoxFit.none,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                                child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Container(
+                                      height: 3.0,
+                                      color: isYoutubeActive ||
+                                              isSettings ||
+                                              isShare
+                                          ? Colors.amber
+                                          : Palette.textLineOrBackGroundColor,
+                                    ))),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  height: 77.0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          child: InkWell(
+                                        onTap: () => setState(() {
+                                          isYoutubeActive = !isYoutubeActive;
+                                          isSettings = false;
+                                          isShare = false;
+                                        }),
+                                        child: SvgPicture.asset(
+                                          'assets/images/youtube.svg',
+                                          color: isYoutubeActive
+                                              ? Palette.whenTapedButton
+                                              : null,
+                                          fit: BoxFit.none,
+                                        ),
+                                      )),
+                                      SizedBox(width: 80),
+                                      Expanded(child: Text('11/365')),
+                                      Expanded(
+                                          child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            isShare = !isShare;
+                                            isYoutubeActive = false;
+                                            isSettings = false;
+                                          });
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/images/share.svg',
+                                          color: isShare
+                                              ? Palette.whenTapedButton
+                                              : null,
+                                          fit: BoxFit.none,
+                                        ),
+                                      )),
+                                      Expanded(
+                                          child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            isSettings = !isSettings;
+                                            isYoutubeActive = false;
+                                            isShare = false;
+                                          });
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/images/settings.svg',
+                                          color: isSettings
+                                              ? Palette.whenTapedButton
+                                              : null,
+                                          fit: BoxFit.none,
+                                        ),
+                                      )),
+                                    ],
+                                  ),
                                 ),
-                              )),
-                              SizedBox(width: 80),
-                              Expanded(child: Text('11/365')),
-                              Expanded(
-                                  child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isShare = !isShare;
-                                    isYoutubeActive = false;
-                                    isSettings = false;
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/images/share.svg',
-                                  color:
-                                      isShare ? Palette.whenTapedButton : null,
-                                  fit: BoxFit.none,
-                                ),
-                              )),
-                              Expanded(
-                                  child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isSettings = !isSettings;
-                                    isYoutubeActive = false;
-                                    isShare = false;
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/images/settings.svg',
-                                  color: isSettings
-                                      ? Palette.whenTapedButton
-                                      : null,
-                                  fit: BoxFit.none,
-                                ),
-                              )),
-                            ],
-                          ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -385,12 +391,16 @@ class _BookPagesState extends State<BookPages> {
   Widget youtubrShow() {
     final mediaQuery = MediaQuery.of(context).size;
     return Positioned(
-      bottom: 90.0,
+      bottom: 80.0,
       child: Container(
           color: Color.fromRGBO(31, 31, 31, 0.5),
+          width: mediaQuery.width,
+          height: mediaQuery.height,
           child: Stack(children: [
             Positioned(
-                top: mediaQuery.height / 1.95,
+                top: mediaQuery.height / 1.55,
+                width: mediaQuery.width,
+                height: mediaQuery.height,
                 child: Container(
                     color: Palette.textLineOrBackGroundColor,
                     height: mediaQuery.height,
@@ -404,10 +414,6 @@ class _BookPagesState extends State<BookPages> {
                             child: YoutubePlayers(
                               url: readScreen?.videoLink,
                             )),
-                      ),
-                      Container(
-                        color: Palette.whenTapedButton,
-                        height: 305.0,
                       ),
                     ])))
           ])),
@@ -431,7 +437,7 @@ class _BookPagesState extends State<BookPages> {
               ),
               Container(
                 color: Palette.textLineOrBackGroundColor,
-                height: mediaQuery.height / 2.13,
+                height: mediaQuery.height / 2.10,
                 width: mediaQuery.width,
                 child: Column(
                   children: [
@@ -499,6 +505,7 @@ class _BookPagesState extends State<BookPages> {
 
   Widget settingsShow() {
     final mediaQuery = MediaQuery.of(context).size;
+
     return Positioned(
         bottom: 80.0,
         top: 80.0,
@@ -564,43 +571,68 @@ class _BookPagesState extends State<BookPages> {
                                             MediaQuery.of(context).size.width,
                                         height: 70,
                                         child: SliderTheme(
-                                          data:
-                                              SliderTheme.of(context).copyWith(
-                                            activeTrackColor: Palette.main,
-                                            inactiveTrackColor: Palette.main,
-                                            trackShape:
-                                                RoundedRectSliderTrackShape(),
-                                            trackHeight: 4.0,
-                                            thumbShape: RoundSliderThumbShape(
-                                                enabledThumbRadius: 12.0),
-                                            thumbColor: Palette.main,
-                                            overlayColor:
-                                                Palette.whenTapedButton,
-                                            overlayShape:
-                                                RoundSliderOverlayShape(
-                                                    overlayRadius: 18.0),
-                                            tickMarkShape:
-                                                RoundSliderTickMarkShape(),
-                                            activeTickMarkColor: Palette.main,
-                                            inactiveTickMarkColor: Palette.main,
-                                            valueIndicatorShape:
-                                                PaddleSliderValueIndicatorShape(),
-                                            valueIndicatorColor: Palette.main,
-                                            valueIndicatorTextStyle:
-                                                TextStyle(color: Palette.main),
-                                          ),
-                                          child: Slider(
-                                            value: brightness,
-                                            min: 0,
-                                            max: 800.0,
-                                            onChanged: (newBrightnessValue) {
-                                              setState(() => brightness =
-                                                  newBrightnessValue);
-                                            },
-                                            inactiveColor: Color.fromRGBO(
-                                                226, 224, 224, 1),
-                                          ),
-                                        ),
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              activeTrackColor: Palette.main,
+                                              inactiveTrackColor:
+                                                  Color.fromRGBO(
+                                                      226, 224, 224, 1),
+                                              trackShape:
+                                                  RoundedRectSliderTrackShape(),
+                                              trackHeight: 4.0,
+                                              thumbShape: RoundSliderThumbShape(
+                                                  enabledThumbRadius: 12.0),
+                                              thumbColor: Palette.main,
+                                              overlayColor:
+                                                  Palette.whenTapedButton,
+                                              overlayShape:
+                                                  RoundSliderOverlayShape(
+                                                      overlayRadius: 18.0),
+                                              tickMarkShape:
+                                                  RoundSliderTickMarkShape(),
+                                              activeTickMarkColor: Palette.main,
+                                              inactiveTickMarkColor:
+                                                  Color.fromRGBO(
+                                                      226, 224, 224, 1),
+                                              valueIndicatorShape:
+                                                  PaddleSliderValueIndicatorShape(),
+                                              valueIndicatorColor: Palette.main,
+                                              valueIndicatorTextStyle:
+                                                  TextStyle(
+                                                      color: Palette.main),
+                                            ),
+                                            child: FutureBuilder(
+                                                future:
+                                                    ScreenBrightness().current,
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot snapshot) {
+                                                  double currentBrightness = 0;
+                                                  if (snapshot.hasData) {
+                                                    currentBrightness =
+                                                        snapshot.data!;
+                                                  }
+                                                  return StreamBuilder<double>(
+                                                    stream: ScreenBrightness()
+                                                        .onCurrentBrightnessChanged,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      double changedBrightness =
+                                                          currentBrightness;
+                                                      if (snapshot.hasData) {
+                                                        changedBrightness =
+                                                            snapshot.data!;
+                                                      }
+
+                                                      return Slider.adaptive(
+                                                        value:
+                                                            changedBrightness,
+                                                        onChanged: (value) {
+                                                          setBrightness(value);
+                                                        },
+                                                      );
+                                                    },
+                                                  );
+                                                })),
                                       ),
                                     ),
                                   ],
@@ -713,11 +745,9 @@ class _BookPagesState extends State<BookPages> {
                                           children: [
                                             Expanded(
                                               child: GestureDetector(
-                                                onTap: () {
-                                                  print('light theme');
-                                                },
+                                                onTap: () {},
                                                 child: Container(
-                                                    width: 50,
+                                                    width: 60,
                                                     height: 70,
                                                     child: Column(
                                                       children: [
@@ -758,11 +788,14 @@ class _BookPagesState extends State<BookPages> {
                                             Expanded(
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('dark theme');
-                                                  setState(() {});
+                                                  setState(() {
+                                                    context
+                                                        .read<ThemeNotifier>()
+                                                        .darkThemeData();
+                                                  });
                                                 },
                                                 child: Container(
-                                                    width: 50,
+                                                    width: 60,
                                                     height: 70,
                                                     child: Column(
                                                       children: [
@@ -923,13 +956,24 @@ class _BookPagesState extends State<BookPages> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(right: 20.0, left: 20.0),
-                            child: Text(
-                              'Կիսվել',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1),
-                              textAlign: TextAlign.center,
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (
+                                      context,
+                                    ) =>
+                                        SaveShowDialog());
+                              },
+                              child: Text(
+                                'Կիսվել',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                           Padding(
@@ -982,46 +1026,51 @@ class _BookPagesState extends State<BookPages> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                child: GestureDetector(
-                  onTap: () => setState(() {
-                    isVisiblty = !isVisiblty;
-                    isBovandakMenu = false;
-                  }),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 50),
-                      Expanded(
-                          child: SingleChildScrollView(
-                              child: RichText(
-                        textAlign: TextAlign.justify,
-                        text: TextSpan(
-                          text: '$listText',
-                          style: TextStyle(
-                              color: Colors.black,
-                              height: 2.5,
-                              fontWeight: FontWeight.w200,
-                              fontSize: 14,
-                              fontFamily: 'GHEAGrapalat',
-                              letterSpacing: 1),
-                        ),
-                      ))),
-                    ],
+    final appTheme = context.read<ThemeNotifier>();
+    var theme = appTheme.theme != null ? appTheme.theme : appTheme.lightTheme;
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: GestureDetector(
+                    onTap: () => setState(() {
+                      isVisiblty = !isVisiblty;
+                      isBovandakMenu = false;
+                    }),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 50),
+                        Expanded(
+                            child: SingleChildScrollView(
+                                child: RichText(
+                          textAlign: TextAlign.justify,
+                          text: TextSpan(
+                            text: '$listText',
+                            style: TextStyle(
+                                color: Colors.black,
+                                height: 2.5,
+                                fontWeight: FontWeight.w200,
+                                fontSize: 14,
+                                fontFamily: 'GHEAGrapalat',
+                                letterSpacing: 1),
+                          ),
+                        ))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              isVisiblty ? hideBottomBarMenu() : Container(),
-            ],
-          ),
-          color: Color.fromRGBO(226, 225, 224, 1)),
-      // bottomNavigationBar:
+                isVisiblty ? hideBottomBarMenu() : Container(),
+              ],
+            ),
+            color: Color.fromRGBO(226, 225, 224, 1)),
+        // bottomNavigationBar:
+      ),
     );
   }
 }

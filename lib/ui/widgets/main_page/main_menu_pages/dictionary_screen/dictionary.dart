@@ -193,7 +193,7 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
               body: GridView.count(
                 mainAxisSpacing: 30,
                 crossAxisCount: 7,
-                physics: NeverScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 children: List.generate(wordsArm.length, (index) {
                   return Center(
                     child: InkWell(
@@ -217,7 +217,7 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
                         '${wordsArm[index]}',
                         style: TextStyle(
                           fontFamily: 'ArshaluyseArtU',
-                          fontSize: 25,
+                          fontSize: 20,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.bold,
                           color: characters

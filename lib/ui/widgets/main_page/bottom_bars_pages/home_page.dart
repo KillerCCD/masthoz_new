@@ -42,157 +42,157 @@ class HomePage extends StatelessWidget {
                   MenuShow(),
                 ],
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      Container(
-                          padding: EdgeInsets.only(left: 5.0),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Palette.whenTapedButton,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(31, 31, 31, 0.5),
-                                        blurRadius: 1.0,
-                                        spreadRadius: 0.0,
-                                        offset: Offset(-1.5, 3),
-                                      ),
-                                    ]),
-                                width: 50,
-                                height: 44,
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('25')),
-                              ),
-                              SizedBox(width: 17),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Color.fromRGBO(113, 141, 156, 1),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              Color.fromRGBO(31, 31, 31, 0.5),
-                                          blurRadius: 1.0,
-                                          spreadRadius: 0.0,
-                                          offset: Offset(-1.5, 3),
-                                        ),
-                                      ]),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 44,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12.0, left: 12.0),
-                                    child: Text(
-                                      'Օրվա խոսք',
-                                      style: TextStyle(
-                                          fontFamily: 'GHEAGrapalat',
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )),
-                      SizedBox(height: 14),
-                      Container(
-                        color: Color.fromRGBO(246, 246, 246, 1),
-                        height: 380,
-                        width: double.infinity,
-                        child: Stack(
-                          children: [
-                            Container(
-                                color: Color.fromRGBO(246, 246, 246, 1),
-                                width: double.infinity,
-                                padding: EdgeInsets.all(16.0),
-                                height: 300,
-                                child: Scrollbar(
-                                    thickness: 1.5,
-                                    radius: const Radius.circular(12),
-                                    isAlwaysShown: false,
-                                    showTrackOnHover: true,
-                                    child: Center(
-                                        child: ListView(
-                                      children: [
-                                        Text(
-                                            'Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: ')
-                                      ],
-                                    )))),
-                            Positioned.fill(
-                                bottom: 50,
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 16.0, left: 16.0),
-                                    child: Divider(
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                )),
-                            Positioned.fill(
-                                child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 16.0, right: 16.0),
-                                        height: 50,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            'Սոս Սարգսյան',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        )))),
-                          ],
-                        ),
-                      ),
-                      Container(
-                          height: 400,
-                          child: Center(
-                              child: ListView.builder(
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        BookCard(
-                                          isOdd: false,
-                                          categorys: BookCategory(
-                                              categoryTitle: 'suka',
-                                              id: 1,
-                                              title: 'dadasion',
-                                              type: 'libraries'),
-                                          book: Content(
-                                            videoLink: null,
-                                            content: null,
-                                            body: '',
-                                            id: 1,
-                                            image: 'https://picsum.photos/200',
-                                            title: 'Davidi Verchi xosqy',
-                                            author: 'Davit Mcarenc',
-                                            explanation: '',
-                                          ),
-                                        ),
-                                        SizedBox(height: 30.0),
-                                      ],
-                                    );
-                                  })))
-                    ],
-                  )),
-                ),
-              )
+              // // SliverToBoxAdapter(
+              // //   child: Container(
+              // //     width: MediaQuery.of(context).size.width,
+              // //     height: MediaQuery.of(context).size.height,
+              // //     child: SingleChildScrollView(
+              // //         child: Column(
+              // //       children: [
+              // //         Container(
+              // //             padding: EdgeInsets.only(left: 5.0),
+              // //             height: 50,
+              // //             width: MediaQuery.of(context).size.width,
+              // //             child: Row(
+              // //               mainAxisAlignment: MainAxisAlignment.start,
+              // //               children: [
+              // //                 Container(
+              // //                   decoration: BoxDecoration(
+              // //                       color: Palette.whenTapedButton,
+              // //                       boxShadow: [
+              // //                         BoxShadow(
+              // //                           color: Color.fromRGBO(31, 31, 31, 0.5),
+              // //                           blurRadius: 1.0,
+              // //                           spreadRadius: 0.0,
+              // //                           offset: Offset(-1.5, 3),
+              // //                         ),
+              // //                       ]),
+              // //                   width: 50,
+              // //                   height: 44,
+              // //                   child: Align(
+              // //                       alignment: Alignment.center,
+              // //                       child: Text('25')),
+              // //                 ),
+              // //                 SizedBox(width: 17),
+              // //                 Expanded(
+              // //                   child: Container(
+              // //                     decoration: BoxDecoration(
+              // //                         color: Color.fromRGBO(113, 141, 156, 1),
+              // //                         boxShadow: [
+              // //                           BoxShadow(
+              // //                             color:
+              // //                                 Color.fromRGBO(31, 31, 31, 0.5),
+              // //                             blurRadius: 1.0,
+              // //                             spreadRadius: 0.0,
+              // //                             offset: Offset(-1.5, 3),
+              // //                           ),
+              // //                         ]),
+              // //                     width: MediaQuery.of(context).size.width,
+              // //                     height: 44,
+              // //                     child: Padding(
+              // //                       padding: const EdgeInsets.only(
+              // //                           top: 12.0, left: 12.0),
+              // //                       child: Text(
+              // //                         'Օրվա խոսք',
+              // //                         style: TextStyle(
+              // //                             fontFamily: 'GHEAGrapalat',
+              // //                             fontSize: 14.0,
+              // //                             fontWeight: FontWeight.w400,
+              // //                             color: Colors.white),
+              // //                         textAlign: TextAlign.start,
+              // //                       ),
+              // //                     ),
+              // //                   ),
+              // //                 )
+              // //               ],
+              // //             )),
+              // //         SizedBox(height: 14),
+              // //         Container(
+              // //           color: Color.fromRGBO(246, 246, 246, 1),
+              // //           height: 380,
+              // //           width: double.infinity,
+              // //           child: Stack(
+              // //             children: [
+              // //               Container(
+              // //                   color: Color.fromRGBO(246, 246, 246, 1),
+              // //                   width: double.infinity,
+              // //                   padding: EdgeInsets.all(16.0),
+              // //                   height: 300,
+              // //                   child: Scrollbar(
+              // //                       thickness: 1.5,
+              // //                       radius: const Radius.circular(12),
+              // //                       isAlwaysShown: false,
+              // //                       showTrackOnHover: true,
+              // //                       child: Center(
+              // //                           child: ListView(
+              // //                         children: [
+              // //                           Text(
+              // //                               'Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: Կյանքում ոչ անհետ ու անհետևանք չի անցնում։ Եթե մի օր մի տեղ մի ծառ ես տնկել, տարիներ հետո դու էլ չէ, ինչ-որ մեկը պիտի նստի նրա շվաքին։ Իսկ թե մի օր մի տեղ մի ճյուղ ես կոտրել, աշխարհի երեսից մի բոռ շվաք, մի քիչ սոսափ կպակասի ու կխաթարվի տիեզերքի հավասարակշռությունը։ Կյանքում ոչինչ անհետ ու անհետևանք չի անցնում: ')
+              // //                         ],
+              // //                       )))),
+              // //               Positioned.fill(
+              // //                   bottom: 50,
+              // //                   child: Align(
+              // //                     alignment: Alignment.bottomCenter,
+              // //                     child: Padding(
+              // //                       padding: const EdgeInsets.only(
+              // //                           right: 16.0, left: 16.0),
+              // //                       child: Divider(
+              // //                         thickness: 1,
+              // //                       ),
+              // //                     ),
+              // //                   )),
+              // //               Positioned.fill(
+              // //                   child: Align(
+              // //                       alignment: Alignment.bottomRight,
+              // //                       child: Container(
+              // //                           padding: EdgeInsets.only(
+              // //                               left: 16.0, right: 16.0),
+              // //                           height: 50,
+              // //                           child: Align(
+              // //                             alignment: Alignment.centerRight,
+              // //                             child: Text(
+              // //                               'Սոս Սարգսյան',
+              // //                               textAlign: TextAlign.center,
+              // //                             ),
+              // //                           )))),
+              // //             ],
+              // //           ),
+              // //         ),
+              // //         Container(
+              // //             height: 400,
+              // //             child: Center(
+              // //                 child: ListView.builder(
+              // //                     itemCount: 2,
+              // //                     itemBuilder: (context, index) {
+              // //                       return Column(
+              // //                         children: [
+              // //                           BookCard(
+              // //                             isOdd: false,
+              // //                             categorys: BookCategory(
+              // //                                 categoryTitle: 'suka',
+              // //                                 id: 1,
+              // //                                 title: 'dadasion',
+              // //                                 type: 'libraries'),
+              // //                             book: Content(
+              // //                               videoLink: null,
+              // //                               content: null,
+              // //                               body: '',
+              // //                               id: 1,
+              // //                               image: 'https://picsum.photos/200',
+              // //                               title: 'Davidi Verchi xosqy',
+              // //                               author: 'Davit Mcarenc',
+              // //                               explanation: '',
+              // //                             ),
+              // //                           ),
+              // //                           SizedBox(height: 30.0),
+              // //                         ],
+              // //                       );
+              // //                     })))
+              // //       ],
+              // //     )),
+              // //   ),
+              // )
             ],
           ),
         ),

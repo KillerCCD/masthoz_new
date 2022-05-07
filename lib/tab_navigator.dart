@@ -23,6 +23,7 @@ class TabNavigator extends StatelessWidget {
     else if (tabItem == "italianpage")
       child = ItalianPage();
     else if (tabItem == "accountpage") child = AccountPage();
+    
     return Navigator(
       key: navigatorKey,
       onGenerateRoute: (routeSettings) {

@@ -8,6 +8,7 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../helper_widgets/menuShow.dart';
+import '../../helper_widgets/save_show_dialog.dart';
 
 class TestBookDataYutubePlayer extends StatefulWidget {
   // final Lessons lessons;
@@ -201,6 +202,7 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                         InkWell(
                           onTap: () {
                             print('kisvel');
+                            
                           },
                           child: Row(
                             children: [
@@ -214,6 +216,13 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                         InkWell(
                           onTap: () {
                             print('share anel paterin');
+                               showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (
+                                          context,
+                                        ) =>
+                                            SaveShowDialog());
                           },
                           child: Row(
                             children: [

@@ -10,6 +10,7 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../../helper_widgets/menuShow.dart';
+import '../../../helper_widgets/save_show_dialog.dart';
 
 class AudioLibraryDataShow extends StatefulWidget {
   final ByCharacters? dataCharacter;
@@ -212,6 +213,7 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                     InkWell(
                                       onTap: () {
                                         print('kisvel');
+                                        
                                       },
                                       child: Row(
                                         children: [
@@ -226,6 +228,13 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                     InkWell(
                                       onTap: () {
                                         print('share anel paterin');
+                                           showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (
+                                          context,
+                                        ) =>
+                                            SaveShowDialog());
                                       },
                                       child: Row(
                                         children: [

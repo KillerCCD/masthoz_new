@@ -45,6 +45,7 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
                 const SizedBox(height: 39),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     IconButton(
                       padding: const EdgeInsets.only(top: 3.5),
@@ -62,22 +63,20 @@ class _RessetPasswordScreenState extends State<RessetPasswordScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: 47,
-                        padding: const EdgeInsets.only(right: 50.0),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: const Text(
-                            'Նոր գաղտնաբառ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'GHEAGrapalat',
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.w400,
-                                color: Palette.textLineOrBackGroundColor),
-                          ),
+                    Container(
+                      height: 47,
+                      padding: const EdgeInsets.only(right: 40.0, bottom: 6),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Նոր գաղտնաբառ',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'GHEAGrapalat',
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w400,
+                              color: Palette.textLineOrBackGroundColor),
                         ),
                       ),
                     ),

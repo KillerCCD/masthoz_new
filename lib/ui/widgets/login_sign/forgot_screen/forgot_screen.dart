@@ -30,21 +30,21 @@ class ForgotScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                        padding: const EdgeInsets.only(top: 1.5),
-                        splashRadius: 0.1,
-                       iconSize: 23,
-                        alignment: Alignment.topCenter,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Padding(
-                          padding: EdgeInsets.only(right: double.infinity),
-                          child: const Icon(
-                            Icons.arrow_back_ios_rounded,
-                            color: Palette.textLineOrBackGroundColor,
-                          ),
+                      padding: const EdgeInsets.only(top: 1.5),
+                      splashRadius: 0.1,
+                      iconSize: 23,
+                      alignment: Alignment.topCenter,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Padding(
+                        padding: EdgeInsets.only(right: double.infinity),
+                        child: const Icon(
+                          Icons.arrow_back_ios_rounded,
+                          color: Palette.textLineOrBackGroundColor,
                         ),
                       ),
+                    ),
                     // const SizedBox(
                     //   width: 35,
                     // ),

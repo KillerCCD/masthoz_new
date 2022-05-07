@@ -6,6 +6,7 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_state.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 
 import '../../buttons/facebook_gmail_buttons.dart';
 
@@ -23,8 +24,7 @@ class SignupForm extends StatelessWidget {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
-          // Navigator.of(context).pop();
-          print('cik isSubmissionSuccess');
+          Navigator.popAndPushNamed(context, '/homepage');
         } else if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()

@@ -6,6 +6,7 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
@@ -34,6 +35,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.textLineOrBackGroundColor,
       body: CustomScrollView(
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
@@ -46,7 +48,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                   left: 45,
                 ),
                 child: Text(
-                  '0${lessons?.number}',
+                  '${lessons?.number}',
                   style: TextStyle(
                       fontSize: 16,
                       letterSpacing: 1,
@@ -88,10 +90,67 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
               ),
             ],
           ),
-          SliverToBoxAdapter(
-            child: YoutubePlayers(
-              lessons: lessons,
-              isShow: isShow,
+          SliverFillRemaining(
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  YoutubePlayers(
+                    lessons: lessons,
+                    isShow: isShow,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          color: Palette.textLineOrBackGroundColor,
+                          width: double.infinity,
+                          height: 49,
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  print('kisvel');
+                                },
+                                child: Row(
+                                  children: [
+                                    //  const SizedBox(width: 16),
+                                    SvgPicture.asset(
+                                        'assets/images/այքըններ.svg'),
+                                    const SizedBox(width: 6),
+                                    const Text('Կիսվել')
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  print('share anel paterin');
+                                  // _showMyDialog();
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (
+                                        context,
+                                      ) =>
+                                          SaveShowDialog());
+                                },
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                        'assets/images/վելացնել1.svg'),
+                                    const SizedBox(width: 6),
+                                    const Text('Պահել'),
+                                    //const SizedBox(width: 16),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],

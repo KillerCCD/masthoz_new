@@ -70,7 +70,9 @@ class _ForgotFormState extends State<ForgotForm> {
                         if (formKey.currentState!.validate()) {
                           final _email = controller.text;
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Processing Data')),
+                            const SnackBar(
+                                duration: Duration(microseconds: 200),
+                                content: Text('Processing Data')),
                           );
                           userDataProvder.forgotPasswordPost(_email, (success) {
                             if (success == true) {
@@ -79,6 +81,12 @@ class _ForgotFormState extends State<ForgotForm> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => VerifyCodeScreen()),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    duration: Duration(microseconds: 200),
+                                    content: Text('Invalid Data')),
                               );
                             }
                           });

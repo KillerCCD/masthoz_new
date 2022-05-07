@@ -107,7 +107,6 @@ class UserDataProvider {
         var expires = body['expires_in'];
         sessionDataProvider.setRegtoken(token);
         sessionDataProvider.setToeknExpires(expires);
-        
 
         return true;
       } else {
@@ -136,6 +135,8 @@ class UserDataProvider {
       var message = data['message'];
       if (response.statusCode == 200 && message.contains('passwords.sent')) {
         closure(true);
+      } else {
+        closure(false);
       }
     } catch (e) {
       print(e);

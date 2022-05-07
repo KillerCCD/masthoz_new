@@ -154,7 +154,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                             });
                           },
                           validator: (v) {
-                            if (v!.length < 3) {
+                            if (v!.length < 6) {
                               return "I'm from validator";
                             } else {
                               return null;
@@ -173,6 +173,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 final smsCode = textController.text;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                      duration: Duration(microseconds: 200),
                                       content: Text('Processing Data')),
                                 );
                                 userDataProvder.sendCode(smsCode, (success) {
@@ -185,6 +186,12 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                               RessetPasswordScreen(
                                                 smsCode: smsCode,
                                               )),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(microseconds: 200),
+                                          content: Text('Invald Data')),
                                     );
                                   }
                                 });

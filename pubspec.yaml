@@ -57,7 +57,8 @@ dependencies:
       url: https://github.com/bluefireteam/photo_view
       ref: master
   jsonml: ^0.1.9
-  flutter_screen_wake: ^1.0.2
+  
+  screen_brightness: ^0.2.0
   
   
   

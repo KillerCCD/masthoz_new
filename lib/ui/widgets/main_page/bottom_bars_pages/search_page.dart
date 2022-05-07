@@ -39,6 +39,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     init();
+    controller.dispose();
     super.initState();
   }
 

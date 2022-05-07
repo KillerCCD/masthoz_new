@@ -6,6 +6,8 @@ import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/Login/login_state.dart';
 
 import 'package:formz/formz.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 
 import '../forgot_screen/forgot_screen.dart';
 
@@ -24,8 +26,8 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
-          // Navigator.of(context).pop();
-          print('cik login Success');
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => HomeScreen()));
         } else if (state.status.isSubmissionFailure) {
           print('cik isSubmissionFailure');
           ScaffoldMessenger.of(context)
@@ -77,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Expanded(child: _ForgotButton()),
+                      _ForgotButton(),
                       Expanded(child: _LoginButton()),
                     ]),
               ],
@@ -291,10 +293,10 @@ class _ForgotButton extends StatelessWidget {
       child: const Text(
         'Մոռացե՞լ եք գաղտնաբառը',
         style: TextStyle(
-            fontSize: 12,
+            fontSize: 10,
             fontFamily: 'GHEAGrapalat',
             color: Palette.main,
-            letterSpacing: 1,
+            //letterSpacing: 1,
             fontWeight: FontWeight.w400),
       ),
       style: TextButton.styleFrom(

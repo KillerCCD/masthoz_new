@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../config/palette.dart';
@@ -47,6 +48,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 50.0,
+                    top: 20.0,
                   ),
                   child: Container(
                     height: 73,
@@ -222,6 +224,13 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                           InkWell(
                             onTap: () {
                               print('share anel paterin');
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      SaveShowDialog());
                             },
                             child: Row(
                               children: [
@@ -460,19 +469,21 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                             readScreen: bovandak![index])));
                               },
                               child: Container(
-                                height: 65,
                                 padding: const EdgeInsets.only(left: 20.0),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${bovandak?[index].title}',
-                                    style: TextStyle(
-                                        fontFamily: 'GHEAGrapalat',
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color.fromRGBO(84, 112, 126, 1)),
-                                    textAlign: TextAlign.start,
-                                    maxLines: 3,
+                                child: Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '${bovandak?[index].title}',
+                                      style: TextStyle(
+                                          fontFamily: 'GHEAGrapalat',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w700,
+                                          color:
+                                              Color.fromRGBO(84, 112, 126, 1)),
+                                      textAlign: TextAlign.start,
+                                      maxLines: 3,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -486,6 +497,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                 color: Color.fromRGBO(226, 224, 224, 1),
                               ),
                             ),
+                            SizedBox(height: 5.0),
                           ]),
                         );
                       }

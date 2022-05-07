@@ -51,7 +51,6 @@ class HomeScreenState extends State<HomeScreen> {
     "searchpage": GlobalKey<NavigatorState>(),
     "italianpage": GlobalKey<NavigatorState>(),
     "accountpage": GlobalKey<NavigatorState>(),
-    'ecyclopedia': GlobalKey<NavigatorState>(),
   };
   String _currentPage = "homepage";
   var _currentIndex = 0;
@@ -87,8 +86,8 @@ class HomeScreenState extends State<HomeScreen> {
         final isFirstRouteInCurrentTab =
             !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
         if (isFirstRouteInCurrentTab) {
-          if (_currentPage != "home") {
-            _selectTab("home", 1);
+          if (_currentPage != "homepage") {
+            _selectTab("homepage", 1);
 
             return false;
           }
