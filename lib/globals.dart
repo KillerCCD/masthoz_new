@@ -4,6 +4,8 @@ const String base_url = 'https://mashtoz.org';
 const api_url = base_url + '/api/v1';
 
 class Api {
+  //Refresh_APIs
+  static String get refreshToken => api_url + '/refresh';
   //Login_Signup_Forgot APIs
   static String get loginUrl => api_url + '/login';
 
@@ -25,6 +27,9 @@ class Api {
 
   static String get updateFavorite => api_url + '/updateFavorite';
 
+    //Get Favorite
+  static String get getFavorites => api_url + '/getFavorites';
+  
   //User_Info API
   static String get userInfo => api_url + '/me';
 

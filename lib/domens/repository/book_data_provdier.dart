@@ -34,8 +34,11 @@ class BookDataProvider {
     var success = body['success'];
     if (success == true) {
       var data = body['data'];
-
+      sessionDataProvider.setShowMenuList([
+        (data as List).map((e) => BookCategory.fromJson(e)).toList().toString()
+      ]);
       return (data as List).map((e) => BookCategory.fromJson(e)).toList();
+
       // print(newData);
       // libraryList.addAll(newData);
     } else {
@@ -100,7 +103,6 @@ class BookDataProvider {
       // List<dynamic> keyGallery = Map.from(data).keys.map((e) => e).toList();
       //  inspect(keyGallery);
 
-      var newElement;
       //  inspect(newElement);
 
       // newElement.forEach(
@@ -129,16 +131,21 @@ class BookDataProvider {
 
       //   },
       // );
-      Map.from(data).forEach((key, value) {
-        MapEntry(
-            key,
-            (value is List)
-                ? galleryList.add(MapEntry(key, value))
-                : Map<String, dynamic>.from(value).entries.forEach((element) {
-                    var dataf = MapEntry(key, Gallery.fromJson(element.value));
-                    galleryList.add(dataf);
-                  }));
-      });
+      // Map.from(data).forEach((key, value) {
+      //   MapEntry(
+      //       key,
+      //       (value is List)
+      //           ? galleryList.add(MapEntry(key, value))
+      //           : Map<String, dynamic>.from(value).entries.forEach((element) {
+      //               var dataf = MapEntry(key, Gallery.fromJson(element.value));
+      //               galleryList.add(dataf);
+      //             }));
+      // });
+      Map.from(data).forEach((key, value) => galleryList.add(value is List
+          ? value
+          : Map.from(value)
+              .map((key, value) => MapEntry(key, Gallery.fromJson(value)))));
+      inspect(galleryList);
     } else {
       print("failed");
     }
@@ -223,27 +230,23 @@ class BookDataProvider {
   }
 
   //Words of Day
-  Future<WordOfDay> getWordOfDay() async {
-    var token = await sessionDataProvider.readToken();
-    var dialects = WordOfDay(summary: '', author: '');
-
+  Future<WordOfDay?> getWordsOfDay() async {
     var response = await http.get(
       Uri.parse(Api.wordsOfDay),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'bearer $token'
       },
     );
     var body = json.decode(response.body);
     var success = body['success'];
     var datas = body['data'];
-    if (success == true) {
+    if (success == true && response.statusCode == 200) {
       var newData = WordOfDay.fromJson(datas);
       inspect(newData);
       return newData;
     } else {
       print("failed");
-      return dialects;
+      return null;
     }
   }
 

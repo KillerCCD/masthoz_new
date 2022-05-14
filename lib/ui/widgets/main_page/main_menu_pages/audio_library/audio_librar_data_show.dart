@@ -213,7 +213,15 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                     InkWell(
                                       onTap: () {
                                         print('kisvel');
-                                        
+                                           showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      SaveShowDialog(
+                                        isShow: false,
+                                      ));
                                       },
                                       child: Row(
                                         children: [
@@ -234,7 +242,7 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                         builder: (
                                           context,
                                         ) =>
-                                            SaveShowDialog());
+                                            SaveShowDialog(isShow: true));
                                       },
                                       child: Row(
                                         children: [

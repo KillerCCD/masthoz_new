@@ -202,7 +202,15 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                         InkWell(
                           onTap: () {
                             print('kisvel');
-                            
+                            showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      SaveShowDialog(
+                                        isShow: false,
+                                      ));
                           },
                           child: Row(
                             children: [
@@ -216,13 +224,13 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                         InkWell(
                           onTap: () {
                             print('share anel paterin');
-                               showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (
-                                          context,
-                                        ) =>
-                                            SaveShowDialog());
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (
+                                  context,
+                                ) =>
+                                    SaveShowDialog(isShow: true));
                           },
                           child: Row(
                             children: [

@@ -383,6 +383,7 @@ class _DelegateChildState extends State<DelegateChild>
           ),
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: wordsArm
                 .map(

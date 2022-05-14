@@ -373,7 +373,7 @@ class _ItalianLessonState extends State<ITLesson>
                         left: 4,
                         child: Container(
                           width: MediaQuery.of(context).size.width > 300
-                              ? MediaQuery.of(context).size.width / 1.33
+                              ? MediaQuery.of(context).size.width / 1.34
                               : 300,
                           height: 142,
                           child: CachedNetworkImage(

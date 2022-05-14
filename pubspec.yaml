@@ -59,6 +59,7 @@ dependencies:
   jsonml: ^0.1.9
   
   screen_brightness: ^0.2.0
+  flutter_cache_manager: ^3.3.0
   
   
   

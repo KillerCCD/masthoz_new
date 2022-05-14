@@ -6,6 +6,7 @@ abstract class _Keys {
   static const regToken = 'token';
   static const expiresToken = 'expires_in';
   static const cutsomerId = 'customer_id';
+  static const menuList = 'menu_list';
 }
 
 class SessionDataProvider {
@@ -38,6 +39,16 @@ class SessionDataProvider {
   Future<int?> readCustomerId() async {
     final storage = await _storage;
     return storage.getInt(_Keys.cutsomerId);
+  }
+
+  Future<void> setShowMenuList(List<String> list) async {
+    final storage = await _storage;
+    storage.setStringList(_Keys.menuList, list);
+  }
+
+  Future<List<String>?> readShowMenuList() async {
+    final storage = await _storage;
+    return storage.getStringList(_Keys.menuList);
   }
 
   deleteRegToken() async {

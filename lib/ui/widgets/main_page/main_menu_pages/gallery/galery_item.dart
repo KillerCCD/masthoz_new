@@ -12,9 +12,6 @@ import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../../../helper_widgets/actions_widgets.dart';
 
 class GalleryItem extends StatefulWidget {
   const GalleryItem({Key? key}) : super(key: key);
@@ -41,8 +38,7 @@ class _GalleryItemState extends State<GalleryItem> {
 
   Future<List<dynamic>>? galleryFuture;
   final bookDataProvider = BookDataProvider();
-  var listCount = 0;
-  var mapCount = 0;
+
   @override
   void initState() {
     galleryFuture = bookDataProvider.fetchGalleryList();
@@ -76,10 +72,10 @@ class _GalleryItemState extends State<GalleryItem> {
         title: Text(
           'Պատկերադարան',
           style: TextStyle(
-              fontSize: 20,
+              fontSize: 16.0,
               letterSpacing: 1,
               fontFamily: 'GHEAGrapalat',
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               color: Palette.appBarTitleColor),
         ),
         pinned: false,
@@ -100,7 +96,10 @@ class _GalleryItemState extends State<GalleryItem> {
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
         actions: [
-          MenuShow(),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: MenuShow(),
+          ),
         ],
       ),
       SliverFillRemaining(
@@ -118,12 +117,9 @@ class _GalleryItemState extends State<GalleryItem> {
               if (snapshot.hasError) {
                 return const Text('Error');
               } else if (snapshot.hasData) {
-                dynamic data = snapshot.data;
-                Map mapDAta = data.asMap();
-                var valueMap = mapDAta.entries.map((e) => e.value).toSet();
-
-                print(
-                    'is List :$listCount  ---------    is MAp Count :$mapCount ');
+                var data = snapshot.data;
+                data?.asMap().values.map((e) => e);
+                print('data Run time : ${data.runtimeType}');
                 return ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
@@ -134,7 +130,7 @@ class _GalleryItemState extends State<GalleryItem> {
                       return ExpansionTile(
                         title: SizedBox(
                           child: Text(
-                            '{mapDAta}',
+                            '${newData}',
                             textAlign: TextAlign.center,
                           ),
                         ),

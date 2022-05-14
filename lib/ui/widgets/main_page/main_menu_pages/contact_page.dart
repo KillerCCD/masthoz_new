@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/home_page.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 
 import '../../../../config/palette.dart';
 import '../../helper_widgets/actions_widgets.dart';
@@ -20,116 +22,6 @@ class _ContactState extends State<Contact> {
   final userDataProvider = UserDataProvider();
 
   final _formKey = GlobalKey<FormState>();
-
-  Widget email() {
-    return TextFormField(
-      controller: emailController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.zero,
-            borderSide: BorderSide(
-              color: Colors.black,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color.fromRGBO(226, 224, 224, 1),
-              ),
-              borderRadius: BorderRadius.zero),
-          hintText: 'Էլ. փոստ',
-          hintStyle: TextStyle(
-              fontFamily: 'GHEAGrapalat',
-              fontSize: 14.0,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w400)),
-      autofocus: false,
-      keyboardType: TextInputType.emailAddress,
-    );
-  }
-
-  Widget fullName(FormFieldState state) {
-    return TextFormField(
-      controller: nameController,
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.zero,
-              borderSide: BorderSide(color: Colors.black)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color.fromRGBO(226, 224, 224, 1),
-              ),
-              borderRadius: BorderRadius.zero),
-          hintText: 'Անուն Ազգանուն',
-          hintStyle: TextStyle(
-              fontFamily: 'GHEAGrapalat',
-              fontSize: 14.0,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w400)),
-      autofocus: false,
-      keyboardType: TextInputType.emailAddress,
-    );
-  }
-
-  Widget message(FormFieldState state) {
-    return TextField(
-      controller: messageConttroller,
-      maxLines: 10,
-      cursorColor: Colors.black,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.zero,
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color.fromRGBO(226, 224, 224, 1),
-              ),
-              borderRadius: BorderRadius.zero),
-          hintText: 'Հաղորդագրություն',
-          hintStyle: TextStyle(
-              fontFamily: 'GHEAGrapalat',
-              fontSize: 14.0,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w400)),
-      autofocus: false,
-    );
-  }
-
-  Widget sendButton() {
-    return Container(
-        height: 40,
-        width: double.infinity,
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Color.fromRGBO(113, 141, 156, 1),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            ),
-            onPressed: () {
-              final email = emailController.text;
-              final name = nameController.text;
-              final message = messageConttroller.text;
-              Map parameter = {
-                "name": name,
-                "email": email,
-                "message": message,
-                "locale": "hy"
-              };
-              userDataProvider.userContactForm(parameter);
-            },
-            child: Text('Ուղարկել')));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,37 +74,39 @@ class _ContactState extends State<Contact> {
               ],
             ),
             SliverToBoxAdapter(
-              child: Container(
-                color: Color.fromRGBO(226, 224, 224, 1),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:',
-                      style: TextStyle(
-                          fontFamily: 'GHEAGrapalat',
-                          fontSize: 12.0,
-                          letterSpacing: 1.0,
-                          fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.left,
+              child: SingleChildScrollView(
+                child: Container(
+                  color: Color.fromRGBO(226, 224, 224, 1),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:',
+                            style: TextStyle(
+                                fontFamily: 'GHEAGrapalat',
+                                fontSize: 12.0,
+                                letterSpacing: 1.0,
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(height: 20),
+                          fullName(),
+                          const SizedBox(height: 30),
+                          email(),
+                          const SizedBox(height: 30),
+                          message(),
+                          const SizedBox(height: 30),
+                          sendButton(),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    FormField(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        builder: (FormFieldState state) {
-                          return Column(
-                            children: [
-                              fullName(state),
-                              const SizedBox(height: 30),
-                              email(),
-                              const SizedBox(height: 30),
-                              message(state),
-                              const SizedBox(height: 30),
-                              sendButton(),
-                            ],
-                          );
-                        }),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -220,5 +114,152 @@ class _ContactState extends State<Contact> {
         ),
       ),
     );
+  }
+
+  Widget email() {
+    return TextFormField(
+      controller: emailController,
+      cursorColor: Colors.black,
+      decoration: const InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Էլ. փոստ',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
+      autofocus: false,
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (!value!.contains(RegExp(
+            r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'))) {
+          return 'Մուտքագրված հասցեն սխալ է';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget fullName() {
+    return TextFormField(
+      controller: nameController,
+      cursorColor: Colors.black,
+      decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.zero,
+              borderSide: BorderSide(color: Colors.black)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Անուն Ազգանուն',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
+      autofocus: false,
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value!.isEmpty ||
+            !value.contains(RegExp(
+                r"^(?:[ա-ֆԱ-Ֆա-ֆԱ-Ֆ\w+а-яА-Яа-яА-Яa-zA-Z]{3,} [ա-ֆԱ-Ֆա-ֆԱ-Ֆ\w+а-яА-Яа-яА-Яa-zA-Za-zA-Z]{5,}){0,1}$"))) {
+          return 'Մուտքագրված տվյալները սխալ են ';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget message() {
+    return TextFormField(
+      controller: messageConttroller,
+      maxLines: 10,
+      cursorColor: Colors.black,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(226, 224, 224, 1),
+              ),
+              borderRadius: BorderRadius.zero),
+          hintText: 'Հաղորդագրություն',
+          hintStyle: TextStyle(
+              fontFamily: 'GHEAGrapalat',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400)),
+      autofocus: false,
+      validator: (value) {
+        if (!value!
+            .contains(RegExp("[ա-ֆԱ-Ֆա-ֆԱ-Ֆ+а-яА-Яа-яА-Яa-zA-Za-zA-Z0-9]"))) {
+          return null;
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget sendButton() {
+    return Container(
+        height: 40,
+        width: double.infinity,
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color.fromRGBO(113, 141, 156, 1),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            ),
+            onPressed: () async {
+              final email = emailController.text;
+              final name = nameController.text;
+              final message = messageConttroller.text;
+              Map parameter = {
+                "name": name,
+                "email": email,
+                "message": message,
+                "locale": "hy"
+              };
+
+              if (_formKey.currentState!.validate()) {
+                print('$email,$name,$message');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Processing Data')),
+                );
+                bool isSend = await userDataProvider.userContactForm(parameter);
+                if (!isSend) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Failure')),
+                  );
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomeScreen()));
+                }
+              }
+            },
+            child: Text('Ուղարկել')));
   }
 }

@@ -145,6 +145,7 @@ class _DictionaryState extends State<Dictionary>
                     ),
                   ),
                   body: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: _controller,
                     children: const <Widget>[
                       _ArmenianItalian(),

@@ -6,6 +6,7 @@ import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/Login/login_state.dart';
 
 import 'package:formz/formz.dart';
+import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 
@@ -209,6 +210,7 @@ class _LoginButtonState extends State<_LoginButton> {
     });
   }
 
+  UserDataProvider userDataProvider = UserDataProvider();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
@@ -256,6 +258,7 @@ class _LoginButtonState extends State<_LoginButton> {
                               isActive();
                               context.read<LoginCubit>().loginWithCredentials();
                             }
+                            // userDataProvider.logOut();
                           },
                         ),
                       ),

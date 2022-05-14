@@ -252,7 +252,7 @@ class _DelegateChildState extends State<DelegateChild>
                           context,
                           MaterialPageRoute(
                               builder: (_) => BookReadScreen(
-                                    encyclopediaBody: data?[index].body,
+                                    encyclopediaBody: data?[index],
                                   )));
                     },
                     child: Container(
@@ -288,7 +288,7 @@ class _DelegateChildState extends State<DelegateChild>
                                   child: Container(
                                     width: 260,
                                     child: Text(
-                                      'Գիտությունների Քահանայապետական Ակադեմիա',
+                                      '${data?[index].title}',
                                       style: TextStyle(
                                           fontFamily: 'GHEAGrapalat',
                                           fontSize: 16.0,
@@ -398,6 +398,7 @@ class _DelegateChildState extends State<DelegateChild>
                           }).toList()),
                     ))),
             body: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: wordsArm
                     .map(

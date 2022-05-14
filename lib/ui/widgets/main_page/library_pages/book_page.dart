@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/palette.dart';
 
@@ -33,6 +35,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
   Content book;
   final BookCategory category;
   bool isValid = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +149,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                         Stack(
                           children: [
                             Positioned.fill(
-                                bottom: 60,
+                                bottom: 80,
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
@@ -205,6 +208,15 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                           InkWell(
                             onTap: () {
                               print('kisvel');
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      SaveShowDialog(
+                                        isShow: false,
+                                      ));
                             },
                             child: Row(
                               children: [
@@ -230,7 +242,9 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                   builder: (
                                     context,
                                   ) =>
-                                      SaveShowDialog());
+                                      SaveShowDialog(
+                                        isShow: true,
+                                      ));
                             },
                             child: Row(
                               children: [
@@ -431,13 +445,21 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                                 );
                                                 print('Coco');
                                               },
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    right: 20.0, left: 20.0),
-                                                height: 60,
-                                                child: Text(
-                                                  '${subBovandak?[index2].title}',
-                                                  textAlign: TextAlign.start,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20, left: 40.0),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      height: 80,
+                                                      child: Text(
+                                                        '${subBovandak?[index2].title}',
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    ),
+                                                    Divider(),
+                                                  ],
                                                 ),
                                               ),
                                             );
