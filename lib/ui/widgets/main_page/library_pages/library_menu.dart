@@ -32,109 +32,115 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.libraryBacgroundColor,
-      extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(73),
-        child: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Color.fromRGBO(25, 4, 18, 1),
+    return Theme(
+      data: ThemeData(
+          textSelectionTheme:
+              TextSelectionThemeData(cursorColor: Colors.amber)),
+      child: Scaffold(
+        backgroundColor: Palette.libraryBacgroundColor,
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(73),
+          child: AppBar(
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Color.fromRGBO(25, 4, 18, 1),
+            ),
+            elevation: 0,
+            title: Text(
+              'Գրադարան',
+              style: TextStyle(
+                  fontFamily: 'GHEAGrapalat',
+                  fontSize: 23,
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.bold,
+                  color: Palette.textLineOrBackGroundColor),
+            ),
+            automaticallyImplyLeading: false,
+            backgroundColor: Palette.barColor,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 20.0,
+                ),
+                child: MenuShow(),
+              )
+            ],
           ),
-          elevation: 0,
-          title: Text(
-            'Գրադարան',
-            style: TextStyle(
-                fontFamily: 'GHEAGrapalat',
-                fontSize: 23,
-                letterSpacing: 1,
-                fontWeight: FontWeight.bold,
-                color: Palette.textLineOrBackGroundColor),
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: Palette.barColor,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 20.0,
-              ),
-              child: MenuShow(),
-            )
-          ],
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(right: 16.0),
-        child: FutureBuilder<List<BookCategory>>(
-          future: categoryFutureList,
-          builder: (context, snapshot) {
-            var categoryList = snapshot.data;
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: Scrollbar(
-                        thickness: 3,
-                        radius: const Radius.circular(12),
-                        isAlwaysShown: false,
-                        showTrackOnHover: true,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: categoryList!.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(right: 0),
-                              child: ListTile(
-                                trailing: SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    '${categoryList[index].categoryTitle}',
-                                    style: TextStyle(
-                                      color: Palette.textLineOrBackGroundColor,
-                                      fontSize: 12,
-                                      fontFamily: 'GHEAGrapalat',
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 1,
+        body: Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: FutureBuilder<List<BookCategory>>(
+            future: categoryFutureList,
+            builder: (context, snapshot) {
+              var categoryList = snapshot.data;
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: RawScrollbar(
+                          thumbColor: Palette.whenTapedButton,
+                          thickness: 3,
+                          radius: const Radius.circular(12),
+                          isAlwaysShown: true,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: categoryList!.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.only(right: 26),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isColorAvtive = !isColorAvtive;
+
+                                      ;
+                                    });
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => BooksScreen(
+                                          category: categoryList[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      '${categoryList[index].categoryTitle}',
+                                      style: TextStyle(
+                                        color:
+                                            Palette.textLineOrBackGroundColor,
+                                        fontSize: 12,
+                                        fontFamily: 'GHEAGrapalat',
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 1,
+                                      ),
+                                      textAlign: TextAlign.right,
                                     ),
-                                    textAlign: TextAlign.right,
                                   ),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    isColorAvtive = !isColorAvtive;
-
-                                    ;
-                                  });
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => BooksScreen(
-                                        category: categoryList[index],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        )),
+                              );
+                            },
+                          )),
+                    ),
+                  ],
+                );
+              }
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    color: Palette.main,
                   ),
-                ],
-              );
-            }
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.0,
-                  color: Palette.main,
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -149,15 +149,17 @@ class _ItalianPageState extends State<ItalianPage>
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       var listsLesson = snapshot.data;
+             
                       return AnimatedList(
                         key: _listKey,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
+                        initialItemCount: snapshot.data!.length,
                         physics: ClampingScrollPhysics(),
                         itemBuilder:
                             (BuildContext context, int index, animation) {
                           final Lessons italianLesson = listsLesson![index];
-
+  listsLesson?.sort((a, b) => a.number!.compareTo(b.number!));
                           if (index % 2 != 0) {
                             return SlideTransition(
                               position: Tween<Offset>(
@@ -195,7 +197,6 @@ class _ItalianPageState extends State<ItalianPage>
                             );
                           }
                         },
-                        initialItemCount: snapshot.data!.length,
                       );
                     } else {
                       return SizedBox(

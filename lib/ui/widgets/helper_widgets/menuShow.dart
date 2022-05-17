@@ -9,7 +9,7 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/gallery/galery_item.dart';
-
+import 'package:simple_shadow/simple_shadow.dart';
 import '../../../domens/repository/book_data_provdier.dart';
 import '../main_page/bottom_bars_pages/italian_lessons_screen/italian_lesson_page.dart';
 import '../main_page/main_menu_pages/abaut_us.dart';
@@ -86,7 +86,7 @@ class _MenuShowState extends State<MenuShow>
   Widget build(BuildContext context) {
     final animation = Tween(begin: 0, end: 0.5 * pi).animate(_controller);
     final orintation = MediaQuery.of(context).orientation;
-    return SizedBox(
+    return Container(
       height: double.infinity,
       width: 30,
       child: InkWell(
@@ -139,6 +139,7 @@ class _MenuShowState extends State<MenuShow>
                                     child: SvgPicture.asset(
                                       'assets/images/mashtoz_org.svg',
                                       width: 250,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -157,17 +158,23 @@ class _MenuShowState extends State<MenuShow>
                                     child: Stack(children: [
                                       Stack(
                                         children: [
-                                          SvgPicture.asset(
-                                            'assets/images/app_bar_icon_button.svg',
+                                          SimpleShadow(
+                                            child: SvgPicture.asset(
+                                              'assets/images/app_bar_icon_button.svg',
 
-                                            color: iconAcitve
-                                                ? Palette.appBarIconMenuColor
-                                                : const Color.fromRGBO(
-                                                    122, 108, 115, 1),
-                                            fit: BoxFit.cover,
+                                              color: iconAcitve
+                                                  ? Palette.appBarIconMenuColor
+                                                  : const Color.fromRGBO(
+                                                      122, 108, 115, 1),
+                                              fit: BoxFit.cover,
 
-                                            //width: 60,
-                                            //width: 22,
+                                              //width: 60,
+                                              //width: 22,
+                                            ),
+                                            opacity: 0.15,
+                                            offset: const Offset(0, 4),
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.15),
                                           ),
                                         ],
                                       ),
@@ -510,16 +517,21 @@ class _MenuShowState extends State<MenuShow>
         child: Stack(children: [
           Stack(
             children: [
-              SvgPicture.asset(
-                'assets/images/app_bar_icon_button.svg',
+              SimpleShadow(
+                child: SvgPicture.asset(
+                  'assets/images/app_bar_icon_button.svg',
 
-                color: iconAcitve
-                    ? Palette.appBarIconMenuColor
-                    : const Color.fromRGBO(122, 108, 115, 1),
-                fit: BoxFit.none,
+                  color: iconAcitve
+                      ? Palette.appBarIconMenuColor
+                      : const Color.fromRGBO(122, 108, 115, 1),
+                  fit: BoxFit.none,
 
-                //width: 60,
-                //width: 22,
+                  //width: 60,
+                  //width: 22,
+                ),
+                opacity: 0.15,
+                offset: const Offset(0, 4),
+                color: Color.fromRGBO(0, 0, 0, 0.15),
               ),
             ],
           ),

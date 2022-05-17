@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
-import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:provider/provider.dart';
@@ -139,13 +136,13 @@ class _BookPagesState extends State<BookPages> {
   final String listText;
   final Content? readScreen;
   double selectedValue = 0;
-  var textSize = <double>[14, 16, 18];
+
   var items = 1;
   bool isDarkTheme = false;
   bool isLisghtTheme = false;
   bool isPhoneturnHorizontal = false;
   bool isPhoneturnVertical = false;
-
+  double textSize = 16.0;
   Future<void> setBrightness(double brightness) async {
     try {
       await ScreenBrightness().setScreenBrightness(brightness);
@@ -249,36 +246,47 @@ class _BookPagesState extends State<BookPages> {
                 height: 181,
                 width: double.infinity,
                 child: Column(children: [
-                  SizedBox(height: 15.0),
-                  hideMenuAppBar(),
-                  SizedBox(
-                      width: 250,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          '${book?.title}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              letterSpacing: 0,
-                              fontWeight: FontWeight.normal,
-                              height: 1),
-                        ),
-                      )),
-                  SizedBox(
-                    height: 17.0,
-                  ),
-                  SizedBox(
-                      width: 300,
-                      child: Text(
-                        '${book?.author}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.bold,
-                            height: 1),
-                      )),
+                  Expanded(
+                      child: Column(
+                    children: [
+                      SizedBox(height: 15.0),
+                      hideMenuAppBar(),
+                      SizedBox(
+                          width: 250,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              '${book?.title}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1),
+                            ),
+                          )),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      SizedBox(
+                          width: 300,
+                          // height: 50,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Expanded(
+                              child: Text(
+                                '${book?.author}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1),
+                              ),
+                            ),
+                          )),
+                    ],
+                  )),
                 ]),
               ),
             ),
@@ -395,16 +403,26 @@ class _BookPagesState extends State<BookPages> {
                 ? Positioned(
                     top: 90,
                     child: Container(
-                      color: Palette.textLineOrBackGroundColor,
+                      color: Color.fromRGBO(31, 31, 31, 0.7),
                       height: mediaQuery.height,
                       width: mediaQuery.width,
-                      child: Column(
+                      child: Stack(
                         children: [
-                          Container(
-                            color: Palette.whenTapedButton,
-                            height: 3.0,
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Container(
+                                  color: Palette.whenTapedButton,
+                                  height: 3.0,
+                                ),
+                                Container(
+                                    color: theme.backgroundColor != null
+                                        ? theme.backgroundColor
+                                        : Palette.textLineOrBackGroundColor,
+                                    child: GlobalBovandakLists()),
+                              ],
+                            ),
                           ),
-                          Expanded(child: GlobalBovandakLists()),
                         ],
                       ),
                     ),
@@ -474,35 +492,40 @@ class _BookPagesState extends State<BookPages> {
         height: mediaQuery.height,
         width: mediaQuery.width,
         child: Stack(children: [
-          Column(
-            children: [
-              Container(
-                color: Palette.whenTapedButton,
-                height: 3.0,
-              ),
-              Container(
-                color: theme.backgroundColor != null
-                    ? theme.backgroundColor
-                    : Palette.textLineOrBackGroundColor,
-                height: orentation == Orientation.landscape
-                    ? mediaQuery.height / 1.55
-                    : mediaQuery.height / 2.10,
-                width: mediaQuery.width,
-                child: Column(
-                  children: [
-                    SizedBox(height: 15.0),
-                    Text(
-                      'Պահպանած էջեր',
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      width: mediaQuery.width,
-                      height: mediaQuery.height / 2.45,
-                      child: ListView.builder(
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: Palette.whenTapedButton,
+                  height: 3.0,
+                ),
+                // SizedBox(height: 15.0),
+                // Container(
+                //   color: Palette.textLineOrBackGroundColor,
+                //   child: Text(
+                //     'Պահպանած էջեր',
+                //     textAlign: TextAlign.center,
+                //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                //   ),
+                // ),
+
+                Container(
+                  color: theme.backgroundColor != null
+                      ? theme.backgroundColor
+                      : Palette.textLineOrBackGroundColor,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 15.0),
+                      Text(
+                        'Պահպանած էջեր',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      ListView.builder(
                           shrinkWrap: true,
-                          itemCount: 15,
+                          itemCount: 3,
+                          physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             return Column(
@@ -517,11 +540,72 @@ class _BookPagesState extends State<BookPages> {
                               ],
                             );
                           }),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+
+                // Expanded(
+                //   child: Container(
+                //     color: theme.backgroundColor != null
+                //         ? theme.backgroundColor
+                //         : Palette.textLineOrBackGroundColor,
+                //     height: orentation == Orientation.landscape
+                //         ? mediaQuery.height / 1.55
+                //         : mediaQuery.height,
+                //     width: mediaQuery.width,
+                //     child: Column(
+                //       children: [
+                //         SizedBox(height: 15.0),
+                //         Text(
+                //           'Պահպանած էջեր',
+                //           textAlign: TextAlign.center,
+                //           style: TextStyle(
+                //               fontSize: 16, fontWeight: FontWeight.bold),
+                //         ),
+                //         ListView.builder(
+                //             shrinkWrap: true,
+                //             itemCount: 4,
+                //             scrollDirection: Axis.vertical,
+                //             itemBuilder: (context, index) {
+                //               return Column(
+                //                 children: [
+                //                   ListTile(
+                //                     leading: Text('$index'),
+                //                     title: Text('Data$index'),
+                //                   ),
+                //                   Divider(
+                //                     thickness: 1,
+                //                   ),
+                //                 ],
+                //               );
+                //             }),
+                //         // Container(
+                //         //   width: mediaQuery.width,
+                //         //   height: mediaQuery.height - 120,
+                //         //   child: ListView.builder(
+                //         //       shrinkWrap: true,
+                //         //       itemCount: 4,
+                //         //       scrollDirection: Axis.vertical,
+                //         //       itemBuilder: (context, index) {
+                //         //         return Column(
+                //         //           children: [
+                //         //             ListTile(
+                //         //               leading: Text('$index'),
+                //         //               title: Text('Data$index'),
+                //         //             ),
+                //         //             Divider(
+                //         //               thickness: 1,
+                //         //             ),
+                //         //           ],
+                //         //         );
+                //         //       }),
+                //         // ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ]),
       ),
@@ -722,25 +806,40 @@ class _BookPagesState extends State<BookPages> {
                                         Expanded(
                                           child: Container(
                                             height: 50.0,
+                                            color: Colors.amber,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    //!!!!
+                                                    if (textSize >= 12.0) {
+                                                      setState(() {
+                                                        textSize =
+                                                            textSize - 2.0;
+                                                      });
+                                                    }
+                                                  },
                                                   child: SvgPicture.asset(
                                                     'assets/images/VectorLine.svg',
                                                   ),
                                                 ),
                                                 Text(
                                                   'Աա',
-                                                  style:
-                                                      TextStyle(fontSize: 16),
+                                                  style: TextStyle(
+                                                      fontSize: textSize),
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    setState(() {});
-                                                    print(textSize);
+                                                    if (textSize <= 20.0) {
+                                                      setState(() {
+                                                        textSize =
+                                                            textSize + 2.0;
+                                                      });
+                                                    }
+                                                    print(
+                                                        "aklsdfjasdlkfjadskkkkkkkk$textSize");
                                                   },
                                                   child: Padding(
                                                     padding:
@@ -1322,20 +1421,33 @@ class _BookPagesState extends State<BookPages> {
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    if (textSize >= 12.0) {
+                                                      setState(() {
+                                                        textSize =
+                                                            textSize - 2.0;
+                                                      });
+                                                    }
+                                                  },
                                                   child: SvgPicture.asset(
                                                     'assets/images/VectorLine.svg',
                                                   ),
                                                 ),
                                                 Text(
                                                   'Աա',
-                                                  style:
-                                                      TextStyle(fontSize: 16),
+                                                  style: TextStyle(
+                                                      fontSize: textSize),
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    setState(() {});
-                                                    print(textSize);
+                                                    if (textSize <= 20.0) {
+                                                      setState(() {
+                                                        textSize =
+                                                            textSize + 2.0;
+                                                      });
+                                                    }
+                                                    print(
+                                                        "kolikolkioki$textSize");
                                                   },
                                                   child: Padding(
                                                     padding:
@@ -2035,7 +2147,7 @@ class _BookPagesState extends State<BookPages> {
                                     color: Colors.black,
                                     height: 2.5,
                                     fontWeight: FontWeight.w200,
-                                    fontSize: 14,
+                                    fontSize: textSize,
                                     fontFamily: 'GHEAGrapalat',
                                     letterSpacing: 1),
                               ),

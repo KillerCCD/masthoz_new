@@ -74,58 +74,65 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.only(left: 5.0),
                           height: 50,
                           width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Palette.whenTapedButton,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(31, 31, 31, 0.5),
-                                        blurRadius: 1.0,
-                                        spreadRadius: 0.0,
-                                        offset: Offset(-1.5, 3),
-                                      ),
-                                    ]),
-                                width: 50,
-                                height: 44,
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('25')),
-                              ),
-                              SizedBox(width: 17),
-                              Expanded(
-                                child: Container(
+                          child: Flexible(
+                            fit: FlexFit.tight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
                                   decoration: BoxDecoration(
-                                      color: Color.fromRGBO(113, 141, 156, 1),
+                                      color: Palette.whenTapedButton,
                                       boxShadow: [
                                         BoxShadow(
-                                          color:
-                                              Color.fromRGBO(31, 31, 31, 0.5),
+                                          color: Color.fromRGBO(0, 0, 0, 0.1),
                                           blurRadius: 1.0,
                                           spreadRadius: 0.0,
-                                          offset: Offset(-1.5, 3),
+                                          offset: Offset(-4, 4),
                                         ),
                                       ]),
-                                  width: MediaQuery.of(context).size.width,
+                                  width: 50,
                                   height: 44,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12.0, left: 12.0),
-                                    child: Text(
-                                      'Օրվա խոսք',
-                                      style: TextStyle(
-                                          fontFamily: 'GHEAGrapalat',
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.start,
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text('25')),
+                                ),
+                                SizedBox(width: 17),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(113, 141, 156, 1),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                                            blurRadius: 1.0,
+                                            spreadRadius: 0.0,
+                                            offset: Offset(-4, 4),
+                                          ),
+                                        ]),
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 44,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 14.0),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Օրվա խոսք',
+                                          style: TextStyle(
+                                              fontFamily: 'GHEAGrapalat',
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           )),
                       SizedBox(height: 14),
                       Container(
@@ -285,10 +292,9 @@ class _HomePageState extends State<HomePage> {
                             Positioned.fill(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Container(
-                                    color: Colors.blue,
-                                    height: 200,
-                                    child: YoutubePlayers()),
+                                child: YoutubePlayers(
+                                  isShow: true,
+                                ),
                               ),
                             ),
                             Positioned.fill(
@@ -374,19 +380,27 @@ class _HomePageState extends State<HomePage> {
                                           child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Container(
-                                          color:
-                                              Color.fromRGBO(113, 141, 156, 1),
+                                          decoration: BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  113, 141, 156, 1),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 0.1),
+                                                  blurRadius: 1.0,
+                                                  spreadRadius: 0.0,
+                                                  offset: Offset(4, 4),
+                                                ),
+                                              ]),
                                           height: 34,
-                                          width: 150,
+                                          width: 155,
                                         ),
                                       )),
                                       Positioned.fill(
-                                        right: 10.0,
                                         child: Align(
                                           alignment: Alignment.centerRight,
                                           child: Container(
                                             height: 34,
-                                            width: 153,
                                             child: ListView.separated(
                                               separatorBuilder:
                                                   (context, index) => SizedBox(
@@ -401,8 +415,18 @@ class _HomePageState extends State<HomePage> {
                                                 return Container(
                                                   height: 34,
                                                   width: 45,
-                                                  color: Color.fromRGBO(
-                                                      113, 141, 156, 1),
+                                                  decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          113, 141, 156, 1),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Color.fromRGBO(
+                                                              0, 0, 0, 0.1),
+                                                          blurRadius: 1.0,
+                                                          spreadRadius: 0.0,
+                                                          offset: Offset(4, 4),
+                                                        ),
+                                                      ]),
                                                   child: Center(
                                                     child: Text('Պ'),
                                                   ),
@@ -419,8 +443,18 @@ class _HomePageState extends State<HomePage> {
                                             Container(
                                               height: double.infinity,
                                               width: 84,
-                                              color: Color.fromRGBO(
-                                                  84, 112, 126, 1),
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      84, 126, 126, 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          0, 0, 0, 0.1),
+                                                      blurRadius: 1.0,
+                                                      spreadRadius: 0.0,
+                                                      offset: Offset(4, 4),
+                                                    ),
+                                                  ]),
                                               child: Center(
                                                 child: Align(
                                                   alignment: Alignment.center,
@@ -565,7 +599,18 @@ class _HomePageState extends State<HomePage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        color: Color.fromRGBO(83, 66, 77, 1),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Color.fromRGBO(83, 66, 77, 1),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color.fromRGBO(
+                                                    0, 0, 0, 0.1),
+                                                blurRadius: 1.0,
+                                                spreadRadius: 0.0,
+                                                offset: Offset(4, 4),
+                                              ),
+                                            ]),
                                         height: 63,
                                         width: 50,
                                         child: Align(
@@ -651,12 +696,13 @@ class _HomePageState extends State<HomePage> {
                                       Text(
                                         'Համաբարբառ ',
                                         style: TextStyle(
-                                            fontFamily: 'GHEAGrapalat',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            letterSpacing: 1,
-                                            color: Color.fromRGBO(
-                                                164, 171, 189, 1)),
+                                          fontFamily: 'GHEAGrapalat',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 1,
+                                          color:
+                                              Color.fromRGBO(164, 171, 189, 1),
+                                        ),
                                       ),
                                       GestureDetector(
                                           onTap: () {},
@@ -689,19 +735,27 @@ class _HomePageState extends State<HomePage> {
                                           child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Container(
-                                          color:
-                                              Color.fromRGBO(113, 141, 156, 1),
+                                          decoration: BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  164, 171, 189, 1),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 0.1),
+                                                  blurRadius: 1.0,
+                                                  spreadRadius: 0.0,
+                                                  offset: Offset(4, 4),
+                                                ),
+                                              ]),
                                           height: 34,
-                                          width: 150,
+                                          width: 155,
                                         ),
                                       )),
                                       Positioned.fill(
-                                        right: 10.0,
                                         child: Align(
                                           alignment: Alignment.centerRight,
                                           child: Container(
                                             height: 34,
-                                            width: 153,
                                             child: ListView.separated(
                                               separatorBuilder:
                                                   (context, index) => SizedBox(
@@ -716,8 +770,18 @@ class _HomePageState extends State<HomePage> {
                                                 return Container(
                                                   height: 34,
                                                   width: 45,
-                                                  color: Color.fromRGBO(
-                                                      113, 141, 156, 1),
+                                                  decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          164, 171, 189, 1),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Color.fromRGBO(
+                                                              0, 0, 0, 0.1),
+                                                          blurRadius: 1.0,
+                                                          spreadRadius: 0.0,
+                                                          offset: Offset(4, 4),
+                                                        ),
+                                                      ]),
                                                   child: Center(
                                                     child: Text('Ո'),
                                                   ),
@@ -734,8 +798,18 @@ class _HomePageState extends State<HomePage> {
                                             Container(
                                               height: double.infinity,
                                               width: 84,
-                                              color: Color.fromRGBO(
-                                                  84, 112, 126, 1),
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      97, 109, 135, 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          0, 0, 0, 0.1),
+                                                      blurRadius: 1.0,
+                                                      spreadRadius: 0.0,
+                                                      offset: Offset(4, 4),
+                                                    ),
+                                                  ]),
                                               child: Center(
                                                 child: Align(
                                                   alignment: Alignment.center,

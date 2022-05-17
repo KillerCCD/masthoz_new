@@ -60,15 +60,17 @@ class _BooksScreenState extends State<BooksScreen> {
                 padding: const EdgeInsets.only(left: 50.0, top: 20.0),
                 child: Container(
                   height: 73,
+                  width: MediaQuery.of(context).size.width - 80,
                   padding: EdgeInsets.only(top: 18),
                   child: Text(
                     '${category?.categoryTitle}',
                     style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 1,
-                        fontFamily: 'GHEAGrapalat',
-                        fontWeight: FontWeight.w700,
-                        color: Palette.appBarTitleColor),
+                      fontSize: 16,
+                      letterSpacing: 1,
+                      fontFamily: 'GHEAGrapalat',
+                      fontWeight: FontWeight.w700,
+                      color: Palette.appBarTitleColor,
+                    ),
                   ),
                 ),
               ),
@@ -329,7 +331,7 @@ class BookCard extends StatelessWidget {
                               Stack(
                                 children: [
                                   Positioned.fill(
-                                    bottom: 25.0,
+                                    bottom: 30.0,
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
@@ -377,7 +379,7 @@ class BookCard extends StatelessWidget {
                                             padding: EdgeInsets.only(top: 5.0),
                                             width: 200,
                                             child: Text(
-                                              book.author ?? '',
+                                              book.title ?? '',
                                               textAlign: TextAlign.center,
                                               style: const TextStyle(
                                                   color: Color.fromRGBO(
@@ -403,7 +405,7 @@ class BookCard extends StatelessWidget {
                                               : EdgeInsets.only(top: 0.0),
                                           width: 200,
                                           child: Text(
-                                            book.author ?? '',
+                                            book.title ?? '',
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color: Color.fromRGBO(
@@ -428,7 +430,7 @@ class BookCard extends StatelessWidget {
                                         child: SizedBox(
                                           width: 200,
                                           child: Text(
-                                            book.title ?? '',
+                                            book.author ?? '',
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color: Color.fromRGBO(
@@ -438,6 +440,7 @@ class BookCard extends StatelessWidget {
                                                 fontFamily: 'GHEAGrapalat',
                                                 fontWeight: FontWeight.w400,
                                                 height: 1),
+                                            maxLines: 3,
                                           ),
                                         ),
                                       )
@@ -446,7 +449,7 @@ class BookCard extends StatelessWidget {
                                         child: SizedBox(
                                           width: 149,
                                           child: Text(
-                                            book.title ?? '',
+                                            book.author ?? '',
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color: const Color.fromRGBO(
@@ -456,6 +459,7 @@ class BookCard extends StatelessWidget {
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: 'GHEAGrapalat',
                                                 height: 1),
+                                            maxLines: 3,
                                           ),
                                         ),
                                       ),

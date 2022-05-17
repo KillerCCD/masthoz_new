@@ -128,16 +128,6 @@ class _InfoPageState extends State<InfoPage> {
                             )
                           : Container(),
                       SizedBox(height: isShow ? 20.0 : 0.0),
-                      isShow
-                          ? Text('Անուն Ազգանուն',
-                              style: TextStyle(
-                                  fontFamily: 'GHEAGpalat',
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  color: Color.fromRGBO(25, 4, 18, 1)))
-                          : Container(),
-                      SizedBox(height: isShow ? 20.0 : 0.0),
                       ListView(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
@@ -171,47 +161,50 @@ class _InfoPageState extends State<InfoPage> {
                               color: Color.fromRGBO(226, 224, 224, 1),
                               height: 100,
                               width: double.infinity,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                          fontFamily: 'GHEAGpalat',
-                                          fontWeight: FontWeight.w400,
-                                          letterSpacing: 1.2,
-                                          fontSize: 14,
-                                          color: Colors.black),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              'Հուսով եմ, այս կայքի էջերը օգտակար\n',
-                                        ),
-                                        TextSpan(
-                                          text: 'են լինում Ձեզ։\n',
-                                        ),
-                                        TextSpan(text: 'Որևէ հարցով, '),
-                                        TextSpan(
-                                          text: ' գրեցեք ինձ:',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          Contact()));
-                                            },
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                              child: Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                            fontFamily: 'GHEAGpalat',
+                                            fontWeight: FontWeight.w400,
+                                            letterSpacing: 1.2,
+                                            fontSize: 14,
+                                            color: Colors.black),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                'Հուսով եմ, այս կայքի էջերը օգտակար\n',
+                                          ),
+                                          TextSpan(
+                                            text: 'են լինում Ձեզ։\n',
+                                          ),
+                                          TextSpan(text: 'Որևէ հարցով, '),
+                                          TextSpan(
+                                            text: ' գրեցեք ինձ:',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            Contact()));
+                                              },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           : Container(),
+                      SizedBox(height: 100.0),
                     ],
                   ),
                 )

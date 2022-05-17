@@ -42,7 +42,7 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
   _YoutubePlayersState(
       {this.lessons, this.dataCharacters, this.isShow, this.url});
   final List<String> _ids = [
-    'uKZ8ZyUHpyQ',
+    'bcO1qrGO9yQ',
   ];
 
   bool _isPlayerReady = false;
@@ -69,7 +69,7 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(isShow == true
-          ? lessons?.link
+          ? 'PB8yF5ZnDYU'
           : dataCharacters?.link ?? url ?? _ids.first)!,
       //initialVideoId: _ids.first,
       flags: const YoutubePlayerFlags(
@@ -156,8 +156,8 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
                                             width: 270,
                                             child: Text(
                                               isShow == true
-                                                  ? '${lessons?.title} '
-                                                  : '${dataCharacters?.summary}',
+                                                  ? '{lessons?.title} '
+                                                  : '{dataCharacters?.summary}',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 12.0,
