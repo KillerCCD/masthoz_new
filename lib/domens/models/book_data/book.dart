@@ -105,6 +105,7 @@ class GalleryExampleItemThumbnail extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Hero(
+          
           tag: galleryExampleItem.id,
           child: Image.asset(galleryExampleItem.resource, height: 80.0),
         ),

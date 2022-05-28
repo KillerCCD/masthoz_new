@@ -172,18 +172,16 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                   borderRadius: BorderRadius.zero),
                               hintText: 'Գրել այստեղ․․․',
-                              suffixIcon: SizedBox(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 5.0),
-                                  child: SvgPicture.asset(
-                                    'assets/images/search.svg',
-                                    semanticsLabel: 'search',
-                                    color: Color.fromRGBO(122, 108, 115, 1),
-                                  ),
+                              suffixIcon: Container(
+                                height: double.infinity,
+                                child: SvgPicture.asset(
+                                  'assets/images/search.svg',
+                                  semanticsLabel: 'search',
+                                  color: Color.fromRGBO(122, 108, 115, 1),
                                 ),
                               ),
                               suffixIconConstraints: BoxConstraints.tightFor(
-                                  height: 35, width: 36)),
+                                  height: 30, width: 80)),
                           autofocus: false,
                           keyboardType: TextInputType.emailAddress,
                           onChanged: searchBook,

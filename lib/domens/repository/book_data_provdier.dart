@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
@@ -86,6 +87,7 @@ class BookDataProvider {
 
   //Fetch Gallery List
   Future<List<dynamic>> fetchGalleryList() async {
+    var galleryMap = <dynamic>{};
     var galleryList = <dynamic>[];
     var keyGallery = <dynamic>[];
     var response = await http.get(
@@ -96,10 +98,11 @@ class BookDataProvider {
     );
 
     var body = json.decode(response.body);
-
+    var dataf;
     var success = body['success'];
     if (success == true) {
       var data = body['data'];
+
       // List<dynamic> keyGallery = Map.from(data).keys.map((e) => e).toList();
       //  inspect(keyGallery);
 
@@ -131,37 +134,40 @@ class BookDataProvider {
 
       //   },
       // );
-      // Map.from(data).forEach((key, value) {
-      //   MapEntry(
-      //       key,
-      //       (value is List)
-      //           ? galleryList.add(MapEntry(key, value))
-      //           : Map<String, dynamic>.from(value).entries.forEach((element) {
-      //               var dataf = MapEntry(key, Gallery.fromJson(element.value));
-      //               galleryList.add(dataf);
-      //             }));
-      // });
-      Map.from(data).forEach((key, value) => galleryList.add(value is List
-          ? value
-          : Map.from(value)
-              .map((key, value) => MapEntry(key, Gallery.fromJson(value)))));
-      inspect(galleryList);
-    } else {
-      print("failed");
+      Map.from(data).forEach((key, value) {
+        (value is List)
+            ? galleryMap.add(key)
+            : Map<String, dynamic>.from(value).entries.forEach((element) {
+                var dataf = MapEntry(key, Gallery.fromJson(element.value));
+                galleryMap.addAll([dataf]);
+              });
+      });
     }
-    //inspect(galleryList);
+
+    Set.from(galleryMap).map((e) {
+      Map.from(e).values.map((e) => print(e));
+    });
+
     return galleryList;
   }
+  //     Map.from(data).forEach((key, value) => galleryList.add(value is List
+  //         ? value
+  //         : Map.from(value)
+  //             .map((key, value) => MapEntry(key, Gallery.fromJson(value)))));
+  //     inspect(galleryList);
+  //   } else {
+  //     print("failed");
+  //   }
+  //   //inspect(galleryList);
+  //   return galleryList;
+  // }
 
   //Main menu list
   Future<List<Data>?> getMenuList() async {
-    var token = await sessionDataProvider.readToken();
-
     var response = await http.get(
       Uri.parse(Api.menu),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'bearer $token'
       },
     );
     var body = json.decode(response.body);
@@ -177,13 +183,10 @@ class BookDataProvider {
 
   //Dialect Character
   Future<List<String>> getDialect_Encyclopaedia_Characters(String url) async {
-    var token = await sessionDataProvider.readToken();
-
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'bearer $token'
       },
     );
     var body = json.decode(response.body);
@@ -202,14 +205,12 @@ class BookDataProvider {
 
   //Data by characters
   Future<List<ByCharacters>> getDataByCharacters(String url) async {
-    var token = await sessionDataProvider.readToken();
     var dialects = <ByCharacters>[];
 
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'bearer $token'
       },
     );
     var body = json.decode(response.body);
@@ -252,14 +253,12 @@ class BookDataProvider {
 
   //Lessons
   Future<List<Lessons>> getLessons() async {
-    var token = await sessionDataProvider.readToken();
     var dialects = <Lessons>[];
     try {
       var response = await http.get(
         Uri.parse(Api.italianLessons),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'bearer $token'
         },
       );
       var body = json.decode(response.body);

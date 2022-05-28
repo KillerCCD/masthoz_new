@@ -70,13 +70,15 @@ class _DialectState extends State<Dialect> with SingleTickerProviderStateMixin {
               hasScrollBody: false,
               child: Column(
                 children: [
-                  Container(
-                    color: Color.fromRGBO(246, 246, 246, 1),
-                    width: double.infinity,
-                    height: 80,
-                    child: Text(
-                      'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
-                      textAlign: TextAlign.center,
+                  Flexible(
+                    child: Container(
+                      color: Color.fromRGBO(246, 246, 246, 1),
+                      width: double.infinity,
+                      height: 80,
+                      child: Text(
+                        'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 50),

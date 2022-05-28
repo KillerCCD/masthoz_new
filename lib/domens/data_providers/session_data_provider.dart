@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class _Keys {
-  static const regToken = 'token';
+  static const accessToken = 'access_token';
+  static const refreshToken = 'refresh_token';
   static const expiresToken = 'expires_in';
   static const cutsomerId = 'customer_id';
   static const menuList = 'menu_list';
@@ -11,24 +12,24 @@ abstract class _Keys {
 
 class SessionDataProvider {
   final _storage = SharedPreferences.getInstance();
-  Future<void> setRegtoken(String value) async {
+  Future<void> setAccessToken(String value) async {
     final storage = await _storage;
-    storage.setString(_Keys.regToken, value);
+    storage.setString(_Keys.accessToken, value);
   }
 
-  Future<String?> readToken() async {
+  Future<String?> readsAccessToken() async {
     final storage = await _storage;
-    return storage.getString(_Keys.regToken);
+    return storage.getString(_Keys.accessToken);
   }
 
-  Future<void> setToeknExpires(int value) async {
+  Future<void> setRefreshToken(String value) async {
     final storage = await _storage;
-    storage.setInt(_Keys.expiresToken, value);
+    storage.setString(_Keys.refreshToken, value);
   }
 
-  Future<int?> readToeknExpires() async {
+  Future<String?> readRefreshToken() async {
     final storage = await _storage;
-    return storage.getInt(_Keys.expiresToken);
+    return storage.getString(_Keys.refreshToken);
   }
 
   Future<void> setCustomerId(int value) async {
@@ -51,8 +52,11 @@ class SessionDataProvider {
     return storage.getStringList(_Keys.menuList);
   }
 
-  deleteRegToken() async {
+  deleteAllToken() async {
     final storage = await _storage;
-    return storage.remove(_Keys.regToken);
+    storage.remove(_Keys.refreshToken);
+    storage.remove(_Keys.accessToken);
   }
+
+  void setRegtoken(token) {}
 }

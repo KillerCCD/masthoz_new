@@ -75,20 +75,22 @@ class _AudioLibraryState extends State<AudioLibrary>
               hasScrollBody: false,
               child: Column(
                 children: [
-                  Container(
-                    color: Color.fromRGBO(246, 246, 246, 1),
-                    width: double.infinity,
-                    height: 80,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
-                        textAlign: TextAlign.center,
+                  Flexible(
+                    child: Container(
+                      color: Color.fromRGBO(246, 246, 246, 1),
+                      width: double.infinity,
+                      height: 80,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(height: 27),
-                  Expanded(child: _ArmenianItalian()),
+                  Expanded(flex: 3, child: _ArmenianItalian()),
                 ],
               ),
             )

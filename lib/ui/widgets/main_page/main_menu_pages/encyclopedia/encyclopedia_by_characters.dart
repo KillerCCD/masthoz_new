@@ -80,6 +80,7 @@ class _EcyclopediaByCharactersState extends State<EcyclopediaByCharacters>
                 child: Container(
                   height: 73,
                   padding: EdgeInsets.only(top: 18),
+                  width: MediaQuery.of(context).size.width * 0.85,
                   child: Text(
                     'Հանրագիտարան',
                     style: TextStyle(

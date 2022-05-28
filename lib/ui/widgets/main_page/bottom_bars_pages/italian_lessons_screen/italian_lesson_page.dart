@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,7 @@ import '../../../../../config/palette.dart';
 import '../../../helper_widgets/actions_widgets.dart';
 import 'dart:math' as math;
 
+import '../../../helper_widgets/size_config.dart';
 import '../../main_menu_pages/audio_library/audio_library.dart';
 import '../../main_menu_pages/italian_lesson/italian_data_show.dart';
 
@@ -32,6 +35,7 @@ class _ItalianPageState extends State<ItalianPage>
 
   final bool showPage = false;
   bool isOdd = false;
+  bool isTurnLesson = true;
   @override
   void initState() {
     lessonFuture = bookDataProvider.getLessons();
@@ -58,165 +62,152 @@ class _ItalianPageState extends State<ItalianPage>
       child: Scaffold(
         backgroundColor: Palette.textLineOrBackGroundColor,
         extendBodyBehindAppBar: true,
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              title: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Իտալերենի դասեր',
-                  style: TextStyle(
-                      fontSize: 20,
-                      letterSpacing: 1,
-                      fontFamily: 'GHEAGrapalat',
-                      fontWeight: FontWeight.bold,
-                      color: Palette.appBarTitleColor),
-                ),
+        body: CustomScrollView(slivers: [
+          SliverAppBar(
+            title: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Իտալերենի դասեր',
+                style: TextStyle(
+                    fontSize: 20,
+                    letterSpacing: 1,
+                    fontFamily: 'GHEAGrapalat',
+                    fontWeight: FontWeight.bold,
+                    color: Palette.appBarTitleColor),
               ),
-              expandedHeight: 53,
-              backgroundColor: Palette.textLineOrBackGroundColor,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-              actions: [
-                Padding(
-                    padding: EdgeInsets.only(right: 20.0), child: MenuShow()),
-              ],
             ),
-            // SliverAppBar(
-            //   expandedHeight: 73,
-            //   backgroundColor: Palette.textLineOrBackGroundColor,
-            //   pinned: false,
-            //   floating: true,
-            //   elevation: 0,
-            //   automaticallyImplyLeading: false,
-            //   systemOverlayStyle: SystemUiOverlayStyle(
-            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            //   title: Text(
-            //     'Իտալերենի դասեր',
-            //     style: TextStyle(
-            //         fontSize: 16,
-            //         letterSpacing: 1,
-            //         fontFamily: 'GHEAGrapalat',
-            //         fontWeight: FontWeight.w700,
-            //         color: Palette.appBarTitleColor),
-            //   ),
-            //   actions: [
-            //     Padding(
-            //       padding: const EdgeInsets.only(right: 20.0),
-            //       child: MenuShow(),
-            //     ),
-            //   ],
-            // ),
-            SliverToBoxAdapter(
-              child: Container(
-                padding: EdgeInsets.only(left: 20.0),
-                height: 60,
-                width: 87,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Հին ',
+            expandedHeight: 53,
+            backgroundColor: Palette.textLineOrBackGroundColor,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            actions: [
+              Padding(padding: EdgeInsets.only(right: 20.0), child: MenuShow()),
+            ],
+          ),
+          // SliverAppBar(
+          //   expandedHeight: 73,
+          //   backgroundColor: Palette.textLineOrBackGroundColor,
+          //   pinned: false,
+          //   floating: true,
+          //   elevation: 0,
+          //   automaticallyImplyLeading: false,
+          //   systemOverlayStyle: SystemUiOverlayStyle(
+          //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+          //   title: Text(
+          //     'Իտալերենի դասեր',
+          //     style: TextStyle(
+          //         fontSize: 16,
+          //         letterSpacing: 1,
+          //         fontFamily: 'GHEAGrapalat',
+          //         fontWeight: FontWeight.w700,
+          //         color: Palette.appBarTitleColor),
+          //   ),
+          //   actions: [
+          //     Padding(
+          //       padding: const EdgeInsets.only(right: 20.0),
+          //       child: MenuShow(),
+          //     ),
+          //   ],
+          // ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.only(left: 20.0),
+              height: 60,
+              width: 87,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isTurnLesson = !isTurnLesson;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Հին ',
+                      style: TextStyle(
+                          fontFamily: "GHEAGrapalat",
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          color: Palette.main),
+                    ),
+                    SizedBox(width: 5.0),
+                    SvgPicture.asset('assets/images/hin_nor.svg'),
+                    SizedBox(width: 5.0),
+                    Text('Նոր',
                         style: TextStyle(
                             fontFamily: "GHEAGrapalat",
                             fontSize: 12.0,
                             fontWeight: FontWeight.w400,
-                            color: Palette.main),
-                      ),
-                      SizedBox(width: 5.0),
-                      SvgPicture.asset('assets/images/hin_nor.svg'),
-                      SizedBox(width: 5.0),
-                      Text('Նոր',
-                          style: TextStyle(
-                              fontFamily: "GHEAGrapalat",
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                              color: Palette.main)),
-                    ],
-                  ),
+                            color: Palette.main)),
+                  ],
                 ),
               ),
             ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                FutureBuilder<List<Lessons>>(
-                  future: lessonFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var listsLesson = snapshot.data;
-             
-                      return AnimatedList(
-                        key: _listKey,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        initialItemCount: snapshot.data!.length,
-                        physics: ClampingScrollPhysics(),
-                        itemBuilder:
-                            (BuildContext context, int index, animation) {
-                          final Lessons italianLesson = listsLesson![index];
-  listsLesson?.sort((a, b) => a.number!.compareTo(b.number!));
-                          if (index % 2 != 0) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0, 0),
-                                end: const Offset(0, 0),
-                              ).animate(CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.bounceIn,
-                                  reverseCurve: Curves.bounceOut)),
-                              child: Transform(
-                                  alignment: Alignment.center,
-                                  transform: Matrix4.rotationY(math.pi),
-                                  child: SizedBox(
-                                    child: ITLesson(
-                                      isOdd: true,
-                                      italianLesson: italianLesson,
-                                    ),
-                                  )),
-                            );
-                          } else {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0, 0),
-                                end: const Offset(0, 0),
-                              ).animate(CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.bounceIn,
-                                  reverseCurve: Curves.bounceOut)),
-                              child: SizedBox(
-                                child: ITLesson(
-                                  isOdd: false,
-                                  italianLesson: italianLesson,
-                                ),
+          ),
+
+          SliverToBoxAdapter(
+            child: FutureBuilder<List<Lessons>>(
+              future: lessonFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var listsLesson = snapshot.data;
+
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: SizeConfig.screenWidth! / 2),
+                    reverse: isTurnLesson,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (
+                      BuildContext context,
+                      int index,
+                    ) {
+                      final Lessons italianLesson = listsLesson![index];
+
+                      if (index % 2 != 0) {
+                        return Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationY(math.pi),
+                            child: SizedBox(
+                              child: ITLesson(
+                                isOdd: true,
+                                italianLesson: italianLesson,
                               ),
-                            );
-                          }
-                        },
-                      );
-                    } else {
-                      return SizedBox(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                              child: CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            color: Palette.main,
-                          )),
-                        ],
-                      ));
-                    }
-                  },
-                ),
-              ]),
+                            ));
+                      } else {
+                        return SizedBox(
+                          child: ITLesson(
+                            isOdd: false,
+                            italianLesson: italianLesson,
+                          ),
+                        );
+                      }
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                        color: Palette.main,
+                      )),
+                    ],
+                  ));
+                }
+              },
             ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -281,7 +272,7 @@ class _ItalianLessonState extends State<ITLesson>
     sizeImageAnimation = Tween<double>(
             begin: -220.0, end: MediaQuery.of(context).size.width / 30)
         .animate(_controller);
-
+    print(SizeConfig.screenWidth! - SizeConfig.screenWidth! + 20);
     return InkWell(
       onTap: () {
         print('dadas youtube');

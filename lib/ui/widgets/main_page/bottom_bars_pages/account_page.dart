@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -65,53 +66,6 @@ class AccountPage extends StatelessWidget {
                 ),
               ],
             ),
-            // SliverAppBar(
-            //   expandedHeight: 73,
-            //   backgroundColor: Palette.textLineOrBackGroundColor,
-            //   pinned: false,
-            //   floating: true,
-            //   elevation: 0,
-            //   automaticallyImplyLeading: false,
-            //   systemOverlayStyle: SystemUiOverlayStyle(
-            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            //   // flexibleSpace: ActionsHelper(
-            //   //   leftPadding: 50,
-            //   //   // botomPadding: 0,
-            //   //   // topPadding: 30,
-            //   //   text: 'Իտալերենի դասեր',
-            //   //   fontFamily: 'GHEAGrapalat',
-            //   //   fontSize: 20,
-            //   //   laterSpacing: 1,
-            //   //   fontWeight: FontWeight.bold,
-            //   //   color: Palette.appBarTitleColor,
-            //   // ),
-            //   title: Padding(
-            //     padding: const EdgeInsets.only(left: 20),
-            //     child: Text(
-            //       'Իմ հաշիվը',
-            //       style: TextStyle(
-            //           fontSize: 20,
-            //           letterSpacing: 1,
-            //           fontFamily: 'GHEAGrapalat',
-            //           fontWeight: FontWeight.bold,
-            //           color: Palette.appBarTitleColor),
-            //     ),
-            //   ),
-
-            //   actions: [
-            //     MenuShow(),
-            //   ],
-            // ),
-            // SliverToBoxAdapter(
-            //   child: Center(
-            //     child: ElevatedButton(
-            //         onPressed: () {
-            //           Navigator.push(context,
-            //               MaterialPageRoute(builder: (_) => LoginScreen()));
-            //         },
-            //         child: Text('Login Screen')),
-
-            // )),
             SliverFillRemaining(
               child: DelegateChild(),
             )
@@ -131,9 +85,9 @@ class DelegateChild extends StatefulWidget {
 
 class _DelegateChildState extends State<DelegateChild>
     with SingleTickerProviderStateMixin {
-  final bookDataProvider = BookDataProvider();
+  final userDataProvider = UserDataProvider();
 
-  Future<List<ByCharacters>?>? audioLibraryByCharacters;
+  Future<List<dynamic>?>? favoriteFuture;
 
   late TabController _tabController;
 
@@ -144,8 +98,7 @@ class _DelegateChildState extends State<DelegateChild>
         vsync: this,
         initialIndex: 0,
         animationDuration: Duration.zero);
-    // audioLibraryByCharacters =
-    //     bookDataProvider.getDataByCharacters(Api.audioLibrariesByCharacters(0));
+    favoriteFuture = userDataProvider.getFavorites();
 
     super.initState();
   }
@@ -156,8 +109,8 @@ class _DelegateChildState extends State<DelegateChild>
       child: Column(
         children: [
           SizedBox(height: 52),
-          FutureBuilder<List<ByCharacters>?>(
-              future: audioLibraryByCharacters,
+          FutureBuilder<List<dynamic>?>(
+              future: favoriteFuture,
               builder: (context, snapshot) {
                 var data = snapshot.data;
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -183,14 +136,7 @@ class _DelegateChildState extends State<DelegateChild>
                             '0${index}',
                             style: TextStyle(color: Palette.main),
                           ),
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (_) => AudioLibraryDataShow(
-                            //               dataCharacter: data?[index],
-                            //             )));
-                          },
+                          onTap: () {},
                           contentPadding: EdgeInsets.only(right: 10.0),
                         );
                       },

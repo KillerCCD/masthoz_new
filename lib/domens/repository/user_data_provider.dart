@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserDataProvider {
   final sessionDataProvider = SessionDataProvider();
-  String? accessToken;
+
   //Sign Up
   Future<bool> signUp(
       {required String email,
@@ -39,7 +39,7 @@ class UserDataProvider {
   //Log out
   Future<void> logOut() async {
     try {
-      await sessionDataProvider.deleteRegToken();
+      await sessionDataProvider.deleteAllToken();
     } catch (e) {
       print(e);
     }
@@ -52,8 +52,7 @@ class UserDataProvider {
       'email': email,
       'password': password,
     };
-    var hastoken = await sessionDataProvider.readToken();
-    print(hastoken);
+
     try {
       var response = await http.post(
         Uri.parse(Api.loginUrl),
@@ -67,7 +66,10 @@ class UserDataProvider {
       print(token);
       if (response.statusCode == 200) {
         print('success');
-
+        var access_token = body['access_token'];
+        var refresh_token = body['refresh_token'];
+        sessionDataProvider.setAccessToken(access_token);
+        sessionDataProvider.setRefreshToken(refresh_token);
         return true;
       } else {
         print("failed");
@@ -103,10 +105,10 @@ class UserDataProvider {
       var body = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        var token = body['access_token'];
-        var expires = body['expires_in'];
-        sessionDataProvider.setRegtoken(token);
-        sessionDataProvider.setToeknExpires(expires);
+        var access_token = body['access_token'];
+        var refresh_token = body['refresh_token'];
+        sessionDataProvider.setAccessToken(access_token);
+        sessionDataProvider.setRefreshToken(refresh_token);
 
         return true;
       } else {
@@ -204,7 +206,7 @@ class UserDataProvider {
 
   //Fetch User Info
   Future<bool> fetchUserInfo() async {
-    var token = await sessionDataProvider.readToken();
+    var token = await sessionDataProvider.readsAccessToken();
 
     try {
       var response = await http.get(
@@ -218,6 +220,8 @@ class UserDataProvider {
       if (response.statusCode == 200) {
         print('success');
         return true;
+      } else if (response.statusCode == 401) {
+        refreshToken();
       } else {
         print("failed");
         return false;
@@ -253,35 +257,34 @@ class UserDataProvider {
   }
 
 //Get Favorites
-  Future<bool> getFavorites() async {
-    var token = await sessionDataProvider.readToken();
+  Future<List<dynamic>> getFavorites() async {
+    var token = await sessionDataProvider.readsAccessToken();
     try {
       var response = await http.get(
         Uri.parse(Api.getFavorites),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
           'Authorization': 'bearer $token'
         },
       );
       //var success = json.decode(response.body);
       if (response.statusCode == 200) {
         print('success');
-        return true;
       } else if (response.statusCode == 401) {
-        refreshToken();
+        bool isTrue = await refreshToken();
+        isTrue ? print("true") : print('falseDavs');
       } else {
         print("failed");
-        return false;
       }
     } catch (e) {
       print(e);
     }
-    return false;
+    return [];
   }
 
   //Save Favorite
   Future<bool> saveFavorite(Map parameters) async {
-    var token = await sessionDataProvider.readToken();
+    var token = await sessionDataProvider.readsAccessToken();
     try {
       var response = await http.post(
         Uri.parse(Api.saveFavorite),
@@ -291,11 +294,15 @@ class UserDataProvider {
         },
         body: json.encode(parameters),
       );
-      var success = json.decode(response.body)['success'];
+
       if (response.statusCode == 200) {
         print('success');
         return true;
       } else if (response.statusCode == 401) {
+        bool isTrue = await refreshToken();
+        if (isTrue) {
+          saveFavorite(parameters);
+        }
       } else {
         print("failed");
         return false;
@@ -331,35 +338,29 @@ class UserDataProvider {
   }
 
   Future<bool> refreshToken() async {
-    final access_token = await sessionDataProvider.readToken();
-    final expires_in = await sessionDataProvider.readToeknExpires();
-    final response = await http.post(Uri.parse(Api.refreshToken), headers: {
-      'Authorization': 'bearer $access_token'
-    }, body: <String, dynamic>{
-      'access_token': access_token,
-      'token_type': 'bearer',
-      'expires_in': expires_in.toString(),
-    });
-    ;
-    var body = jsonDecode(response.body)['access_token'];
-    if (response.statusCode == 201) {
-      accessToken = body;
-      sessionDataProvider.setRegtoken(accessToken!);
-      return true;
-    } else {
-      // refresh token is wrong
-      accessToken = null;
-      sessionDataProvider.deleteRegToken();
-      return false;
-    }
-  }
+    final refresh_token = await sessionDataProvider.readRefreshToken();
+    final access_token = await sessionDataProvider.readsAccessToken();
+    if (refresh_token != null) {
+      final response = await http.post(Uri.parse(Api.refreshToken), headers: {
+        'Authorization': 'bearer $access_token',
+        'Contnet-type': "application/json"
+      }, body: <String, dynamic>{
+        'refresh_token': '$refresh_token',
+      });
+      ;
+      var body = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        var access_token = body['access_token'];
 
-  Future<bool> check_user_Login() async {
-    var token = await sessionDataProvider.readToken();
+        sessionDataProvider.setAccessToken(access_token);
 
-    print(token);
-    if (token != null) {
-      return true;
+        return true;
+      } else {
+        // refresh token is wrong
+
+        sessionDataProvider.deleteAllToken();
+        return false;
+      }
     } else {
       return false;
     }

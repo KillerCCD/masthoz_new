@@ -11,13 +11,13 @@ class InfoDataProvider {
   //About_Us  //Donation
   Future<Data> getInfoAbaoutUs_Donation(String url) async {
     Data? data;
-    var token = await sessionDataProvider.readToken();
+ 
     try {
       var response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'bearer $token'
+         
         },
       );
       // var body = json.decode(response.body);

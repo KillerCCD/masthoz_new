@@ -10,6 +10,8 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
+import 'package:mashtoz_flutter/ui/widgets/buttons/bottom_navigation_bar/bottom_app_bar.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
 
 import '../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
@@ -48,6 +50,8 @@ class _BooksScreenState extends State<BooksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final orentation = MediaQuery.of(context).size;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Palette.textLineOrBackGroundColor,
@@ -138,10 +142,22 @@ class _BooksScreenState extends State<BooksScreen> {
                 var conentList = snapshot.data;
                 inspect(conentList);
                 if (snapshot.hasData) {
-                  return ListView.builder(
+                  return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 1.7,
+                        crossAxisCount:
+                            orentation.width >= 800 && orentation.width < 1300
+                                ? 2
+                                : orentation.width >= 1300 &&
+                                        orentation.width < 1600
+                                    ? 3
+                                    : orentation.width >= 1600
+                                        ? 4
+                                        : 1,
+                      ),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: conentList?.length,
+                      itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         Content book = conentList![index];
                         return index % 2 != 0
@@ -197,465 +213,666 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        width: 388,
-        height: 169,
-        child: Row(
-          children: [
-            Flexible(
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                            top: 147,
-                            left: 0,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: Color.fromRGBO(122, 108, 115, 1),
-                              ),
-                            )),
-                        Positioned(
-                            top: 155,
-                            left: 0,
-                            child: SizedBox(
-                                width: 388,
-                                height: 14,
-                                child: Stack(children: <Widget>[
-                                  Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    child: SvgPicture.asset(
-                                        'assets/images/group5040.svg',
-                                        width: 380,
-                                        semanticsLabel: 'group5040'),
-                                  ),
-                                ]))),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (_) => BookInitalScreen(
+                book: book,
+                category: categorys,
+              ),
+            ),
+          );
+
+          context.read<ContentProvider>().getContentList(book);
+          print(book.title);
+        },
+        child: SizedBox(
+          width: 388,
+          height: 169,
+          child: Stack(
+            children: [
+              Positioned(
+                  top: 147,
+                  left: 0,
+                  child: SizedBox(
+                      width: 388,
+                      height: 14,
+                      child: Stack(children: <Widget>[
                         Positioned(
                             top: 0,
-                            left: 14,
-                            child: Container(
-                                width: 116,
-                                height: 148,
-                                decoration: const BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Color.fromARGB(24, 0, 0, 0),
-                                        offset: Offset(4, -4),
-                                        blurRadius: 1)
-                                  ],
-                                  color: Color.fromRGBO(164, 171, 189, 1),
-                                ))),
-                        Positioned(
-                            top: 17,
-                            left: 26,
-                            child: Container(
-                                width: 91,
-                                height: 113,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color:
-                                        const Color.fromRGBO(255, 255, 255, 1),
-                                    width: 1,
-                                  ),
-                                ))),
-                        Positioned(
-                            top: 21.0,
-                            left: 30,
-                            child: SizedBox(
-                              width: 83,
-                              height: 104.0,
-                              child: Expanded(
-                                child: CachedNetworkImage(
-                                  imageUrl: book.image!,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )),
-                      ],
-                    ))),
-            Flexible(
-                flex: MediaQuery.of(context).size.width <= 380 ? 1 : 2,
-                fit: FlexFit.loose,
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                            top: 147,
-                            right: 0,
-                            child: Container(
-                                width: 388,
-                                height: 8,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(122, 108, 115, 1),
-                                ))),
-                        Positioned(
-                            top: 155,
-                            right: 0,
+                            left: 0,
                             child: Container(
                                 width: 388,
                                 height: 14,
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(255, 255, 255, 1),
+                                ),
                                 child: Stack(children: <Widget>[
                                   Positioned(
                                     top: 0,
                                     left: 0,
-                                    child: SvgPicture.asset(
-                                        'assets/images/group5040.svg',
-                                        width: 380,
-                                        semanticsLabel: 'group5040'),
-                                  ),
-                                ]))),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(
-                                builder: (_) => BookInitalScreen(
-                                  book: book,
-                                  category: categorys,
-                                ),
-                              ),
-                            );
-
-                            context
-                                .read<ContentProvider>()
-                                .getContentList(book);
-                            print(book.title);
-                          },
-                          child: Stack(
-                            children: [
-                              Stack(
-                                children: [
-                                  Positioned.fill(
-                                    bottom: 30.0,
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        child: isOdd
-                                            ? Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: Transform(
-                                                  transform: Matrix4.rotationY(
-                                                      math.pi),
-                                                  alignment: Alignment.center,
-                                                  child: SvgPicture.asset(
-                                                    'assets/images/vector81.svg',
-                                                    color: Palette.main,
-                                                    fit: BoxFit.none,
-                                                    // semanticsLabel: 'vector81',
-                                                  ),
-                                                ),
-                                              )
-                                            : Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: SvgPicture.asset(
-                                                  'assets/images/vector81.svg',
-                                                  color: Palette.main,
-                                                  fit: BoxFit.none,
-                                                  // semanticsLabel: 'vector81',
-                                                ),
-                                              ),
+                                    child: Container(
+                                      height: 14,
+                                      width: 388,
+                                      child: CustomPaint(
+                                        foregroundPainter: BookBox(),
                                       ),
                                     ),
                                   ),
-                                ],
+                                  // child: Stack(children: <Widget>[
+                                  //   Positioned(
+                                  //     top: 0,
+                                  //     left: 0,
+                                  //     child: SizedBox(
+                                  //       width: 388,
+                                  //       child:
+                                  //     ),
+                                  //   ),
+                                  //   // Positioned(
+                                  //   //     top: 14,
+                                  //   //     child: SizedBox(
+                                  //   //       width: 388,
+                                  //   //       child: Transform.rotate(
+                                  //   //         angle: 179.99999499104388 *
+                                  //   //             (math.pi / 180),
+                                  //   //         child: SvgPicture.asset(
+                                  //   //           'assets/images/rectangle3649.svg',
+                                  //   //         ),
+                                  //   //       ),
+                                  //   //     )),
+                                  // ]
+                                ]))),
+
+                        // Positioned(
+                        //   top: 0,
+                        //   left: 0,
+                        //   child: SvgPicture.asset(
+                        //     'assets/images/group5040.svg',
+                        //     width: 330,
+                        //   ),
+                        // ),
+                      ]))),
+              Positioned(
+                  top: 0,
+                  left: 14,
+                  child: Container(
+                      width: 116,
+                      height: 148,
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromARGB(24, 0, 0, 0),
+                              offset: Offset(4, -4),
+                              blurRadius: 1)
+                        ],
+                        color: Color.fromRGBO(164, 171, 189, 1),
+                      ))),
+              Positioned(
+                  top: 17,
+                  left: 26,
+                  child: Container(
+                      width: 91,
+                      height: 113,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromRGBO(255, 255, 255, 1),
+                          width: 1,
+                        ),
+                      ))),
+              Positioned(
+                  top: 21.0,
+                  left: 30,
+                  child: SizedBox(
+                    width: 83,
+                    height: 104.0,
+                    child: Expanded(
+                      child: isOdd
+                          ? Transform(
+                              transform: Matrix4.rotationY(math.pi),
+                              alignment: Alignment.center,
+                              child: CachedNetworkImage(
+                                imageUrl: book.image!,
+                                fit: BoxFit.cover,
                               ),
-                              Positioned.fill(
-                                child: isOdd
-                                    ? Align(
-                                        alignment: book.title!.isNotEmpty
-                                            ? Alignment.topCenter
-                                            : Alignment.center,
-                                        child: Transform(
-                                          transform: Matrix4.rotationY(math.pi),
-                                          alignment: Alignment.center,
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 5.0),
-                                            width: 200,
-                                            child: Text(
-                                              book.title ?? '',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      25, 4, 18, 1),
-                                                  fontSize: 12,
-                                                  letterSpacing: 1,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: 'GHEAGrapalat',
-                                                  height: 1),
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Align(
-                                        alignment: book.title!.isNotEmpty
-                                            ? Alignment.topCenter
-                                            : Alignment.center,
-                                        child: Container(
-                                          padding: book.title!.isNotEmpty
-                                              ? EdgeInsets.only(top: 5.0)
-                                              : EdgeInsets.only(top: 0.0),
-                                          width: 200,
-                                          child: Text(
-                                            book.title ?? '',
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: Color.fromRGBO(
-                                                    25, 4, 18, 1),
-                                                fontSize: 12,
-                                                letterSpacing: 1,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: 'GHEAGrapalat',
-                                                height: 1),
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: book.image!,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  )),
+
+              // Positioned(
+              //     top: 155,
+              //     right: 0,
+              //     child: Container(
+              //       width: 388,
+              //       height: 14,
+              //       child: Positioned(
+              //         top: 0,
+              //         left: 0,
+              //         child: SvgPicture.asset(
+              //           'assets/images/group5040.svg',
+              //           color: null,
+              //         ),
+              //       ),
+              //     )),
+              Positioned.fill(
+                bottom: 30.0,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    width: 200,
+                    height: 10,
+                    child: isOdd
+                        ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Transform(
+                              transform: Matrix4.rotationY(math.pi),
+                              alignment: Alignment.center,
+                              child: SvgPicture.asset(
+                                'assets/images/vector81.svg',
+                                color: Palette.main,
+                                fit: BoxFit.none,
+                                // semanticsLabel: 'vector81',
                               ),
-                              Positioned.fill(
-                                top: 66,
-                                child: isOdd
-                                    ? Transform(
-                                        transform: Matrix4.rotationY(math.pi),
-                                        alignment: Alignment.center,
-                                        child: SizedBox(
-                                          width: 200,
-                                          child: Text(
-                                            book.author ?? '',
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: Color.fromRGBO(
-                                                    25, 4, 18, 1),
-                                                fontSize: 12,
-                                                letterSpacing: 1,
-                                                fontFamily: 'GHEAGrapalat',
-                                                fontWeight: FontWeight.w400,
-                                                height: 1),
-                                            maxLines: 3,
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        // color: Colors.orange,
-                                        child: SizedBox(
-                                          width: 149,
-                                          child: Text(
-                                            book.author ?? '',
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: const Color.fromRGBO(
-                                                    25, 4, 18, 1),
-                                                fontSize: 12,
-                                                letterSpacing: 1,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'GHEAGrapalat',
-                                                height: 1),
-                                            maxLines: 3,
-                                          ),
-                                        ),
-                                      ),
+                            ),
+                          )
+                        : Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SvgPicture.asset(
+                              'assets/images/vector81.svg',
+                              color: Palette.main,
+                              fit: BoxFit.none,
+                              // semanticsLabel: 'vector81',
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+
+              Positioned.fill(
+                child: isOdd
+                    ? Align(
+                        alignment: book.title!.isNotEmpty
+                            ? Alignment.topRight
+                            : Alignment.center,
+                        child: Container(
+                          child: Transform(
+                            transform: Matrix4.rotationY(math.pi),
+                            alignment: Alignment.center,
+                            child: Container(
+                              padding: EdgeInsets.only(top: 5.0),
+                              //  width: 200,
+
+                              width: SizeConfig.screenWidth! <= 384 ? 110 : 200,
+                              child: Text(
+                                book.title ?? '',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(25, 4, 18, 1),
+                                    fontSize: 12,
+                                    letterSpacing: 1,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'GHEAGrapalat',
+                                    height: 1),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ],
-                    ))),
-          ],
-        ),
-        // child: Stack(
-        //   children: <Widget>[
-        //     Positioned(
-        //         top: 147,
-        //         left: 0,
-        //         child: Container(
-        //             width: 388,
-        //             height: 8,
-        //             decoration: const BoxDecoration(
-        //               color: Color.fromRGBO(122, 108, 115, 1),
-        //             ))),
-        //     Positioned(
-        //         top: 155,
-        //         left: 0,
-        //         child: SizedBox(
-        //             width: 388,
-        //             height: 14,
-        //             child: Stack(children: <Widget>[
-        //               Positioned(
-        //                 top: 0,
-        //                 left: 0,
-        //                 child: SvgPicture.asset('assets/images/group5040.svg',
-        //                     width: 380, semanticsLabel: 'group5040'),
-        //               ),
-        //             ]))),
-        //     Positioned(
-        //         top: 0,
-        //         left: 14,
-        //         child: Container(
-        //             width: 116,
-        //             height: 148,
-        //             decoration: const BoxDecoration(
-        //               boxShadow: [
-        //                 BoxShadow(
-        //                     color: Color.fromARGB(24, 0, 0, 0),
-        //                     offset: Offset(4, -4),
-        //                     blurRadius: 1)
-        //               ],
-        //               color: Color.fromRGBO(164, 171, 189, 1),
-        //             ))),
-        //     Positioned(
-        //         top: 17,
-        //         left: 26,
-        //         child: Container(
-        //             width: 91,
-        //             height: 113,
-        //             decoration: BoxDecoration(
-        //               border: Border.all(
-        //                 color: const Color.fromRGBO(255, 255, 255, 1),
-        //                 width: 1,
-        //               ),
-        //             ))),
-        //     Positioned(
-        //         top: 21.0,
-        //         left: 30,
-        //         child: SizedBox(
-        //           width: 83,
-        //           height: 104.0,
-        //           child: CachedNetworkImage(
-        //             imageUrl: book.image!,
-        //             fit: BoxFit.cover,
-        //           ),
-        //         )),
-        //     Container(
-        //       padding: const EdgeInsets.only(left: 20.0, bottom: 20),
-        //       child: InkWell(
-        //         onTap: () {
-        //           print('cikiTaki');
+                      )
+                    : Align(
+                        alignment: book.title!.isNotEmpty
+                            ? Alignment.topRight
+                            : Alignment.center,
+                        child: Container(
+                          padding: book.title!.isNotEmpty
+                              ? EdgeInsets.only(top: 5.0)
+                              : EdgeInsets.only(top: 0.0),
+                          width: SizeConfig.screenWidth! <= 384 ? 120 : 200,
+                          child: Text(
+                            book.title ?? '',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Color.fromRGBO(25, 4, 18, 1),
+                                fontSize: 12,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'GHEAGrapalat',
+                                height: 1),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+              ),
+              Positioned.fill(
+                top: 66,
+                child: isOdd
+                    ? Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          child: Transform(
+                            transform: Matrix4.rotationY(math.pi),
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: SizeConfig.screenWidth! <= 384 ? 120 : 200,
+                              child: Text(
+                                book.author ?? '',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(25, 4, 18, 1),
+                                    fontSize: 12,
+                                    letterSpacing: 1,
+                                    fontFamily: 'GHEAGrapalat',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1),
+                                maxLines: 3,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          // color: Colors.orange,
+                          child: SizedBox(
+                            width: SizeConfig.screenWidth! <= 384 ? 120 : 200,
+                            child: Text(
+                              book.author ?? '',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: const Color.fromRGBO(25, 4, 18, 1),
+                                  fontSize: 12,
+                                  letterSpacing: 1,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'GHEAGrapalat',
+                                  height: 1),
+                              maxLines: 3,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ],
+          ),
+          // child: Stack(
+          //   children: <Widget>[
+          //     Positioned(
+          //         top: 147,
+          //         left: 0,
+          //         child: Container(
+          //             width: 388,
+          //             height: 8,
+          //             decoration: const BoxDecoration(
+          //               color: Color.fromRGBO(122, 108, 115, 1),
+          //             ))),
+          //     Positioned(
+          //         top: 155,
+          //         left: 0,
+          //         child: SizedBox(
+          //             width: 388,
+          //             height: 14,
+          //             child: Stack(children: <Widget>[
+          //               Positioned(
+          //                 top: 0,
+          //                 left: 0,
+          //                 child: SvgPicture.asset('assets/images/group5040.svg',
+          //                     width: 380, semanticsLabel: 'group5040'),
+          //               ),
+          //             ]))),
+          //     Positioned(
+          //         top: 0,
+          //         left: 14,
+          //         child: Container(
+          //             width: 116,
+          //             height: 148,
+          //             decoration: const BoxDecoration(
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                     color: Color.fromARGB(24, 0, 0, 0),
+          //                     offset: Offset(4, -4),
+          //                     blurRadius: 1)
+          //               ],
+          //               color: Color.fromRGBO(164, 171, 189, 1),
+          //             ))),
+          //     Positioned(
+          //         top: 17,
+          //         left: 26,
+          //         child: Container(
+          //             width: 91,
+          //             height: 113,
+          //             decoration: BoxDecoration(
+          //               border: Border.all(
+          //                 color: const Color.fromRGBO(255, 255, 255, 1),
+          //                 width: 1,
+          //               ),
+          //             ))),
+          //     Positioned(
+          //         top: 21.0,
+          //         left: 30,
+          //         child: SizedBox(
+          //           width: 83,
+          //           height: 104.0,
+          //           child: CachedNetworkImage(
+          //             imageUrl: book.image!,
+          //             fit: BoxFit.cover,
+          //           ),
+          //         )),
+          //     Container(
+          //       padding: const EdgeInsets.only(left: 20.0, bottom: 20),
+          //       child: InkWell(
+          //         onTap: () {
+          //           print('cikiTaki');
 
-        //           Navigator.of(context, rootNavigator: true).push(
-        //             MaterialPageRoute(
-        //               builder: (_) => BookInitalScreen(
-        //                 book: book,
-        //                 category: categorys,
-        //               ),
-        //             ),
-        //           );
-        //           print(book.author);
-        //         },
-        //         child: Stack(
-        //           children: [
-        //             Positioned(
-        //               top: 130,
-        //               right: 100,
-        //               child: isOdd
-        //                   ? Transform(
-        //                       transform: Matrix4.rotationY(math.pi),
-        //                       alignment: Alignment.center,
-        //                       child: SvgPicture.asset(
-        //                         'assets/images/vector81.svg',
-        //                         color: Palette.main,
-        //                         // semanticsLabel: 'vector81',
-        //                       ),
-        //                     )
-        //                   : SvgPicture.asset(
-        //                       'assets/images/vector81.svg',
-        //                       color: Palette.main,
-        //                       // semanticsLabel: 'vector81',
-        //                     ),
-        //             ),
-        //             Positioned(
-        //               top: 5,
-        //               left: 141,
-        //               child: isOdd
-        //                   ? Transform(
-        //                       transform: Matrix4.rotationY(math.pi),
-        //                       alignment: Alignment.center,
-        //                       child: SizedBox(
-        //                         width: 200,
-        //                         child: Text(
-        //                           book.author ?? '',
-        //                           textAlign: TextAlign.center,
-        //                           style: const TextStyle(
-        //                               color: Color.fromRGBO(25, 4, 18, 1),
-        //                               fontSize: 12,
-        //                               letterSpacing: 1,
-        //                               fontWeight: FontWeight.w700,
-        //                               fontFamily: 'GHEAGrapalat',
-        //                               height: 1),
-        //                           maxLines: 3,
-        //                           overflow: TextOverflow.ellipsis,
-        //                         ),
-        //                       ),
-        //                     )
-        //                   : SizedBox(
-        //                       width: 200,
-        //                       child: Text(
-        //                         book.author ?? '',
-        //                         textAlign: TextAlign.center,
-        //                         style: const TextStyle(
-        //                             color: Color.fromRGBO(25, 4, 18, 1),
-        //                             fontSize: 12,
-        //                             letterSpacing: 1,
-        //                             fontWeight: FontWeight.w700,
-        //                             fontFamily: 'GHEAGrapalat',
-        //                             height: 1),
-        //                         maxLines: 3,
-        //                         overflow: TextOverflow.ellipsis,
-        //                       ),
-        //                     ),
-        //             ),
-        //             Positioned(
-        //               top: 95,
-        //               left: 141,
-        //               child: isOdd
-        //                   ? Transform(
-        //                       transform: Matrix4.rotationY(math.pi),
-        //                       alignment: Alignment.center,
-        //                       child: SizedBox(
-        //                         width: 200,
-        //                         child: Text(
-        //                           book.title ?? '',
-        //                           textAlign: TextAlign.center,
-        //                           style: const TextStyle(
-        //                               color: Color.fromRGBO(25, 4, 18, 1),
-        //                               fontSize: 12,
-        //                               letterSpacing: 1,
-        //                               fontFamily: 'GHEAGrapalat',
-        //                               fontWeight: FontWeight.w400,
-        //                               height: 1),
-        //                         ),
-        //                       ),
-        //                     )
-        //                   : SizedBox(
-        //                       width: 200,
-        //                       child: Text(
-        //                         book.title ?? '',
-        //                         textAlign: TextAlign.center,
-        //                         style: const TextStyle(
-        //                             color: const Color.fromRGBO(25, 4, 18, 1),
-        //                             fontSize: 12,
-        //                             letterSpacing: 1,
-        //                             fontWeight: FontWeight.w400,
-        //                             fontFamily: 'GHEAGrapalat',
-        //                             height: 1),
-        //                       ),
-        //                     ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
+          //           Navigator.of(context, rootNavigator: true).push(
+          //             MaterialPageRoute(
+          //               builder: (_) => BookInitalScreen(
+          //                 book: book,
+          //                 category: categorys,
+          //               ),
+          //             ),
+          //           );
+          //           print(book.author);
+          //         },
+          //         child: Stack(
+          //           children: [
+          //             Positioned(
+          //               top: 130,
+          //               right: 100,
+          //               child: isOdd
+          //                   ? Transform(
+          //                       transform: Matrix4.rotationY(math.pi),
+          //                       alignment: Alignment.center,
+          //                       child: SvgPicture.asset(
+          //                         'assets/images/vector81.svg',
+          //                         color: Palette.main,
+          //                         // semanticsLabel: 'vector81',
+          //                       ),
+          //                     )
+          //                   : SvgPicture.asset(
+          //                       'assets/images/vector81.svg',
+          //                       color: Palette.main,
+          //                       // semanticsLabel: 'vector81',
+          //                     ),
+          //             ),
+          //             Positioned(
+          //               top: 5,
+          //               left: 141,
+          //               child: isOdd
+          //                   ? Transform(
+          //                       transform: Matrix4.rotationY(math.pi),
+          //                       alignment: Alignment.center,
+          //                       child: SizedBox(
+          //                         width: 200,
+          //                         child: Text(
+          //                           book.author ?? '',
+          //                           textAlign: TextAlign.center,
+          //                           style: const TextStyle(
+          //                               color: Color.fromRGBO(25, 4, 18, 1),
+          //                               fontSize: 12,
+          //                               letterSpacing: 1,
+          //                               fontWeight: FontWeight.w700,
+          //                               fontFamily: 'GHEAGrapalat',
+          //                               height: 1),
+          //                           maxLines: 3,
+          //                           overflow: TextOverflow.ellipsis,
+          //                         ),
+          //                       ),
+          //                     )
+          //                   : SizedBox(
+          //                       width: 200,
+          //                       child: Text(
+          //                         book.author ?? '',
+          //                         textAlign: TextAlign.center,
+          //                         style: const TextStyle(
+          //                             color: Color.fromRGBO(25, 4, 18, 1),
+          //                             fontSize: 12,
+          //                             letterSpacing: 1,
+          //                             fontWeight: FontWeight.w700,
+          //                             fontFamily: 'GHEAGrapalat',
+          //                             height: 1),
+          //                         maxLines: 3,
+          //                         overflow: TextOverflow.ellipsis,
+          //                       ),
+          //                     ),
+          //             ),
+          //             Positioned(
+          //               top: 95,
+          //               left: 141,
+          //               child: isOdd
+          //                   ? Transform(
+          //                       transform: Matrix4.rotationY(math.pi),
+          //                       alignment: Alignment.center,
+          //                       child: SizedBox(
+          //                         width: 200,
+          //                         child: Text(
+          //                           book.title ?? '',
+          //                           textAlign: TextAlign.center,
+          //                           style: const TextStyle(
+          //                               color: Color.fromRGBO(25, 4, 18, 1),
+          //                               fontSize: 12,
+          //                               letterSpacing: 1,
+          //                               fontFamily: 'GHEAGrapalat',
+          //                               fontWeight: FontWeight.w400,
+          //                               height: 1),
+          //                         ),
+          //                       ),
+          //                     )
+          //                   : SizedBox(
+          //                       width: 200,
+          //                       child: Text(
+          //                         book.title ?? '',
+          //                         textAlign: TextAlign.center,
+          //                         style: const TextStyle(
+          //                             color: const Color.fromRGBO(25, 4, 18, 1),
+          //                             fontSize: 12,
+          //                             letterSpacing: 1,
+          //                             fontWeight: FontWeight.w400,
+          //                             fontFamily: 'GHEAGrapalat',
+          //                             height: 1),
+          //                       ),
+          //                     ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+        ),
       ),
     );
   }
 }
+// class _BookCard extends StatelessWidget {
+//   final Content book;
+//   final bool isOdd;
+//   const _BookCard({
+//     Key? key,
+//     required this.book,
+//     required this.isOdd,
+//   }) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: SizedBox(
+//         width: 388,
+//         height: 169,
+//         child: Stack(
+//           children: <Widget>[
+//             Positioned(
+//                 top: 147,
+//                 left: 0,
+//                 child: Container(
+//                     width: 388,
+//                     height: 8,
+//                     decoration: const BoxDecoration(
+//                       color: Color.fromRGBO(122, 108, 115, 1),
+//                     ))),
+//             Positioned(
+//                 top: 155,
+//                 left: 0,
+//                 child: SizedBox(
+//                     width: 388,
+//                     height: 14,
+//                     child: Stack(children: <Widget>[
+//                       Positioned(
+//                         top: 0,
+//                         left: 0,
+//                         child: SvgPicture.asset('assets/images/group5040.svg',
+//                             width: 380, semanticsLabel: 'group5040'),
+//                       ),
+//                     ]))),
+//             Positioned(
+//                 top: 0,
+//                 left: 14,
+//                 child: Container(
+//                     width: 116,
+//                     height: 148,
+//                     decoration: const BoxDecoration(
+//                       boxShadow: [
+//                         BoxShadow(
+//                             color: Color.fromARGB(24, 0, 0, 0),
+//                             offset: Offset(4, -4),
+//                             blurRadius: 1)
+//                       ],
+//                       color: Color.fromRGBO(164, 171, 189, 1),
+//                     ))),
+//             Positioned(
+//                 top: 17,
+//                 left: 26,
+//                 child: Container(
+//                     width: 91,
+//                     height: 113,
+//                     decoration: BoxDecoration(
+//                       border: Border.all(
+//                         color: const Color.fromRGBO(255, 255, 255, 1),
+//                         width: 1,
+//                       ),
+//                     ))),
+//             Positioned(
+//                 top: 21.0,
+//                 left: 30,
+//                 child: SizedBox(
+//                   width: 83,
+//                   height: 104.0,
+//                   child: CachedNetworkImage(
+//                     imageUrl: book.image!,
+//                     fit: BoxFit.cover,
+//                   ),
+//                 )),
+//             Container(
+//               padding: const EdgeInsets.only(left: 20.0, bottom: 20),
+//               child: InkWell(
+//                 onTap: () {
+//                   print('cikiTaki');
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (_) => BookInitalScreen(
+//                         book: book,
+//                       ),
+//                     ),
+//                   );
+//                   print(book.author);
+//                 },
+//                 child: Stack(
+//                   children: [
+//                     Positioned(
+//                       top: 130,
+//                       right: 100,
+//                       child: isOdd
+//                           ? Transform(
+//                               transform: Matrix4.rotationY(math.pi),
+//                               alignment: Alignment.center,
+//                               child: SvgPicture.asset(
+//                                 'assets/images/vector81.svg',
+//                                 color: Palette.main,
+//                                 // semanticsLabel: 'vector81',
+//                               ),
+//                             )
+//                           : SvgPicture.asset(
+//                               'assets/images/vector81.svg',
+//                               color: Palette.main,
+//                               // semanticsLabel: 'vector81',
+//                             ),
+//                     ),
+//                     Positioned(
+//                       top: 50,
+//                       left: 151,
+//                       child: isOdd
+//                           ? Transform(
+//                               transform: Matrix4.rotationY(math.pi),
+//                               alignment: Alignment.center,
+//                               child: SizedBox(
+//                                 width: 200,
+//                                 child: Text(
+//                                   book.author ?? '',
+//                                   textAlign: TextAlign.center,
+//                                   style: const TextStyle(
+//                                       color: Color.fromRGBO(25, 4, 18, 1),
+//                                       fontSize: 12,
+//                                       letterSpacing: 0,
+//                                       fontWeight: FontWeight.normal,
+//                                       height: 1),
+//                                 ),
+//                               ),
+//                             )
+//                           : SizedBox(
+//                               width: 200,
+//                               child: Text(
+//                                 book.author ?? '',
+//                                 textAlign: TextAlign.center,
+//                                 style: const TextStyle(
+//                                     color: Color.fromRGBO(25, 4, 18, 1),
+//                                     fontSize: 12,
+//                                     letterSpacing: 0,
+//                                     fontWeight: FontWeight.normal,
+//                                     height: 1),
+//                               ),
+//                             ),
+//                     ),
+//                     Positioned(
+//                       top: 60,
+//                       left: 160,
+//                       child: isOdd
+//                           ? Transform(
+//                               transform: Matrix4.rotationY(math.pi),
+//                               alignment: Alignment.center,
+//                               child: Text(
+//                                 book.explanation ?? '',
+//                                 textAlign: TextAlign.center,
+//                                 style: const TextStyle(
+//                                     color: Color.fromRGBO(25, 4, 18, 1),
+//                                     fontSize: 12,
+//                                     letterSpacing: 0,
+//                                     fontWeight: FontWeight.normal,
+//                                     height: 1),
+//                               ),
+//                             )
+//                           : Text(
+//                               book.explanation ?? '',
+//                               textAlign: TextAlign.center,
+//                               style: const TextStyle(
+//                                   color: const Color.fromRGBO(25, 4, 18, 1),
+//                                   fontSize: 12,
+//                                   letterSpacing: 0,
+//                                   fontWeight: FontWeight.normal,
+//                                   height: 1),
+//                             ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
