@@ -9,6 +9,7 @@ import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_read_screen.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import '../../../../../domens/models/book_data/data.dart';
 import '../../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
 
@@ -44,7 +45,7 @@ class _EcyclopediaByCharactersState extends State<EcyclopediaByCharacters>
   final String characterByindex;
   final int characterIndex;
   final List<Object> characters;
-  Future<List<ByCharacters>?>? charctersData;
+  Future<List<Data>?>? charctersData;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +194,7 @@ class _DelegateChildState extends State<DelegateChild>
   final String characterByindex;
   final int characterIndex;
   final Object characters;
-  Future<List<ByCharacters>?>? encyclopediaByCharacters;
+  Future<List<Data>?>? encyclopediaByCharacters;
 
   late TabController _tabController;
 
@@ -211,7 +212,7 @@ class _DelegateChildState extends State<DelegateChild>
   }
 
   Widget buildData() {
-    return FutureBuilder<List<ByCharacters>?>(
+    return FutureBuilder<List<Data>?>(
         future: encyclopediaByCharacters,
         builder: (context, snapshot) {
           var data = snapshot.data;

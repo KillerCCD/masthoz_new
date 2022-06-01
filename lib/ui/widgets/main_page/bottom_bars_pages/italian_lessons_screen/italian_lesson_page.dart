@@ -7,15 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/autio_librar_test.dart';
-import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../../../../config/palette.dart';
-import '../../../helper_widgets/actions_widgets.dart';
+
 import 'dart:math' as math;
 
 import '../../../helper_widgets/size_config.dart';
-import '../../main_menu_pages/audio_library/audio_library.dart';
 import '../../main_menu_pages/italian_lesson/italian_data_show.dart';
 
 class ItalianPage extends StatefulWidget {
@@ -86,31 +83,6 @@ class _ItalianPageState extends State<ItalianPage>
               Padding(padding: EdgeInsets.only(right: 20.0), child: MenuShow()),
             ],
           ),
-          // SliverAppBar(
-          //   expandedHeight: 73,
-          //   backgroundColor: Palette.textLineOrBackGroundColor,
-          //   pinned: false,
-          //   floating: true,
-          //   elevation: 0,
-          //   automaticallyImplyLeading: false,
-          //   systemOverlayStyle: SystemUiOverlayStyle(
-          //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-          //   title: Text(
-          //     'Իտալերենի դասեր',
-          //     style: TextStyle(
-          //         fontSize: 16,
-          //         letterSpacing: 1,
-          //         fontFamily: 'GHEAGrapalat',
-          //         fontWeight: FontWeight.w700,
-          //         color: Palette.appBarTitleColor),
-          //   ),
-          //   actions: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 20.0),
-          //       child: MenuShow(),
-          //     ),
-          //   ],
-          // ),
           SliverToBoxAdapter(
             child: Container(
               padding: EdgeInsets.only(left: 20.0),
@@ -148,7 +120,6 @@ class _ItalianPageState extends State<ItalianPage>
               ),
             ),
           ),
-
           SliverToBoxAdapter(
             child: FutureBuilder<List<Lessons>>(
               future: lessonFuture,
@@ -158,11 +129,11 @@ class _ItalianPageState extends State<ItalianPage>
 
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: SizeConfig.screenWidth! / 2),
+                        crossAxisCount: 1, childAspectRatio: (2 / 1)),
                     reverse: isTurnLesson,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
+                    primary: false,
                     itemCount: snapshot.data!.length,
                     physics: ClampingScrollPhysics(),
                     itemBuilder: (
@@ -172,20 +143,40 @@ class _ItalianPageState extends State<ItalianPage>
                       final Lessons italianLesson = listsLesson![index];
 
                       if (index % 2 != 0) {
-                        return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.rotationY(math.pi),
-                            child: SizedBox(
+                        return GridTile(
+                          child: Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Expanded(
+                                          child: SizedBox(
+                                            child: ITLesson(
+                                              isOdd: true,
+                                              italianLesson: italianLesson,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        );
+                      } else {
+                        return GridTile(
+                          child: SizedBox(
+                            child: Expanded(
                               child: ITLesson(
-                                isOdd: true,
+                                isOdd: false,
                                 italianLesson: italianLesson,
                               ),
-                            ));
-                      } else {
-                        return SizedBox(
-                          child: ITLesson(
-                            isOdd: false,
-                            italianLesson: italianLesson,
+                            ),
                           ),
                         );
                       }

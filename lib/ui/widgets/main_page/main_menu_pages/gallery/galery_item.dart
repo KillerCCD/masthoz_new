@@ -1,9 +1,14 @@
+import 'dart:developer';
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/fake_book_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/book.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:photo_view/photo_view.dart';
@@ -46,25 +51,6 @@ class _GalleryItemState extends State<GalleryItem> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: CustomScrollView(slivers: [
-      //  SliverAppBar(
-      //   expandedHeight: 73,
-      //   backgroundColor: Palette.textLineOrBackGroundColor,
-      //   pinned: false,
-      //   floating: true,
-      //   elevation: 0,
-      //   automaticallyImplyLeading: false,
-      //   systemOverlayStyle:
-      //       SystemUiOverlayStyle(statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-      //   flexibleSpace: ActionsHelper(
-      //     leftPadding: 12,
-      //     text: 'Պատկերադարան',
-      //     fontFamily: 'GHEAGrapalat',
-      //     fontSize: 20,
-      //     laterSpacing: 1,
-      //     fontWeight: FontWeight.bold,
-      //     color: Palette.appBarTitleColor,
-      //   ),
-      // ),
       SliverAppBar(
         title: Text(
           'Պատկերադարան',
@@ -99,105 +85,110 @@ class _GalleryItemState extends State<GalleryItem> {
           ),
         ],
       ),
-      // SliverFillRemaining(
-      //   child: FutureBuilder<List<dynamic>>(
-      //     future: galleryFuture,
-      //     builder: (context, snapshot) {
-      //       if (snapshot.connectionState == ConnectionState.waiting) {
-      //         return Container(
-      //             child: Center(
-      //                 child: CircularProgressIndicator(
-      //           strokeWidth: 2.0,
-      //           color: Palette.main,
-      //         )));
-      //       } else if (snapshot.connectionState == ConnectionState.done) {
-      //         if (snapshot.hasError) {
-      //           return const Text('Error');
-      //         } else if (snapshot.hasData) {
-      //           var data = snapshot.data;
-
-      //           return ListView.builder(
-      //               scrollDirection: Axis.vertical,
-      //               shrinkWrap: true,
-      //               itemCount: data?.length,
-      //               itemBuilder: (context, index) {
-      //                 dynamic newData = data?[index];
-      //                 print(newData);
-      //                 return ExpansionTile(
-      //                   title: SizedBox(
-      //                     child: Text(
-      //                       '${newData}',
-      //                       textAlign: TextAlign.center,
-      //                     ),
-      //                   ),
-      //                   controlAffinity: ListTileControlAffinity.leading,
-      //                   //initalIcon: SvgPicture.asset('assets/images/line24.svg'),
-      //                   //leading: Icon(Icons.rotate_90_degrees_ccw),
-      //                   children: [
-      //                     GridView.builder(
-      //                       shrinkWrap: true,
-      //                       scrollDirection: Axis.vertical,
-      //                       itemCount: data?.length,
-      //                       itemBuilder: (context, index) {
-      //                         dynamic gallery = data![index];
-
-      //                         //  print(gallery.image);
-      //                         // return Text('${gallery}');
-      //                         return Container(
-      //                             padding: const EdgeInsets.symmetric(
-      //                                 horizontal: 5.0),
-      //                             child: GestureDetector(
-      //                               onTap: () {
-      //                                 open(context, index);
-      //                               },
-      //                               child: Hero(
-      //                                 tag: gallery.id.toString(),
-      //                                 child: CachedNetworkImage(
-      //                                   imageUrl: gallery.image!,
-      //                                 ),
-      //                               ),
-      //                             ));
-      //                       },
-      //                       gridDelegate:
-      //                           SliverGridDelegateWithFixedCrossAxisCount(
-      //                         crossAxisCount: 2,
-      //                         mainAxisSpacing: 20.0,
-      //                       ),
-      //                     )
-      //                   ],
-      //                 );
-      //               });
-      //         } else {
-      //           return const Text('Empty data');
-      //         }
-      //       } else {
-      //         return Text('State: ${snapshot.connectionState}');
-      //       }
-      //     },
-      //   ),
-      // )
-
       SliverFillRemaining(
-          child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 20.0,
+        child: FutureBuilder<List<dynamic>>(
+          future: galleryFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                  child: Center(
+                      child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+                color: Palette.main,
+              )));
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return const Text('Error');
+              } else if (snapshot.hasData) {
+                var data = snapshot.data;
+                var ks;
+                var lengthGallery = data?[0];
+                // data?.map((e) => e).toList();
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      dynamic newData = data?[index];
+                      dynamic galery = newData[1];
+                      print(galery.runtimeType);
+                      return ExpansionTile(
+                        title: SizedBox(
+                          child: Text(
+                            '${newData[0]}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        //initalIcon: SvgPicture.asset('assets/images/line24.svg'),
+                        //leading: Icon(Icons.rotate_90_degrees_ccw),
+                        children: [
+                          GridView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemCount:
+                                (galery is Gallery) ? galery.images?.length : 0,
+                            itemBuilder: (context, index) {
+                              //  print(gallery.image);
+                              // return Text('${gallery}');
+                              return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      //  open(context, index);
+                                    },
+                                    child: Container(
+                                      child: (galery is Gallery)
+                                          ? CachedNetworkImage(
+                                              imageUrl:
+                                                  '${galery.images?[index].img}')
+                                          : Text('$galery'),
+                                    ),
+                                  ));
+                            },
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20.0,
+                            ),
+                          )
+                        ],
+                      );
+                    });
+              } else {
+                return const Text('Empty data');
+              }
+            } else {
+              return Text('State: ${snapshot.connectionState}');
+            }
+          },
         ),
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: galleryItems.length,
-        itemBuilder: (context, index) {
-          Gellerys gallery = galleryItems[index];
-          print(gallery.resource);
-          // return Text('data');
-          return GalleryExampleItemThumbnail(
-            galleryExampleItem: galleryItems[index],
-            onTap: () {
-              open(context, index);
-            },
-          );
-        },
-      )),
+      )
+
+      // SliverFillRemaining(
+      //     child: GridView.builder(
+      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //     crossAxisCount: 2,
+      //     mainAxisSpacing: 20.0,
+      //   ),
+      //   shrinkWrap: true,
+      //   scrollDirection: Axis.vertical,
+      //   itemCount: galleryItems.length,
+      //   itemBuilder: (context, index) {
+      //     Gellerys gallery = galleryItems[index];
+      //     print(gallery.resource);
+      //     // return Text('data');
+      //     return GalleryExampleItemThumbnail(
+      //       galleryExampleItem: galleryItems[index],
+      //       onTap: () {
+      //         open(context, index);
+      //       },
+      //     );
+      //   },
+      // )),
 
       //       ],
       //     ),
@@ -300,7 +291,6 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
                     options: CarouselOptions(
                       initialPage: currentIndex,
                       autoPlay: isAuthoPlay,
-                      
                       autoPlayAnimationDuration: Duration(seconds: 1),
                     ),
                   ),
@@ -406,13 +396,11 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
 
   Widget buildImage(String urlImage, index) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50.0),
-      color: Color.fromRGBO(31, 31, 31, 0.9),
-      width: double.infinity,
-      child: Image.asset(
-        urlImage,
-        fit: BoxFit.contain,
-      ),
-    );
+        margin: EdgeInsets.symmetric(horizontal: 50.0),
+        color: Color.fromRGBO(31, 31, 31, 0.9),
+        width: double.infinity,
+        child: CachedNetworkImage(
+          imageUrl: urlImage,
+        ));
   }
 }

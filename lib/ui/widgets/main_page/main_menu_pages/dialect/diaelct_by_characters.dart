@@ -12,6 +12,7 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_read_scr
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_librar_data_show.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dialect/dialect_data_show.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import '../../../../../domens/models/book_data/data.dart';
 import '/config/palette.dart';
 
 class DialectByCharacters extends StatefulWidget {
@@ -46,7 +47,7 @@ class _DialectByCharactersState extends State<DialectByCharacters>
   final String characterByindex;
   final int characterIndex;
   final List<Object> characters;
-  Future<List<ByCharacters>?>? charctersData;
+  Future<List<Data>?>? charctersData;
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +176,7 @@ class _DelegateChildState extends State<DelegateChild>
   final String characterByindex;
   final int characterIndex;
   final Object characters;
-  Future<List<ByCharacters>?>? dialectByCharacters;
+  Future<List<Data>?>? dialectByCharacters;
 
   late TabController _tabController;
 
@@ -195,7 +196,7 @@ class _DelegateChildState extends State<DelegateChild>
   Widget buildData() {
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      child: FutureBuilder<List<ByCharacters>?>(
+      child: FutureBuilder<List<Data>?>(
           future: dialectByCharacters,
           builder: (context, snapshot) {
             var data = snapshot.data;

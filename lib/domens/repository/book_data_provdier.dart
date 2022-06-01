@@ -38,7 +38,7 @@ class BookDataProvider {
       sessionDataProvider.setShowMenuList([
         (data as List).map((e) => BookCategory.fromJson(e)).toList().toString()
       ]);
-      return (data as List).map((e) => BookCategory.fromJson(e)).toList();
+      return (data).map((e) => BookCategory.fromJson(e)).toList();
 
       // print(newData);
       // libraryList.addAll(newData);
@@ -102,52 +102,17 @@ class BookDataProvider {
     var success = body['success'];
     if (success == true) {
       var data = body['data'];
-
-      // List<dynamic> keyGallery = Map.from(data).keys.map((e) => e).toList();
-      //  inspect(keyGallery);
-
-      //  inspect(newElement);
-
-      // newElement.forEach(
-      //   (key, value) {
-      //     if (value is List) {
-      //     } else {
-      //       Map.from(value).values.forEach((element) {
-      //         //   var newData = Gallery.fromJson(element);
-      //       });
-
-      //       print('Is Map');
-      //     }
-      //   },
-      // );
-      // newElement.forEach(
-      //   (key, value) {
-      //     if (value is List) {
-      //     } else {
-      //       Map.from(value).values.forEach((element) {
-      //         //   var newData = Gallery.fromJson(element);
-      //         Gallery.fromJson(element);
-      //       });
-
-      //       print('Is Map');
-      //     }
-
-      //   },
-      // );
       Map.from(data).forEach((key, value) {
         (value is List)
-            ? galleryMap.add(key)
-            : Map<String, dynamic>.from(value).entries.forEach((element) {
-                var dataf = MapEntry(key, Gallery.fromJson(element.value));
-                galleryMap.addAll([dataf]);
+            ? galleryList.add([key, value])
+            : Map<String, dynamic>.from(value).forEach((key2, value2) {
+                var dataf = [key, Gallery.fromJson(value2)];
+
+                galleryList.add(dataf);
               });
       });
     }
-
-    Set.from(galleryMap).map((e) {
-      Map.from(e).values.map((e) => print(e));
-    });
-
+    inspect(galleryList);
     return galleryList;
   }
   //     Map.from(data).forEach((key, value) => galleryList.add(value is List
@@ -204,8 +169,8 @@ class BookDataProvider {
   }
 
   //Data by characters
-  Future<List<ByCharacters>> getDataByCharacters(String url) async {
-    var dialects = <ByCharacters>[];
+  Future<List<Data>> getDataByCharacters(String url) async {
+    var dialects = <Data>[];
 
     var response = await http.get(
       Uri.parse(url),
@@ -219,7 +184,7 @@ class BookDataProvider {
     if (success == true) {
       Map.from(datas).values.forEach((element) {
         //print(element);
-        var dat = ByCharacters.fromJSon(element);
+        var dat = Data.fromJson(element);
         dialects.add(dat);
       });
       inspect(dialects);

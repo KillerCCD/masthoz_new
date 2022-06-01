@@ -11,6 +11,7 @@ import 'dart:math' as math;
 import '../../../../domens/models/book_data/book.dart';
 import '../../helper_widgets/actions_widgets.dart';
 import '../../helper_widgets/menuShow.dart';
+import '../library_pages/book_read_screen.dart';
 import '/config/palette.dart';
 
 class SearchPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   String query = '';
   final searchBookProvider = SearchBookProvider();
 
-  var searchbooks = <Book>[];
+  var searchbooks = <Search>[];
   var searcjBookforDisplay = <Search>[];
 
   @override
@@ -44,13 +45,13 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future init() async {
-    final books = await SearchBookProvider.getBooks(query);
+    final books = await SearchBookProvider.fetchAllBooks(query);
 
     setState(() => this.searchbooks = books);
   }
 
   Future searchBook(String query) async => debounce(() async {
-        final books = await SearchBookProvider.getBooks(query);
+        final books = await SearchBookProvider.fetchAllBooks(query);
 
         if (!mounted) return;
 
@@ -78,34 +79,11 @@ class _SearchPageState extends State<SearchPage> {
       child: Scaffold(
           backgroundColor: Palette.searchBackGroundColor,
           extendBodyBehindAppBar: false,
+          resizeToAvoidBottomInset: false,
           body: Padding(
             padding: const EdgeInsets.only(right: 20.0, left: 20.0),
             child: CustomScrollView(
               slivers: [
-                // SliverAppBar(
-                //   pinned: false,
-                //   floating: true,
-                //   title: Padding(
-                //     padding: const EdgeInsets.only(left: 20),
-                //     child: Text(
-                //       'Որոնել',
-                //       style: TextStyle(
-                //           fontSize: 20,
-                //           letterSpacing: 1,
-                //           fontFamily: 'GHEAGrapalat',
-                //           fontWeight: FontWeight.bold,
-                //           color: Palette.appBarTitleColor),
-                //     ),
-                //   ),
-                //   expandedHeight: 73,
-                //   backgroundColor: Palette.searchBackGroundColor,
-                //   elevation: 0,
-                //   automaticallyImplyLeading: false,
-                //   systemOverlayStyle: SystemUiOverlayStyle(
-                //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-                //   actions: [
-                //     MenuShow(),
-                //   ],
                 // ),
                 SliverAppBar(
                   title: Align(
@@ -130,25 +108,6 @@ class _SearchPageState extends State<SearchPage> {
                     MenuShow(),
                   ],
                 ),
-                // SliverAppBar(
-                //   expandedHeight: 73,
-                //   backgroundColor: Palette.searchBackGroundColor,
-                //   elevation: 0,
-                //   automaticallyImplyLeading: false,
-                //   systemOverlayStyle: SystemUiOverlayStyle(
-                //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-                //   flexibleSpace: ActionsHelper(
-                //     leftPadding: 50,
-                //     // botomPadding: 0,
-                //     // topPadding: 30,
-                //     text: 'Որոնել',
-                //     fontFamily: 'GHEAGrapalat',
-                //     fontSize: 20,
-                //     laterSpacing: 1,
-                //     fontWeight: FontWeight.bold,
-                //     color: Palette.appBarTitleColor,
-                //   ),
-                // ),
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Column(
@@ -187,21 +146,27 @@ class _SearchPageState extends State<SearchPage> {
                           onChanged: searchBook,
                         ),
                       ),
-                      SizedBox(height: 20.0),
+
                       searchbooks.isNotEmpty
                           ? Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Որոնման արդյունքները',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(122, 108, 115, 1),
-                                    fontFamily: "GHEAGrapalat",
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400),
+                              child: Container(
+                                height: 50.0,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Որոնման արդյունքները',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(122, 108, 115, 1),
+                                        fontFamily: "GHEAGrapalat",
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                               ),
                             )
                           : SizedBox(height: 20.0),
-                      SizedBox(height: 20),
+
                       Expanded(
                           child: ListView.builder(
                               shrinkWrap: true,
@@ -211,7 +176,12 @@ class _SearchPageState extends State<SearchPage> {
                                 final book = searchbooks[index];
                                 return InkWell(
                                   onTap: () {
-                                    // Navigator.push(context,MaterialPageRoute(builder: (_)=> BookReadScreen(readScreen: )))
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => BookReadScreen(
+                                                  searchData: book,
+                                                )));
                                   },
                                   child: Column(
                                     crossAxisAlignment:
@@ -228,7 +198,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   width: 116,
                                                   height: 160,
                                                   child: CachedNetworkImage(
-                                                    imageUrl: book.urlImage,
+                                                    imageUrl: book.image!,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 )),
@@ -236,7 +206,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 top: 63,
                                                 left: 126,
                                                 child: Text(
-                                                  book.author,
+                                                  "  ${book.id} : ${book.type}",
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       color: Color.fromRGBO(

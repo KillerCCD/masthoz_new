@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 const String base_url = 'https://mashtoz.org';
 const api_url = base_url + '/api/v1';
 
@@ -27,9 +25,9 @@ class Api {
 
   static String get updateFavorite => api_url + '/updateFavorite';
 
-    //Get Favorite
+  //Get Favorite
   static String get getFavorites => api_url + '/getFavorites';
-  
+
   //User_Info API
   static String get userInfo => api_url + '/me';
 
@@ -86,4 +84,11 @@ class Api {
 
   //Words of Day APIs
   static String get wordsOfDay => api_url + '/wordsofday';
+
+  //Search
+  static search(query) => api_url + '/search?search=$query';
+
+  //Search results
+  static searchReuslts({String? type, int? id}) =>
+      api_url + '/byType/$type/$id';
 }

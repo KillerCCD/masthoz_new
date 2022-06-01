@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
@@ -46,7 +47,7 @@ class _AudioLibraryByCharactersState extends State<AudioLibraryByCharacters>
   final String characterByindex;
   final int characterIndex;
   final List<Object> characters;
-  Future<List<ByCharacters>?>? charctersData;
+  Future<List<Data>?>? charctersData;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +166,7 @@ class _DelegateChildState extends State<DelegateChild>
   final String characterByindex;
   final int characterIndex;
   final Object characters;
-  Future<List<ByCharacters>?>? audioLibraryByCharacters;
+  Future<List<Data>?>? audioLibraryByCharacters;
 
   late TabController _tabController;
 
@@ -188,7 +189,7 @@ class _DelegateChildState extends State<DelegateChild>
       child: Column(
         children: [
           SizedBox(height: 52),
-          FutureBuilder<List<ByCharacters>?>(
+          FutureBuilder<List<Data>?>(
               future: audioLibraryByCharacters,
               builder: (context, snapshot) {
                 var data = snapshot.data;

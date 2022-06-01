@@ -6,11 +6,14 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
+import 'package:mashtoz_flutter/domens/models/user.dart';
+import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
+import 'package:provider/provider.dart';
 
 import '../../../helper_widgets/menuShow.dart';
 
@@ -39,6 +42,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
   @override
   Widget build(BuildContext context) {
     final orentation = MediaQuery.of(context).orientation;
+    var data = context.watch<UserInfoNotify>();
     return Padding(
       padding: const EdgeInsets.only(right: 20, left: 20.0),
       child: Scaffold(
@@ -183,22 +187,14 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                                   onTap: () {
                                     var data = <String, dynamic>{
                                       'type': 'lessons',
-                                      'type_id': 5,
+                                      'type_id': lessons?.id,
                                       'customer_id': 38,
                                     };
-
-                                    print('share anel paterin');
-                                    userDataProvider.saveFavorite(data);
+                                    setState(() {
+                                      userIsSign(data);
+                                    });
+                                    //  data.userData();
                                     // _showMyDialog();
-                                    // showDialog(
-                                    //     context: context,
-                                    //     barrierDismissible: false,
-                                    //     builder: (
-                                    //       context,
-                                    //     ) =>
-                                    //         SaveShowDialog(
-                                    //           isShow: true,
-                                    //         ));
                                   },
                                   child: Row(
                                     children: [
@@ -223,5 +219,22 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
         ),
       ),
     );
+  }
+
+  void userIsSign(Map<String, dynamic> data) async {
+    User hasId = await userDataProvider.fetchUserInfo();
+    bool isSign = await userDataProvider.saveFavorite(data);
+
+    if (!isSign || hasId.isEmpty) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (
+            context,
+          ) =>
+              SaveShowDialog(
+                isShow: true,
+              ));
+    }
   }
 }

@@ -28,37 +28,7 @@ class Book {
       };
 }
 // class Book {
-//   final String title;
-//   final String bookName;
-//   final String imageUrl;
-//   final String body;
-//   const Book({
-//     required this.body,
-//     required this.bookName,
-//     required this.title,
-//     required this.imageUrl,
-//   });
 
-//   // Map<String, dynamic> toMap() {
-//   //   return {
-//   //     'title': title,
-//   //     'imageUrl': imageUrl,
-//   //   };
-//   // }
-
-//   factory Book.fromJson(Map<String, dynamic> json) {
-//     return Book(
-//       bookName: json['bookName'],
-//       title: json['title'],
-//       imageUrl: json['imageUrl'],
-//       body: json['body']
-//     );
-//   }
-
-//   // String toJson() => json.encode(toMap());
-
-//   //factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
-// }
 
 class IalianLesson {
   final int id;

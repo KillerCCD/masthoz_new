@@ -9,10 +9,11 @@ import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
+import '../../../../../domens/models/book_data/data.dart';
 import '../../../helper_widgets/menuShow.dart';
 
 class DialectDataShow extends StatefulWidget {
-  final ByCharacters? dataCharacter;
+  final Data? dataCharacter;
   const DialectDataShow({Key? key, this.dataCharacter}) : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class _DialectDataShowState extends State<DialectDataShow> {
   var textData =
       '135, 112. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26';
 
-  final ByCharacters? dataCharacter;
+  final Data? dataCharacter;
   _DialectDataShowState({this.dataCharacter});
   @override
   void initState() {

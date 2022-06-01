@@ -8,6 +8,7 @@ import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import '../../../../../domens/models/book_data/data.dart';
 import '../../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
 
@@ -45,7 +46,7 @@ class _DictionaryArmItlState extends State<DictionaryArmItl>
   final String characterByindex;
   final int characterIndex;
   final List<Object> characters;
-  Future<List<ByCharacters>?>? charctersData;
+  Future<List<Data>?>? charctersData;
   final bool isShow;
 
   @override
@@ -150,8 +151,8 @@ class _DelegateChildState extends State<DelegateChild>
   final String characterByindex;
   final int characterIndex;
   final Object characters;
-  Future<List<ByCharacters>?>? charctersDataArmenian;
-  Future<List<ByCharacters>?>? charctersDataItalian;
+  Future<List<Data>?>? charctersDataArmenian;
+  Future<List<Data>?>? charctersDataItalian;
   final bool isShow;
 
   late TabController _tabController;
@@ -174,7 +175,7 @@ class _DelegateChildState extends State<DelegateChild>
   Widget buildData() {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-      child: FutureBuilder<List<ByCharacters>?>(
+      child: FutureBuilder<List<Data>?>(
           future: isShow ? charctersDataArmenian : charctersDataItalian,
           builder: (context, snapshot) {
             var data = snapshot.data;

@@ -1,73 +1,51 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:mashtoz_flutter/domens/fake_book_data.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 
 import 'package:mashtoz_flutter/domens/models/book_data/search_data.dart';
 import 'package:http/http.dart' as http;
-import '../models/book_data/book.dart';
+import 'package:mashtoz_flutter/globals.dart';
+
+import '../models/book_data/data.dart';
 
 class SearchBookProvider {
-  // Future<List<Search>> fetchBooks() async {
-  //   var searchList = <Search>[];
-  //   // var response =
-  //   //     await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
-  //   // var body = json.decode(response.body);
-  //   // if (response.statusCode == 200) {
-  //   // var data = body['data'];
-  //   //  var newDAta = (data as List).map((e) => Search.fromJson(e)).toList();
-  //   // var searchs = json.encode(searchLists);
-
-  //   var data = json.decode(jsonString);
-  //   // var newData = (data as List).map((e) => Search.fromJson(e)).where((book) {
-  //   //   final bookName = book.title?.toLowerCase();
-  //   //   //final typeName = book.type.typeName?.toLowerCase();
-  //   //   // final contetBodyName =
-  //   //   //     book.type.content?.values.map((e) => e.body).toString();
-  //   //   final searchLower = query.toLowerCase();
-  //   //   if (bookName!.contains(searchLower)) {
-  //   //     return true;
-  //   //   } else {
-  //   //     return false;
-  //   //   }
-  //   // }).toList();
-  //   // inspect(newData);
-  //   //  var newData = searchLists;
-  //   //  searchList.addAll(datas);
-  //   //return searchList;
-  //   //  }
-  //   // var newData = (data).map((e) => Search.fromJson(e)).toList();
-  //   var query = 'A1';
-  //   Map.from(data).forEach((key, value) {
-  //     //if (key.toString().contains(Map.from(value).values.first.toString())) {
-  //     for (var i = 0; i < (Map.from(data).length); i++) {
-  //       print('DADAS${data["book"]![i]}');
-  //     }
-
-  //     // }
-  //   });
-  //   var kiki = Search.fromJson(data);
-  //   inspect(kiki);
-  //   return searchList;
-  // }
-  static Future<List<Book>> getBooks(String query) async {
-    final url = Uri.parse(
-        'https://gist.githubusercontent.com/JohannesMilke/d53fbbe9a1b7e7ca2645db13b995dc6f/raw/eace0e20f86cdde3352b2d92f699b6e9dedd8c70/books.json');
-    final response = await http.get(url);
-
+  static Future<List<Search>> fetchAllBooks(String query) async {
+    // var searchList = <Search>[];
+    var response = await http
+        .get(Uri.parse("https://mashtoz.org/api/v1/search?search=$query"));
+    //var body =
     if (response.statusCode == 200) {
-      final List books = json.decode(response.body);
+      List books = json.decode(response.body)['data'];
 
-      return books.map((json) => Book.fromJson(json)).where((book) {
-        final titleLower = book.title.toLowerCase();
-        final authorLower = book.author.toLowerCase();
-        final searchLower = query.toLowerCase();
-
-        return titleLower.contains(searchLower) ||
-            authorLower.contains(searchLower);
+      return (books).map((e) => Search.fromJson(e)).where((book) {
+        final bookName = book.title?.toLowerCase();
+        inspect(book.id);
+        //final typeName = book.type.toString();
+        //final image = book.image;
+        final searchLover = query.toLowerCase();
+        return bookName.toString().contains(searchLover);
       }).toList();
     } else {
-      throw Exception();
+      return [];
+    }
+  }
+
+  //Navigate Search_reuslt to Screen
+  Future<Data?> fetchBook({String? type, int? id}) async {
+    var response =
+        await http.get(Uri.parse(Api.searchReuslts(type: type, id: id)));
+
+    try {
+      if (response.statusCode == 200) {
+        var books = json.decode(response.body)['data'];
+
+        return Data.fromJson(books);
+      } else {
+        return Data();
+      }
+    } catch (e) {
+      throw Exception('Failed to load Data');
     }
   }
 }

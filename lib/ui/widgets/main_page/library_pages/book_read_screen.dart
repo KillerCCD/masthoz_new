@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/search_data.dart';
+import 'package:mashtoz_flutter/domens/repository/search_book_data_provider.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:provider/provider.dart';
@@ -14,29 +19,51 @@ import '../../helper_widgets/save_show_dialog.dart';
 import 'book_inherited_widget.dart';
 
 class BookReadScreen extends StatefulWidget {
-  const BookReadScreen({Key? key, this.readScreen, this.encyclopediaBody})
+  const BookReadScreen(
+      {Key? key, this.readScreen, this.encyclopediaBody, this.searchData})
       : super(key: key);
 
-  final ByCharacters? encyclopediaBody;
+  final Data? encyclopediaBody;
   final Content? readScreen;
+  final Search? searchData;
 
   @override
   State<BookReadScreen> createState() => _BookReadScreenState(
-      readScreen: readScreen, encyclopediaBody: encyclopediaBody);
+      readScreen: readScreen,
+      encyclopediaBody: encyclopediaBody,
+      searchData: searchData);
 }
 
 class _BookReadScreenState extends State<BookReadScreen> {
-  _BookReadScreenState({this.readScreen, this.encyclopediaBody});
+  _BookReadScreenState(
+      {this.readScreen, this.encyclopediaBody, this.searchData});
 
+  final Content? readScreen;
+  final Search? searchData;
+  final Data? encyclopediaBody;
+  Future<Data?>? futureSearchText;
+  final searchBookProvider = SearchBookProvider();
+  Future<Content?>? content;
   var bookPartsLengt;
   var count = 0;
   var data;
-  final ByCharacters? encyclopediaBody;
-  bool isVisiblty = false;
-  final Content? readScreen;
   var textList = [];
+
   int pageindex = 0;
+  bool isVisiblty = false;
+
   PageController _pageController = PageController(initialPage: 1);
+
+  @override
+  void initState() {
+    _pageController;
+    futureSearchText = getSearchBook();
+    textList = bookGengerator(
+      readScreen?.body != null ? readScreen?.body : encyclopediaBody?.body,
+    )!;
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -45,31 +72,29 @@ class _BookReadScreenState extends State<BookReadScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    _pageController;
-    textList = bookGengerator(
-        readScreen?.body != null ? readScreen?.body : encyclopediaBody?.body)!;
-    super.initState();
+  Future<Data?> getSearchBook() async {
+    return await searchBookProvider.fetchBook(
+        type: searchData?.type, id: searchData?.id);
   }
 
+  //Book data add
   List<dynamic>? bookGengerator(String? x) {
     var textList = <dynamic>[];
 
     print(x?.length);
     var indexCharacter;
-    var cutCount = 800;
+    var cutCount = SizeConfig.screenWidth!.floor();
 
-    if (x!.length < cutCount) {
+    if (x != null && x.length < cutCount) {
       cutCount = x.length;
       indexCharacter = x.indexOf(' ', cutCount);
     } else {
-      indexCharacter = x.indexOf(' ', cutCount);
+      indexCharacter = x?.indexOf(' ', cutCount);
     }
 
-    var count = (x.length / indexCharacter).floor();
+    var count = x != null ? (x.length / indexCharacter).floor() : 0;
 
-    print(count);
+    print("DADADADADADADAAD$cutCount");
 
     for (var i = 0; i < count; i++) {
       final a = x!.substring(0, indexCharacter);
@@ -83,17 +108,47 @@ class _BookReadScreenState extends State<BookReadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-        controller: _pageController,
-        children: textList
-            .map((e) => BookPages(
-                  listText: e,
-                  readScreen: readScreen,
-                  encyclopediaBody: encyclopediaBody,
-                  controller: _pageController,
-                  //   isVisiblty: isVisiblty,
-                ))
-            .toList());
+    inspect(textList);
+    print(SizeConfig.screenHeight);
+    return searchData != null
+        ? FutureBuilder<Data?>(
+            future: futureSearchText,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var data = snapshot.data;
+                textList = bookGengerator(data?.body)!;
+                inspect(data);
+                return PageView(
+                    controller: _pageController,
+                    children: textList
+                        .map((e) => BookPages(
+                              listText: e,
+                              readScreen: readScreen,
+                              encyclopediaBody: encyclopediaBody,
+                              controller: _pageController,
+                              //   isVisiblty: isVisiblty,
+                            ))
+                        .toList());
+              } else {
+                return Container(
+                    child: Center(
+                        child: CircularProgressIndicator(
+                  color: Palette.main,
+                )));
+              }
+            },
+          )
+        : PageView(
+            controller: _pageController,
+            children: textList
+                .map((e) => BookPages(
+                      listText: e,
+                      readScreen: readScreen,
+                      encyclopediaBody: encyclopediaBody,
+                      controller: _pageController,
+                      //   isVisiblty: isVisiblty,
+                    ))
+                .toList());
   }
 }
 
@@ -106,7 +161,7 @@ class BookPages extends StatefulWidget {
     this.controller,
   }) : super(key: key);
 
-  final ByCharacters? encyclopediaBody;
+  final Data? encyclopediaBody;
   final String listText;
   final Content? readScreen;
   final PageController? controller;
@@ -126,7 +181,7 @@ class _BookPagesState extends State<BookPages> {
     this.controller,
   });
   final PageController? controller;
-  final ByCharacters? encyclopediaBody;
+  final Data? encyclopediaBody;
   bool isBovandakMenu = false;
   bool isFavorite = false;
   bool isSettings = false;
@@ -1984,133 +2039,133 @@ class _BookPagesState extends State<BookPages> {
                       child: SingleChildScrollView(
                           child: Column(
                         children: [
-                          listText.length.toString().contains('0')
-                              ? Container(
-                                  height: 238,
-                                  width: double.infinity,
-                                  child: Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          bottom: 49,
-                                          child: Align(
-                                              alignment: Alignment.center,
-                                              child: Container(
-                                                height: 94,
-                                                width: double.infinity,
-                                                color: Color.fromRGBO(
-                                                    164, 171, 189, 1),
-                                              ))),
-                                      Positioned.fill(
-                                          child: Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Container(
-                                                height: 180,
-                                                width: 140,
-                                                decoration: BoxDecoration(
-                                                  color: Palette
-                                                      .textLineOrBackGroundColor,
-                                                  border: Border.all(
-                                                    color: Color.fromRGBO(
-                                                        51, 51, 51, 1),
-                                                    width: 01,
-                                                  ),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                        child: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Container(
-                                                        height: 164.0,
-                                                        width: 122.0,
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl: encyclopediaBody !=
-                                                                  null
-                                                              ? '${encyclopediaBody?.image}'
-                                                              : '${readScreen?.image}',
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
-                                                    ))
-                                                  ],
-                                                ),
-                                              ))),
-                                      encyclopediaBody != null
-                                          ? Positioned.fill(
-                                              child: Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 20.0, right: 20.0),
-                                                  color: Palette
-                                                      .textLineOrBackGroundColor,
-                                                  width: double.infinity,
-                                                  height: 49,
-                                                  child: Row(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () {
-                                                          showDialog(
-                                                              context: context,
-                                                              barrierDismissible:
-                                                                  true,
-                                                              builder: (
-                                                                context,
-                                                              ) =>
-                                                                  SaveShowDialog(
-                                                                      isShow:
-                                                                          false));
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            //  const SizedBox(width: 16),
-                                                            SvgPicture.asset(
-                                                                'assets/images/այքըններ.svg'),
-                                                            const SizedBox(
-                                                                width: 6),
-                                                            const Text('Կիսվել')
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          print(
-                                                              'share anel paterin');
-                                                          // _showMyDialog();
-                                                          showDialog(
-                                                              context: context,
-                                                              barrierDismissible:
-                                                                  false,
-                                                              builder: (
-                                                                context,
-                                                              ) =>
-                                                                  SaveShowDialog(
-                                                                    isShow:
-                                                                        true,
-                                                                  ));
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                                'assets/images/վելացնել1.svg'),
-                                                            const SizedBox(
-                                                                width: 6),
-                                                            const Text('Պահել'),
-                                                            //const SizedBox(width: 16),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )),
-                                            ))
-                                          : Container(height: 0.1),
-                                    ],
-                                  ),
-                                )
-                              : Container(height: 0.1),
+                          // listText.length.toString().contains('0')
+                          //     ? Container(
+                          //         height: 238,
+                          //         width: double.infinity,
+                          //         child: Stack(
+                          //           children: [
+                          //             Positioned.fill(
+                          //                 bottom: 49,
+                          //                 child: Align(
+                          //                     alignment: Alignment.center,
+                          //                     child: Container(
+                          //                       height: 94,
+                          //                       width: double.infinity,
+                          //                       color: Color.fromRGBO(
+                          //                           164, 171, 189, 1),
+                          //                     ))),
+                          //             Positioned.fill(
+                          //                 child: Align(
+                          //                     alignment: Alignment.topCenter,
+                          //                     child: Container(
+                          //                       height: 180,
+                          //                       width: 140,
+                          //                       decoration: BoxDecoration(
+                          //                         color: Palette
+                          //                             .textLineOrBackGroundColor,
+                          //                         border: Border.all(
+                          //                           color: Color.fromRGBO(
+                          //                               51, 51, 51, 1),
+                          //                           width: 01,
+                          //                         ),
+                          //                       ),
+                          //                       child: Stack(
+                          //                         children: [
+                          //                           Positioned.fill(
+                          //                               child: Align(
+                          //                             alignment:
+                          //                                 Alignment.center,
+                          //                             child: Container(
+                          //                               height: 164.0,
+                          //                               width: 122.0,
+                          //                               child:
+                          //                                   CachedNetworkImage(
+                          //                                 imageUrl: encyclopediaBody !=
+                          //                                         null
+                          //                                     ? '${encyclopediaBody?.image}'
+                          //                                     : '${readScreen?.image}',
+                          //                                 fit: BoxFit.fill,
+                          //                               ),
+                          //                             ),
+                          //                           ))
+                          //                         ],
+                          //                       ),
+                          //                     ))),
+                          //             encyclopediaBody != null
+                          //                 ? Positioned.fill(
+                          //                     child: Align(
+                          //                     alignment: Alignment.bottomCenter,
+                          //                     child: Container(
+                          //                         padding: EdgeInsets.only(
+                          //                             left: 20.0, right: 20.0),
+                          //                         color: Palette
+                          //                             .textLineOrBackGroundColor,
+                          //                         width: double.infinity,
+                          //                         height: 49,
+                          //                         child: Row(
+                          //                           children: [
+                          //                             InkWell(
+                          //                               onTap: () {
+                          //                                 showDialog(
+                          //                                     context: context,
+                          //                                     barrierDismissible:
+                          //                                         true,
+                          //                                     builder: (
+                          //                                       context,
+                          //                                     ) =>
+                          //                                         SaveShowDialog(
+                          //                                             isShow:
+                          //                                                 false));
+                          //                               },
+                          //                               child: Row(
+                          //                                 children: [
+                          //                                   //  const SizedBox(width: 16),
+                          //                                   SvgPicture.asset(
+                          //                                       'assets/images/այքըններ.svg'),
+                          //                                   const SizedBox(
+                          //                                       width: 6),
+                          //                                   const Text('Կիսվել')
+                          //                                 ],
+                          //                               ),
+                          //                             ),
+                          //                             Spacer(),
+                          //                             InkWell(
+                          //                               onTap: () {
+                          //                                 print(
+                          //                                     'share anel paterin');
+                          //                                 // _showMyDialog();
+                          //                                 showDialog(
+                          //                                     context: context,
+                          //                                     barrierDismissible:
+                          //                                         false,
+                          //                                     builder: (
+                          //                                       context,
+                          //                                     ) =>
+                          //                                         SaveShowDialog(
+                          //                                           isShow:
+                          //                                               true,
+                          //                                         ));
+                          //                               },
+                          //                               child: Row(
+                          //                                 children: [
+                          //                                   SvgPicture.asset(
+                          //                                       'assets/images/վելացնել1.svg'),
+                          //                                   const SizedBox(
+                          //                                       width: 6),
+                          //                                   const Text('Պահել'),
+                          //                                   //const SizedBox(width: 16),
+                          //                                 ],
+                          //                               ),
+                          //                             ),
+                          //                           ],
+                          //                         )),
+                          //                   ))
+                          //                 : Container(height: 0.1),
+                          //           ],
+                          //         ),
+                          //       )
+                          //     : Container(height: 0.1),
                           // Stack(
                           //   children: [
                           //     Container(

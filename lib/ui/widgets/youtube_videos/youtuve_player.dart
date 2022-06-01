@@ -273,9 +273,11 @@ import 'package:wakelock/wakelock.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../domens/models/book_data/data.dart';
+
 class YoutubePlayers extends StatefulWidget {
   final Lessons? lessons;
-  final ByCharacters? dataCharacters;
+  final Data? dataCharacters;
   final bool? isShow;
   final String? url;
   const YoutubePlayers({
@@ -298,7 +300,7 @@ class _YoutubePlayersState extends State<YoutubePlayers> {
   final bool? isShow;
   final Lessons? lessons;
   final String? url;
-  final ByCharacters? dataCharacters;
+  final Data? dataCharacters;
   _YoutubePlayersState(
       {this.lessons, this.dataCharacters, this.isShow, this.url});
   late YoutubePlayerController _controller;

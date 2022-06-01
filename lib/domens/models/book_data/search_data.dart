@@ -9,32 +9,27 @@ Search searchFromMap(String str) => Search.fromJson(json.decode(str));
 class Search {
   int? id;
   String? title;
-  String? imageUrl;
-  final  Map<String,Search>? type;
-  Content? content;
+  String? image;
+  String? type;
 
   Search({
     this.id,
     this.title,
-    this.imageUrl,
+    this.image,
     this.type,
-    this.content,
   });
 
   factory Search.fromJson(Map<String, dynamic> json) => Search(
         id: json["id"],
         title: json["title"],
-        imageUrl: json["image_url"],
-        //type: json["type"] == null ? null : Search.fromJson(json["type"]),
-        content:
-            json["content"] == null ? null : Content.fromJson(json["content"]),
+        image: json["image"],
+        type: json['type'],
       );
 
-  // Map<String, dynamic> toMap() => {
-  //     "id": id,
-  //     "title": title,
-  //     "image_url": imageUrl,
-  //     "book": book == null ? null : book.toMap(),
-  //     "content": content == null ? null : content.toMap(),
-  // };
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "title": title,
+        "image": image,
+        "type": type == null ? null : type,
+      };
 }

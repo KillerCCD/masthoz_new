@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
+import 'package:mashtoz_flutter/domens/models/user.dart';
+import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
 import '../../globals.dart';
 import 'package:http/http.dart' as http;
@@ -205,9 +207,9 @@ class UserDataProvider {
   }
 
   //Fetch User Info
-  Future<bool> fetchUserInfo() async {
+  Future<User> fetchUserInfo() async {
     var token = await sessionDataProvider.readsAccessToken();
-
+    var user;
     try {
       var response = await http.get(
         Uri.parse(Api.userInfo),
@@ -216,20 +218,26 @@ class UserDataProvider {
           'Authorization': 'bearer $token'
         },
       );
-
+      var body = jsonDecode(response.body);
       if (response.statusCode == 200) {
         print('success');
-        return true;
+        Map.from(body).forEach((key, value) {
+          user = User.fromJson(value);
+        });
+        return user;
       } else if (response.statusCode == 401) {
-        refreshToken();
+        bool isTrue = await refreshToken();
+        if (isTrue) {
+          fetchUserInfo();
+        }
+        ;
       } else {
         print("failed");
-        return false;
       }
     } catch (e) {
       print(e);
     }
-    return false;
+    return user;
   }
 
   //Contact Form
@@ -272,7 +280,7 @@ class UserDataProvider {
         print('success');
       } else if (response.statusCode == 401) {
         bool isTrue = await refreshToken();
-        isTrue ? print("true") : print('falseDavs');
+        isTrue ? true : false;
       } else {
         print("failed");
       }
@@ -300,8 +308,13 @@ class UserDataProvider {
         return true;
       } else if (response.statusCode == 401) {
         bool isTrue = await refreshToken();
+
         if (isTrue) {
           saveFavorite(parameters);
+          return true;
+          //  UsersIsSign(true);
+        } else {
+          return false;
         }
       } else {
         print("failed");
@@ -341,24 +354,27 @@ class UserDataProvider {
     final refresh_token = await sessionDataProvider.readRefreshToken();
     final access_token = await sessionDataProvider.readsAccessToken();
     if (refresh_token != null) {
-      final response = await http.post(Uri.parse(Api.refreshToken), headers: {
-        'Authorization': 'bearer $access_token',
-        'Contnet-type': "application/json"
-      }, body: <String, dynamic>{
-        'refresh_token': '$refresh_token',
-      });
-      ;
-      var body = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        var access_token = body['access_token'];
+      try {
+        final response = await http.post(Uri.parse(Api.refreshToken), headers: {
+          'Authorization': 'bearer $access_token',
+          'Contnet-type': "application/json"
+        }, body: <String, dynamic>{
+          'refresh_token': '$refresh_token',
+        });
+        ;
+        var body = jsonDecode(response.body);
 
-        sessionDataProvider.setAccessToken(access_token);
+        if (response.statusCode == 200) {
+          var access_token = body['access_token'];
 
-        return true;
-      } else {
-        // refresh token is wrong
+          sessionDataProvider.setAccessToken(access_token);
 
-        sessionDataProvider.deleteAllToken();
+          return true;
+        } else {
+          sessionDataProvider.deleteAllToken();
+          return false;
+        }
+      } catch (e) {
         return false;
       }
     } else {

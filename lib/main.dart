@@ -5,6 +5,7 @@ import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
+import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
@@ -40,11 +41,13 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<ContentProvider>(
               create: (_) => ContentProvider()),
-          ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier())
+          ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider<UserInfoNotify>(
+              create: (_) => UserInfoNotify())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
+          home: GalleryItem(),
         ),
       ),
     );

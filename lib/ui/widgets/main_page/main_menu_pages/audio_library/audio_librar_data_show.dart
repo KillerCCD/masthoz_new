@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
@@ -13,7 +14,7 @@ import '../../../helper_widgets/menuShow.dart';
 import '../../../helper_widgets/save_show_dialog.dart';
 
 class AudioLibraryDataShow extends StatefulWidget {
-  final ByCharacters? dataCharacter;
+  final Data? dataCharacter;
   const AudioLibraryDataShow({Key? key, this.dataCharacter}) : super(key: key);
 
   @override
@@ -25,7 +26,7 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
   var textData =
       '135, 112. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26';
 
-  final ByCharacters? dataCharacter;
+  final Data? dataCharacter;
   _AudioLibraryDataShowState({this.dataCharacter});
   @override
   void initState() {
