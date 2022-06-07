@@ -19,6 +19,8 @@ class Gallery {
             ? null
             : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
       );
+
+  get resource => null;
 }
 
 class Image {

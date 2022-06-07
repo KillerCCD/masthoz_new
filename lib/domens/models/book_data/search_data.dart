@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'content_list.dart';
+
 
 Search searchFromMap(String str) => Search.fromJson(json.decode(str));
 

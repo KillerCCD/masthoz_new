@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'gallery_data.dart';
 
 class Book {
   final int id;
@@ -45,17 +48,6 @@ class IalianLesson {
   });
 }
 
-class Gellerys {
-  Gellerys({
-    required this.id,
-    required this.resource,
-    this.isSvg = false,
-  });
-
-  final String id;
-  final String resource;
-  final bool isSvg;
-}
 
 class GalleryExampleItemThumbnail extends StatelessWidget {
   const GalleryExampleItemThumbnail({
@@ -64,7 +56,7 @@ class GalleryExampleItemThumbnail extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final Gellerys galleryExampleItem;
+  final Gallery galleryExampleItem;
 
   final GestureTapCallback onTap;
 
@@ -76,8 +68,8 @@ class GalleryExampleItemThumbnail extends StatelessWidget {
         onTap: onTap,
         child: Hero(
           
-          tag: galleryExampleItem.id,
-          child: Image.asset(galleryExampleItem.resource, height: 80.0),
+          tag: galleryExampleItem.id.toString(),
+          child: CachedNetworkImage(imageUrl: galleryExampleItem.image!,height: 80,),
         ),
       ),
     );

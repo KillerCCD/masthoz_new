@@ -87,31 +87,35 @@ class BookDataProvider {
 
   //Fetch Gallery List
   Future<List<dynamic>> fetchGalleryList() async {
-    var galleryMap = <dynamic>{};
     var galleryList = <dynamic>[];
-    var keyGallery = <dynamic>[];
-    var response = await http.get(
-      Uri.parse(Api.gallery),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-    );
 
-    var body = json.decode(response.body);
-    var dataf;
-    var success = body['success'];
-    if (success == true) {
-      var data = body['data'];
-      Map.from(data).forEach((key, value) {
-        (value is List)
-            ? galleryList.add([key, value])
-            : Map<String, dynamic>.from(value).forEach((key2, value2) {
-                var dataf = [key, Gallery.fromJson(value2)];
+    try {
+      var response = await http.get(
+        Uri.parse(Api.gallery),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      );
 
-                galleryList.add(dataf);
-              });
-      });
+      var body = json.decode(response.body);
+
+      var success = body['success'];
+      if (success == true) {
+        var data = body['data'];
+        Map.from(data).forEach((key, value) {
+          (value is List)
+              ? galleryList.add([key, value])
+              : Map<String, dynamic>.from(value).forEach((key2, value2) {
+                  var dataf = [key, Gallery.fromJson(value2)];
+
+                  galleryList.add(dataf);
+                });
+        });
+      }
+    } catch (e) {
+      print(e);
     }
+
     inspect(galleryList);
     return galleryList;
   }

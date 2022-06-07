@@ -72,19 +72,3 @@ String jsonString = '''{
     }
     
 }''';
-
-List<Gellerys> galleryItems = [
-  Gellerys(
-    id: "tag1",
-    resource: "assets/images/gallery1.jpg",
-  ),
-  Gellerys(id: "tag2", resource: "assets/images/gallery3.jpg"),
-  Gellerys(
-    id: "tag3",
-    resource: "assets/images/gallery2.jpg",
-  ),
-  Gellerys(
-    id: "tag4",
-    resource: "assets/images/gallery3.jpg",
-  ),
-];

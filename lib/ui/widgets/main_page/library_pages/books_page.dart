@@ -64,7 +64,7 @@ class _BooksScreenState extends State<BooksScreen> {
                 padding: const EdgeInsets.only(left: 50.0, top: 20.0),
                 child: Container(
                   height: 73,
-                  width: MediaQuery.of(context).size.width - 80,
+                  width: MediaQuery.of(context).size.width - 90,
                   padding: EdgeInsets.only(top: 18),
                   child: Text(
                     '${category?.categoryTitle}',
@@ -236,25 +236,22 @@ class BookCard extends StatelessWidget {
                   top: 147,
                   left: 0,
                   child: SizedBox(
-                      width: 388,
+                      width: 320,
                       height: 14,
                       child: Stack(children: <Widget>[
                         Positioned(
                             top: 0,
                             left: 0,
                             child: Container(
-                                width: 388,
+                                width: 320,
                                 height: 14,
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(255, 255, 255, 1),
-                                ),
                                 child: Stack(children: <Widget>[
                                   Positioned(
                                     top: 0,
                                     left: 0,
                                     child: Container(
                                       height: 14,
-                                      width: 388,
+                                      width: 320,
                                       child: CustomPaint(
                                         foregroundPainter: BookBox(),
                                       ),
@@ -393,10 +390,11 @@ class BookCard extends StatelessWidget {
               ),
 
               Positioned.fill(
+                left: 100,
                 child: isOdd
                     ? Align(
                         alignment: book.title!.isNotEmpty
-                            ? Alignment.topRight
+                            ? Alignment.topCenter
                             : Alignment.center,
                         child: Container(
                           child: Transform(
@@ -426,7 +424,7 @@ class BookCard extends StatelessWidget {
                       )
                     : Align(
                         alignment: book.title!.isNotEmpty
-                            ? Alignment.topRight
+                            ? Alignment.topCenter
                             : Alignment.center,
                         child: Container(
                           padding: book.title!.isNotEmpty
@@ -451,9 +449,10 @@ class BookCard extends StatelessWidget {
               ),
               Positioned.fill(
                 top: 66,
+                left: 100,
                 child: isOdd
                     ? Align(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topCenter,
                         child: Container(
                           child: Transform(
                             transform: Matrix4.rotationY(math.pi),
@@ -477,7 +476,7 @@ class BookCard extends StatelessWidget {
                         ),
                       )
                     : Align(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topCenter,
                         child: Container(
                           // color: Colors.orange,
                           child: SizedBox(
