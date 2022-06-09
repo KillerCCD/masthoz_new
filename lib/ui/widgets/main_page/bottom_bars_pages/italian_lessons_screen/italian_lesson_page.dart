@@ -129,7 +129,7 @@ class _ItalianPageState extends State<ItalianPage>
 
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1, childAspectRatio: (2 / 1)),
+                        crossAxisCount: 1, childAspectRatio: (2 / 1.3)),
                     reverse: isTurnLesson,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,

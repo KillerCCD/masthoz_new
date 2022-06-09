@@ -25,6 +25,7 @@ class GalleryItem extends StatefulWidget {
 }
 
 class _GalleryItemState extends State<GalleryItem> {
+  bool isExpanded = false;
   //void open(BuildContext context, final int index) {
   // Navigator.push(
   //   context,
@@ -116,12 +117,20 @@ class _GalleryItemState extends State<GalleryItem> {
                             dynamic galery = newData[1];
                             print(galery.runtimeType);
                             return ExpansionTile(
-                              title: SizedBox(
+                              title: Container(
                                 child: Text(
                                   '${newData[0]}',
                                   textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'GHEAGrapalat',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.0,
+                                      color: Color.fromRGBO(113, 141, 156, 1)),
                                 ),
                               ),
+                              onExpansionChanged: (bool expandint) =>
+                                  setState(() => this.isExpanded = expandint),
                               leading:
                                   SvgPicture.asset('assets/images/line24.svg'),
                               controlAffinity: ListTileControlAffinity.leading,

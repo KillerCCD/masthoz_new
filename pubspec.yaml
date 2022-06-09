@@ -67,6 +67,7 @@ dependencies:
   auto_orientation: ^2.2.1
   intl: ^0.17.0
   carousel_slider: ^4.1.1
+  animated_splash_screen: ^1.2.0
   
   
   

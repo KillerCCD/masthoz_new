@@ -147,10 +147,10 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                               ])),
                         )),
                         Positioned.fill(
+                          top: 200,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                              height: 105,
                               child: Stack(
                                 children: [
                                   Positioned.fill(
@@ -162,22 +162,22 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                           "${book.title}",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(25, 4, 18, 1),
-                                              fontSize: 12,
-                                              letterSpacing: 1,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: "GEHAGrapalat",
-                                              height: 1),
+                                            color: Color.fromRGBO(25, 4, 18, 1),
+                                            fontSize: 12,
+                                            letterSpacing: 1,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "GEHAGrapalat",
+                                            height: 1,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   )),
-                                  Positioned(
+                                  Positioned.fill(
+                                    top: 50,
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
-                                        height: 55,
                                         child: Expanded(
                                           child: Align(
                                             alignment: Alignment.topCenter,
@@ -316,6 +316,8 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                   const Color.fromRGBO(250, 147, 114, 1),
                               textColor: const Color.fromRGBO(84, 112, 126, 1),
                               iconColor: Palette.whenTapedButton,
+                              childrenPadding:
+                                  EdgeInsets.only(left: 20.0, right: 20.0),
                               title: Text(
                                 '${bovandak?[index].title}',
                                 style: TextStyle(
@@ -377,7 +379,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                                         scrollDirection:
                                                             Axis.vertical,
                                                         physics:
-                                                            const NeverScrollableScrollPhysics(),
+                                                            NeverScrollableScrollPhysics(),
                                                         itemBuilder:
                                                             (context, index3) {
                                                           Content readContent =
@@ -403,31 +405,36 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                                                           40.0,
                                                                       right:
                                                                           20.0),
-                                                              height: 60,
-                                                              child: Row(
+                                                              child: Column(
                                                                 children: [
-                                                                  SvgPicture.asset(
-                                                                      'assets/images/line24.svg'),
-                                                                  SizedBox(
-                                                                      width:
-                                                                          20.0),
-                                                                  Expanded(
-                                                                    child: Text(
-                                                                      "${subContent[index3].title}",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              'GHEAGrapalat',
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight: FontWeight
-                                                                              .w700,
-                                                                          letterSpacing:
-                                                                              1),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                    ),
+                                                                  Row(
+                                                                    children: [
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                              'assets/images/line24.svg'),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              20.0),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Text(
+                                                                          "${subContent[index3].title}",
+                                                                          style: TextStyle(
+                                                                              fontFamily: 'GHEAGrapalat',
+                                                                              fontSize: 14.0,
+                                                                              fontWeight: FontWeight.w700,
+                                                                              letterSpacing: 1),
+                                                                          textAlign:
+                                                                              TextAlign.start,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
+                                                                  Divider(
+                                                                      height:
+                                                                          20.0,
+                                                                      thickness:
+                                                                          1.0),
                                                                 ],
                                                               ),
                                                             ),

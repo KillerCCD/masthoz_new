@@ -280,7 +280,7 @@ class UserDataProvider {
         print('success');
       } else if (response.statusCode == 401) {
         bool isTrue = await refreshToken();
-        isTrue ? true : false;
+        isTrue ? print(true) : print(false);
       } else {
         print("failed");
       }

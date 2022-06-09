@@ -29,6 +29,7 @@ class _AudioLibraryState extends State<AudioLibrary>
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           slivers: [
             // SliverAppBar(
             //   title: ActionsHelper(
@@ -73,25 +74,33 @@ class _AudioLibraryState extends State<AudioLibrary>
             ),
             SliverFillRemaining(
               hasScrollBody: false,
-              child: Column(
-                children: [
-                  Flexible(
-                    child: Container(
-                      color: Color.fromRGBO(246, 246, 246, 1),
-                      width: double.infinity,
-                      height: 80,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Սեղմելով ցանկացած տառի վրա կարող եք\n ընթերցել այդ տառին համապատասխան\n նյութերը',
-                          textAlign: TextAlign.center,
+              child: Container(
+                color: Palette.textLineOrBackGroundColor,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      top: 43,
+                      bottom: 380,
+                      child: Container(
+                        color: Color.fromRGBO(246, 246, 246, 1),
+                        padding: EdgeInsets.only(
+                            left: 16, right: 16, top: 13, bottom: 13),
+                        width: double.infinity,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Սեղմելով ցանկացած տառի վրա կարող եք ընթերցել այդ տառին համապատասխան նյութերը',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 27),
-                  Expanded(flex: 3, child: _ArmenianItalian()),
-                ],
+                    Positioned.fill(
+                      top: 180,
+                      child: _ArmenianItalian(),
+                    )
+                  ],
+                ),
               ),
             )
           ],
@@ -128,10 +137,10 @@ class _ArmenianItalianState extends State<_ArmenianItalian> {
 
         if (snapshot.hasData) {
           return Scaffold(
+            backgroundColor: Palette.textLineOrBackGroundColor,
             body: GridView.count(
               mainAxisSpacing: 30,
               crossAxisCount: 7,
-              physics: AlwaysScrollableScrollPhysics(),
               children: List.generate(wordsArm.length, (index) {
                 return Center(
                   child: InkWell(

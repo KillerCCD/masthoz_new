@@ -18,14 +18,15 @@ class SearchBookProvider {
     if (response.statusCode == 200) {
       List books = json.decode(response.body)['data'];
 
-      return (books).map((e) => Search.fromJson(e)).where((book) {
-        final bookName = book.title?.toLowerCase();
-        inspect(book.id);
-        //final typeName = book.type.toString();
-        //final image = book.image;
-        final searchLover = query.toLowerCase();
-        return bookName.toString().contains(searchLover);
-      }).toList();
+      // return (books).map((e) => Search.fromJson(e)).where((book) {
+      //   final bookName = book.title?.toLowerCase();
+      //   inspect(book.title);
+      //   //final typeName = book.type.toString();
+      //   //final image = book.image;
+      //   final searchLover = query.toLowerCase();
+      //   return bookName.toString().contains(searchLover);
+      // }).toList();
+        return (books).map((e) => Search.fromJson(e)).toList();
     } else {
       return [];
     }

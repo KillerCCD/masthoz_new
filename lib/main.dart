@@ -1,21 +1,18 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
+
 import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 
 import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_inherited_widget.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_read_screen.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/contact_page.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/gallery/galery_item.dart';
 
 import 'package:provider/provider.dart';
 
@@ -47,9 +44,29 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: GalleryItem(),
+          home: HomeScreen(),
         ),
       ),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSplashScreen(
+      splash: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SvgPicture.asset('assets/images/surb-hogi.svg'),
+        ],
+      ),
+      nextScreen: HomeScreen(),
+      backgroundColor: Color.fromRGBO(83, 66, 77, 1),
+      duration: 3000,
+      splashTransition: SplashTransition.rotationTransition,
     );
   }
 }

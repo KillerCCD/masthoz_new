@@ -47,12 +47,12 @@ class _BookReadScreenState extends State<BookReadScreen> {
   var bookPartsLengt;
   var count = 0;
   var data;
-  var textList = [];
+  var textList = <String>[];
 
   int pageindex = 0;
   bool isVisiblty = false;
 
-  PageController _pageController = PageController(initialPage: 1);
+  PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
@@ -78,8 +78,8 @@ class _BookReadScreenState extends State<BookReadScreen> {
   }
 
   //Book data add
-  List<dynamic>? bookGengerator(String? x) {
-    var textList = <dynamic>[];
+  List<String>? bookGengerator(String? x) {
+    var textList = <String>[];
 
     print(x?.length);
     var indexCharacter;
@@ -94,22 +94,20 @@ class _BookReadScreenState extends State<BookReadScreen> {
 
     var count = x != null ? (x.length / indexCharacter).floor() : 0;
 
-    print("DADADADADADADAAD$cutCount");
-
     for (var i = 0; i < count; i++) {
       final a = x!.substring(0, indexCharacter);
       textList.add(a);
 
       x = x.substring(cutCount, x.length);
     }
-    textList.add(x);
+    textList.add(x ?? '');
     return textList;
   }
 
   @override
   Widget build(BuildContext context) {
-    inspect(textList);
-    print(SizeConfig.screenHeight);
+    inspect(textList.first);
+    // print(SizeConfig.screenHeight);
     return searchData != null
         ? FutureBuilder<Data?>(
             future: futureSearchText,
@@ -120,15 +118,16 @@ class _BookReadScreenState extends State<BookReadScreen> {
                 inspect(data);
                 return PageView(
                     controller: _pageController,
-                    children: textList
-                        .map((e) => BookPages(
-                              listText: e,
-                              readScreen: readScreen,
-                              encyclopediaBody: encyclopediaBody,
-                              controller: _pageController,
-                              //   isVisiblty: isVisiblty,
-                            ))
-                        .toList());
+                    children: textList.map((e) {
+                      print('EEEEEEEEEEEEE : ${e[0]}');
+                      return BookPages(
+                        listText: e,
+                        readScreen: readScreen,
+                        encyclopediaBody: encyclopediaBody,
+                        controller: _pageController,
+                        //   isVisiblty: isVisiblty,
+                      );
+                    }).toList());
               } else {
                 return Container(
                     child: Center(
@@ -138,39 +137,43 @@ class _BookReadScreenState extends State<BookReadScreen> {
               }
             },
           )
-        : PageView(
+        : PageView.builder(
             controller: _pageController,
-            children: textList
-                .map((e) => BookPages(
-                      listText: e,
-                      readScreen: readScreen,
-                      encyclopediaBody: encyclopediaBody,
-                      controller: _pageController,
-                      //   isVisiblty: isVisiblty,
-                    ))
-                .toList());
+            itemBuilder: (BuildContext context, index) {
+              return BookPages(
+                listText: textList[index],
+                readScreen: readScreen,
+                encyclopediaBody: encyclopediaBody,
+                controller: _pageController, index: index,
+                //   isVisiblty: isVisiblty,
+              );
+            },
+          );
   }
 }
 
 class BookPages extends StatefulWidget {
+  final Data? encyclopediaBody;
+  final String listText;
+  final Content? readScreen;
+  final PageController? controller;
+  final int? index;
   BookPages({
     Key? key,
     required this.listText,
     this.encyclopediaBody,
     this.readScreen,
     this.controller,
+    this.index,
   }) : super(key: key);
 
-  final Data? encyclopediaBody;
-  final String listText;
-  final Content? readScreen;
-  final PageController? controller;
   @override
   State<BookPages> createState() => _BookPagesState(
       listText: listText,
       readScreen: readScreen,
       encyclopediaBody: encyclopediaBody,
-      controller: controller);
+      controller: controller,
+      index: index);
 }
 
 class _BookPagesState extends State<BookPages> {
@@ -179,9 +182,11 @@ class _BookPagesState extends State<BookPages> {
     this.readScreen,
     this.encyclopediaBody,
     this.controller,
+    this.index,
   });
   final PageController? controller;
   final Data? encyclopediaBody;
+  final int? index;
   bool isBovandakMenu = false;
   bool isFavorite = false;
   bool isSettings = false;
@@ -2039,158 +2044,154 @@ class _BookPagesState extends State<BookPages> {
                       child: SingleChildScrollView(
                           child: Column(
                         children: [
-                          // listText.length.toString().contains('0')
-                          //     ? Container(
-                          //         height: 238,
-                          //         width: double.infinity,
-                          //         child: Stack(
-                          //           children: [
-                          //             Positioned.fill(
-                          //                 bottom: 49,
-                          //                 child: Align(
-                          //                     alignment: Alignment.center,
-                          //                     child: Container(
-                          //                       height: 94,
-                          //                       width: double.infinity,
-                          //                       color: Color.fromRGBO(
-                          //                           164, 171, 189, 1),
-                          //                     ))),
-                          //             Positioned.fill(
-                          //                 child: Align(
-                          //                     alignment: Alignment.topCenter,
-                          //                     child: Container(
-                          //                       height: 180,
-                          //                       width: 140,
-                          //                       decoration: BoxDecoration(
-                          //                         color: Palette
-                          //                             .textLineOrBackGroundColor,
-                          //                         border: Border.all(
-                          //                           color: Color.fromRGBO(
-                          //                               51, 51, 51, 1),
-                          //                           width: 01,
-                          //                         ),
-                          //                       ),
-                          //                       child: Stack(
-                          //                         children: [
-                          //                           Positioned.fill(
-                          //                               child: Align(
-                          //                             alignment:
-                          //                                 Alignment.center,
-                          //                             child: Container(
-                          //                               height: 164.0,
-                          //                               width: 122.0,
-                          //                               child:
-                          //                                   CachedNetworkImage(
-                          //                                 imageUrl: encyclopediaBody !=
-                          //                                         null
-                          //                                     ? '${encyclopediaBody?.image}'
-                          //                                     : '${readScreen?.image}',
-                          //                                 fit: BoxFit.fill,
-                          //                               ),
-                          //                             ),
-                          //                           ))
-                          //                         ],
-                          //                       ),
-                          //                     ))),
-                          //             encyclopediaBody != null
-                          //                 ? Positioned.fill(
-                          //                     child: Align(
-                          //                     alignment: Alignment.bottomCenter,
-                          //                     child: Container(
-                          //                         padding: EdgeInsets.only(
-                          //                             left: 20.0, right: 20.0),
-                          //                         color: Palette
-                          //                             .textLineOrBackGroundColor,
-                          //                         width: double.infinity,
-                          //                         height: 49,
-                          //                         child: Row(
-                          //                           children: [
-                          //                             InkWell(
-                          //                               onTap: () {
-                          //                                 showDialog(
-                          //                                     context: context,
-                          //                                     barrierDismissible:
-                          //                                         true,
-                          //                                     builder: (
-                          //                                       context,
-                          //                                     ) =>
-                          //                                         SaveShowDialog(
-                          //                                             isShow:
-                          //                                                 false));
-                          //                               },
-                          //                               child: Row(
-                          //                                 children: [
-                          //                                   //  const SizedBox(width: 16),
-                          //                                   SvgPicture.asset(
-                          //                                       'assets/images/այքըններ.svg'),
-                          //                                   const SizedBox(
-                          //                                       width: 6),
-                          //                                   const Text('Կիսվել')
-                          //                                 ],
-                          //                               ),
-                          //                             ),
-                          //                             Spacer(),
-                          //                             InkWell(
-                          //                               onTap: () {
-                          //                                 print(
-                          //                                     'share anel paterin');
-                          //                                 // _showMyDialog();
-                          //                                 showDialog(
-                          //                                     context: context,
-                          //                                     barrierDismissible:
-                          //                                         false,
-                          //                                     builder: (
-                          //                                       context,
-                          //                                     ) =>
-                          //                                         SaveShowDialog(
-                          //                                           isShow:
-                          //                                               true,
-                          //                                         ));
-                          //                               },
-                          //                               child: Row(
-                          //                                 children: [
-                          //                                   SvgPicture.asset(
-                          //                                       'assets/images/վելացնել1.svg'),
-                          //                                   const SizedBox(
-                          //                                       width: 6),
-                          //                                   const Text('Պահել'),
-                          //                                   //const SizedBox(width: 16),
-                          //                                 ],
-                          //                               ),
-                          //                             ),
-                          //                           ],
-                          //                         )),
-                          //                   ))
-                          //                 : Container(height: 0.1),
-                          //           ],
-                          //         ),
-                          //       )
-                          //     : Container(height: 0.1),
-                          // Stack(
-                          //   children: [
-                          //     Container(
-                          //       height: 150,
-                          //       width: double.infinity,
-                          //       color: Colors.pink,
-                          //     )
-                          //   ],
-                          // ),
+                          index == 0
+                              ? Container(
+                                  height: 238,
+                                  width: double.infinity,
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                          bottom: 49,
+                                          child: Align(
+                                              alignment: Alignment.center,
+                                              child: Container(
+                                                height: 94,
+                                                width: double.infinity,
+                                                color: Color.fromRGBO(
+                                                    164, 171, 189, 1),
+                                              ))),
+                                      Positioned.fill(
+                                          child: Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Container(
+                                                height: 180,
+                                                width: 140,
+                                                decoration: BoxDecoration(
+                                                  color: Palette
+                                                      .textLineOrBackGroundColor,
+                                                  border: Border.all(
+                                                    color: Color.fromRGBO(
+                                                        51, 51, 51, 1),
+                                                    width: 01,
+                                                  ),
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                        child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Container(
+                                                        height: 164.0,
+                                                        width: 122.0,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: encyclopediaBody !=
+                                                                  null
+                                                              ? '${encyclopediaBody?.image}'
+                                                              : '${readScreen?.image}',
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                    ))
+                                                  ],
+                                                ),
+                                              ))),
+                                      encyclopediaBody != null
+                                          ? Positioned.fill(
+                                              child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20.0, right: 20.0),
+                                                  color: Palette
+                                                      .textLineOrBackGroundColor,
+                                                  width: double.infinity,
+                                                  height: 49,
+                                                  child: Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true,
+                                                              builder: (
+                                                                context,
+                                                              ) =>
+                                                                  SaveShowDialog(
+                                                                      isShow:
+                                                                          false));
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            //  const SizedBox(width: 16),
+                                                            SvgPicture.asset(
+                                                                'assets/images/այքըններ.svg'),
+                                                            const SizedBox(
+                                                                width: 6),
+                                                            const Text('Կիսվել')
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Spacer(),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          print(
+                                                              'share anel paterin');
+                                                          // _showMyDialog();
+                                                          showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  false,
+                                                              builder: (
+                                                                context,
+                                                              ) =>
+                                                                  SaveShowDialog(
+                                                                    isShow:
+                                                                        true,
+                                                                  ));
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                                'assets/images/վելացնել1.svg'),
+                                                            const SizedBox(
+                                                                width: 6),
+                                                            const Text('Պահել'),
+                                                            //const SizedBox(width: 16),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ))
+                                          : Container(height: 0.1),
+                                    ],
+                                  ),
+                                )
+                              : Container(height: 0.1),
                           SizedBox(height: 16.0),
-                          Center(
-                              child: SizedBox(
-                                  width: 235,
-                                  height: 60,
-                                  child: Text(
-                                    encyclopediaBody != null
-                                        ? '${encyclopediaBody?.title}'
-                                        : '${readScreen?.title}',
-                                    style: TextStyle(
-                                        fontFamily: "GHEAGrapalat",
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1),
-                                    textAlign: TextAlign.center,
-                                  ))),
+                          index == 0
+                              ? Center(
+                                  child: SizedBox(
+                                      width: 235,
+                                      height: 60,
+                                      child: Text(
+                                        encyclopediaBody != null
+                                            ? '${encyclopediaBody?.title}'
+                                            : '${readScreen?.title}',
+                                        style: TextStyle(
+                                            fontFamily: "GHEAGrapalat",
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1),
+                                        textAlign: TextAlign.center,
+                                      )))
+                              : Container(
+                                  height: 0.1,
+                                  width: 0.1,
+                                ),
                           SizedBox(height: 16.0),
                           Padding(
                             padding: EdgeInsets.only(left: 16.0, right: 16.0),

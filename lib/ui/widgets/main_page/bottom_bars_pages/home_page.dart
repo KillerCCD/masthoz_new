@@ -142,7 +142,22 @@ class _HomePageState extends State<HomePage> {
                                 height: 44,
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text('25')),
+                                    child: Stack(
+                                      children: [
+                                        Center(
+                                          child: SvgPicture.asset(
+                                              'assets/images/Group5202.svg'),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            '25',
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                      ],
+                                    )),
                               ),
                               SizedBox(width: 14.0),
                               Expanded(
@@ -282,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     Positioned.fill(
-                                        bottom: 50,
+                                        bottom: 40,
                                         child: Align(
                                           alignment: Alignment.bottomCenter,
                                           child: Padding(
@@ -1263,6 +1278,9 @@ class _HomePageState extends State<HomePage> {
                                                               171,
                                                               189,
                                                               1)),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10.0,
                                                     ),
                                                     GestureDetector(
                                                         onTap: () {},

@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
-import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:provider/provider.dart';
 
@@ -151,7 +147,8 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 15.0),
+                    Divider(),
                     orentation != Orientation.landscape
                         ? Container(
                             color: Palette.textLineOrBackGroundColor,

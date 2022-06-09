@@ -50,8 +50,8 @@ class _LibraryPageState extends State<LibraryPage> {
               'Գրադարան',
               style: TextStyle(
                   fontFamily: 'GHEAGrapalat',
-                  fontSize: 23,
-                  letterSpacing: 1,
+                  fontSize: 18,
+                  letterSpacing: 1.5 ,
                   fontWeight: FontWeight.bold,
                   color: Palette.textLineOrBackGroundColor),
             ),
