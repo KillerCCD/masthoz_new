@@ -114,95 +114,100 @@ class _MenuShowState extends State<MenuShow>
                       height: 130,
                       child: Stack(
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 20.0),
-                            color: Palette.barColor,
-                            child: AppBar(
-                              leading: SizedBox(
-                                width: 0.1,
-                              ),
-                              systemOverlayStyle: SystemUiOverlayStyle(
-                                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-                              elevation: 0.0,
-                              backgroundColor:
-                                  Palette.barColor.withOpacity(0.5),
-                              flexibleSpace: Container(
-                                padding: EdgeInsets.only(right: 30.0),
-                                height: 200,
-                                width: MediaQuery.of(context).size.width,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 20.0,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      'assets/images/mashtoz_org.svg',
-                                      width: 250,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                          Positioned.fill(
+                            child: Container(
+                              padding: EdgeInsets.only(right: 20.0),
+                              color: Palette.barColor,
+                              child: AppBar(
+                                leading: SizedBox(
+                                  width: 0.1,
                                 ),
-                              ),
-
-                              //toolbarHeight: 63,
-                              actions: [
-                                Container(
-                                  width: 30,
-                                  height: 51,
-                                  child: InkWell(
-                                    onTap: () {
-                                      _toggleDrawer();
-                                      Navigator.pop(context);
-                                    },
-                                    child: Stack(children: [
-                                      Stack(
-                                        children: [
-                                          SimpleShadow(
-                                            child: SvgPicture.asset(
-                                              'assets/images/app_bar_icon_button.svg',
-
-                                              color: iconAcitve
-                                                  ? Palette.appBarIconMenuColor
-                                                  : const Color.fromRGBO(
-                                                      122, 108, 115, 1),
-                                              fit: BoxFit.cover,
-
-                                              //width: 60,
-                                              //width: 22,
-                                            ),
-                                            opacity: 0.15,
-                                            offset: const Offset(0, 4),
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.15),
-                                          ),
-                                        ],
+                                systemOverlayStyle: SystemUiOverlayStyle(
+                                    statusBarColor:
+                                        Color.fromRGBO(25, 4, 18, 1)),
+                                elevation: 0.0,
+                                backgroundColor:
+                                    Palette.barColor.withOpacity(0.5),
+                                flexibleSpace: Container(
+                                  padding:
+                                      EdgeInsets.only(right: 30.0, left: 43),
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: 20.0,
                                       ),
-                                      Align(
-                                          alignment: Alignment.center,
-                                          child: AnimatedBuilder(
-                                            animation: animation,
-                                            builder: (context, child) {
-                                              return Transform.rotate(
-                                                angle:
-                                                    animation.value.toDouble(),
-                                                child: _isDrawerOpen() ||
-                                                        _isDrawerOpening()
-                                                    ? SvgPicture.asset(
-                                                        'assets/images/close_bar_icon.svg',
-                                                        fit: BoxFit.none,
-                                                      )
-                                                    : SvgPicture.asset(
-                                                        'assets/images/asset_bar_icon.svg',
-                                                        fit: BoxFit.none,
-                                                      ),
-                                              );
-                                            },
-                                          )),
-                                    ]),
+                                      child: SvgPicture.asset(
+                                        'assets/images/mashtoz_org.svg',
+                                        width: 250,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ],
+
+                                //toolbarHeight: 63,
+                                actions: [
+                                  Container(
+                                    width: 30,
+                                    height: 51,
+                                    child: InkWell(
+                                      onTap: () {
+                                        _toggleDrawer();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Stack(children: [
+                                        Stack(
+                                          children: [
+                                            SimpleShadow(
+                                              child: SvgPicture.asset(
+                                                'assets/images/app_bar_icon_button.svg',
+
+                                                color: iconAcitve
+                                                    ? Palette
+                                                        .appBarIconMenuColor
+                                                    : const Color.fromRGBO(
+                                                        122, 108, 115, 1),
+                                                fit: BoxFit.cover,
+
+                                                //width: 60,
+                                                //width: 22,
+                                              ),
+                                              opacity: 0.15,
+                                              offset: const Offset(0, 4),
+                                              color:
+                                                  Color.fromRGBO(0, 0, 0, 0.15),
+                                            ),
+                                          ],
+                                        ),
+                                        Align(
+                                            alignment: Alignment.center,
+                                            child: AnimatedBuilder(
+                                              animation: animation,
+                                              builder: (context, child) {
+                                                return Transform.rotate(
+                                                  angle: animation.value
+                                                      .toDouble(),
+                                                  child: _isDrawerOpen() ||
+                                                          _isDrawerOpening()
+                                                      ? SvgPicture.asset(
+                                                          'assets/images/close_bar_icon.svg',
+                                                          fit: BoxFit.none,
+                                                        )
+                                                      : SvgPicture.asset(
+                                                          'assets/images/asset_bar_icon.svg',
+                                                          fit: BoxFit.none,
+                                                        ),
+                                                );
+                                              },
+                                            )),
+                                      ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -241,9 +246,10 @@ class _MenuShowState extends State<MenuShow>
                                         ? 200
                                         : 400,
                                     child: Align(
-                                      alignment: AlignmentDirectional(0, 0),
+                                      alignment: Alignment.centerLeft,
                                       child: Container(
-                                        width: 200,
+                                        margin: EdgeInsets.only(right: 75),
+                                        width: 300,
                                         height: double.infinity,
                                         child: Column(
                                           crossAxisAlignment:
@@ -277,158 +283,148 @@ class _MenuShowState extends State<MenuShow>
                                                           'Error');
                                                     } else if (snapshot
                                                         .hasData) {
-                                                      return SizedBox(
+                                                      return Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 40),
                                                         height: orintation ==
                                                                 Orientation
                                                                     .landscape
                                                             ? 200
-                                                            : 400,
-                                                        child: ListView.builder(
-                                                            scrollDirection:
-                                                                Axis.vertical,
-                                                            shrinkWrap: true,
-                                                            itemCount:
-                                                                data?.length,
-                                                            itemBuilder:
-                                                                (contesxt,
-                                                                    index) {
-                                                              return GestureDetector(
-                                                                child:
-                                                                    Container(
-                                                                  height: 50,
-                                                                  child: Text(
-                                                                    '${data?[index].title}',
-                                                                    style: TextStyle(
-                                                                        color: Palette
-                                                                            .textLineOrBackGroundColor,
-                                                                        fontFamily:
-                                                                            'GHEAGrapalat',
-                                                                        letterSpacing:
-                                                                            1,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w400,
-                                                                        fontSize:
-                                                                            12.0),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .end,
-                                                                  ),
-                                                                ),
-                                                                onTap: () {
-                                                                  switch (
-                                                                      index) {
-                                                                    case 0:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      // Navigator
-                                                                      //     .push(
-                                                                      //   context,
-                                                                      //   MaterialPageRoute(
-                                                                      //       builder:
-                                                                      //           (_) =>
-                                                                      //               Ecyclopedia()),
-                                                                      // );
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (_) =>
-                                                                              Ecyclopedia(),
+                                                            : 450,
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child:
+                                                              ListView.builder(
+                                                                  scrollDirection:
+                                                                      Axis
+                                                                          .vertical,
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  itemCount: data
+                                                                      ?.length,
+                                                                  itemBuilder:
+                                                                      (contesxt,
+                                                                          index) {
+                                                                    return Align(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerRight,
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              Text(
+                                                                            '${data?[index].title}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Palette.textLineOrBackGroundColor,
+                                                                              fontFamily: 'GHEAGrapalat',
+                                                                              letterSpacing: 1,
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 12.0,
+                                                                            ),
+                                                                            textAlign:
+                                                                                TextAlign.end,
+                                                                          ),
                                                                         ),
-                                                                      );
-                                                                      break;
-                                                                    case 1:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (_) =>
-                                                                                ItalianPage()),
-                                                                      );
-                                                                      break;
-                                                                    case 2:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (_) =>
-                                                                                Dialect()),
-                                                                      );
-                                                                      break;
-                                                                    case 3:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (_) =>
-                                                                                GalleryItem()),
-                                                                      );
-                                                                      break;
-                                                                    case 4:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (_) =>
-                                                                                AudioLibrary()),
-                                                                      );
-                                                                      break;
-                                                                    case 5:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (_) => InfoPage(
-                                                                                    isShow: true,
-                                                                                  )));
+                                                                        onTap:
+                                                                            () {
+                                                                          switch (
+                                                                              index) {
+                                                                            case 0:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              // Navigator
+                                                                              //     .push(
+                                                                              //   context,
+                                                                              //   MaterialPageRoute(
+                                                                              //       builder:
+                                                                              //           (_) =>
+                                                                              //               Ecyclopedia()),
+                                                                              // );
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(
+                                                                                  builder: (_) => Ecyclopedia(),
+                                                                                ),
+                                                                              );
+                                                                              break;
+                                                                            case 1:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(builder: (_) => ItalianPage()),
+                                                                              );
+                                                                              break;
+                                                                            case 2:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(builder: (_) => Dialect()),
+                                                                              );
+                                                                              break;
+                                                                            case 3:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(builder: (_) => GalleryItem()),
+                                                                              );
+                                                                              break;
+                                                                            case 4:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(builder: (_) => AudioLibrary()),
+                                                                              );
+                                                                              break;
+                                                                            case 5:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(
+                                                                                      builder: (_) => InfoPage(
+                                                                                            isShow: true,
+                                                                                          )));
 
-                                                                      break;
-                                                                    case 6:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (_) => InfoPage(
-                                                                                    isShow: false,
-                                                                                  )));
-                                                                      break;
-                                                                    case 7:
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _toggleDrawer();
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (_) =>
-                                                                                Contact()),
-                                                                      );
-                                                                      break;
-                                                                    default:
-                                                                  }
-                                                                  print(
-                                                                      'menu: $index');
-                                                                },
-                                                              );
-                                                            }),
+                                                                              break;
+                                                                            case 6:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(
+                                                                                      builder: (_) => InfoPage(
+                                                                                            isShow: false,
+                                                                                          )));
+                                                                              break;
+                                                                            case 7:
+                                                                              Navigator.pop(context);
+                                                                              _toggleDrawer();
+                                                                              Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(builder: (_) => Contact()),
+                                                                              );
+                                                                              break;
+                                                                            default:
+                                                                          }
+                                                                          print(
+                                                                              'menu: $index');
+                                                                        },
+                                                                      ),
+                                                                    );
+                                                                  }),
+                                                        ),
                                                       );
                                                     } else {
                                                       return const Text(

@@ -38,30 +38,31 @@ class _LoginFormState extends State<LoginForm> {
                 content: Text(state.errorMessage ?? 'Login Failure'),
               ),
             );
-        } else if (state.status.isSubmissionInProgress) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Container(
-                  height: 23,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Palette.main),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
         }
+        // else if (state.status.isSubmissionInProgress) {
+        //   ScaffoldMessenger.of(context)
+        //     ..hideCurrentSnackBar()
+        //     ..showSnackBar(
+        //       SnackBar(
+        //         content: Container(
+        //           height: 23,
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: <Widget>[
+        //               Container(
+        //                 height: 20,
+        //                 width: 20,
+        //                 child: CircularProgressIndicator(
+        //                   valueColor:
+        //                       AlwaysStoppedAnimation<Color>(Palette.main),
+        //                 ),
+        //               )
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //     );
+        // }
       },
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -220,21 +221,17 @@ class _LoginButtonState extends State<_LoginButton> {
             width: 47,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              // mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   width: 40,
                   height: 40,
                   child: Stack(
-                    //fit: StackFit.expand,
                     alignment: Alignment.centerRight,
-                    //overflow: Overflow.visible,
                     children: [
                       /// bottom
                       Container(
                         width: 40,
                         height: 40,
-                        // color: Colors.orange,
                         decoration: const BoxDecoration(boxShadow: [
                           BoxShadow(
                             color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -254,7 +251,6 @@ class _LoginButtonState extends State<_LoginButton> {
                           splashColor: Palette.whenTapedButton,
                           onPressed: () async {
                             if (state.status.isValidated) {
-                              print(state.status.isValidated);
                               isActive();
                               context.read<LoginCubit>().loginWithCredentials();
                             }

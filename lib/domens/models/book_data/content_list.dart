@@ -20,7 +20,6 @@ class Content {
   final Map<String, Content>? content;
 
   factory Content.fromJson(Map<String, dynamic> json) {
- 
     return Content(
       id: json["id"] == null ? null : json["id"],
       title: json["title"] == null ? null : json["title"],
@@ -35,6 +34,20 @@ class Content {
               .map((key, value) => MapEntry(key, Content.fromJson(value))),
     );
   }
+}
 
-  
+class UserAccount {
+  final String? type;
+  final String? type_id;
+  final Content content;
+  const UserAccount(
+      {required this.content, required this.type, required this.type_id});
+
+  factory UserAccount.fromJson(Map<String, dynamic> json) {
+    return UserAccount(
+      type: json['type'],
+      type_id: json['type_id'],
+      content: Content.fromJson(json['content']),
+    );
+  }
 }

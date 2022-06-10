@@ -222,7 +222,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
     User hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
-    if (!isSign || hasId.isEmpty) {
+    if (!isSign || hasId == null) {
       showDialog(
           context: context,
           barrierDismissible: false,

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
@@ -67,6 +69,7 @@ class UserDataProvider {
       var token = body['access_token'];
       print(token);
       if (response.statusCode == 200) {
+        sessionDataProvider.deleteAllToken();
         print('success');
         var access_token = body['access_token'];
         var refresh_token = body['refresh_token'];
@@ -265,8 +268,9 @@ class UserDataProvider {
   }
 
 //Get Favorites
-  Future<List<dynamic>> getFavorites() async {
+  Future<List<UserAccount>> getFavorites() async {
     var token = await sessionDataProvider.readsAccessToken();
+    var userAccont = <UserAccount>[];
     try {
       var response = await http.get(
         Uri.parse(Api.getFavorites),
@@ -275,9 +279,13 @@ class UserDataProvider {
           'Authorization': 'bearer $token'
         },
       );
-      //var success = json.decode(response.body);
+      var data = json.decode(response.body)['data'];
       if (response.statusCode == 200) {
         print('success');
+        var dd = (data as List).map((e) => UserAccount.fromJson(e)).toList();
+        inspect(dd);
+        return dd;
+        // return userAccont;
       } else if (response.statusCode == 401) {
         bool isTrue = await refreshToken();
         isTrue ? print(true) : print(false);
@@ -375,6 +383,7 @@ class UserDataProvider {
           return false;
         }
       } catch (e) {
+        print(e);
         return false;
       }
     } else {

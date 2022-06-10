@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/italian_lesson/italian_data_show.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../../../../config/palette.dart';
@@ -87,9 +92,40 @@ class _DelegateChildState extends State<DelegateChild>
     with SingleTickerProviderStateMixin {
   final userDataProvider = UserDataProvider();
 
-  Future<List<dynamic>?>? favoriteFuture;
+  Future<List<UserAccount>?>? favoriteFuture;
 
   late TabController _tabController;
+  var types = <String>[
+    'libraries',
+    'encyclopedias',
+    'lessons',
+    'dialects',
+    'audiolibraries',
+    'gallery',
+    'armenians',
+    'italians',
+  ];
+
+  int drawableIndex = 0;
+  Widget buildList({required Content text, required int index}) {
+    if (drawableIndex == 0) {
+      return BookCard(
+          book: text,
+          isOdd: false,
+          categorys: BookCategory(
+            categoryTitle: 'dadas',
+            id: 1,
+            title: '',
+            type: '',
+          ));
+    } else if (drawableIndex == 1) {
+    } else if (drawableIndex == 2) {
+      return ItalianPage();
+    } else if (drawableIndex == 3) {
+    } else if (drawableIndex == 4) {
+    } else if (drawableIndex == 5) {}
+    return Text('data');
+  }
 
   @override
   void initState() {
@@ -109,7 +145,7 @@ class _DelegateChildState extends State<DelegateChild>
       child: Column(
         children: [
           SizedBox(height: 52),
-          FutureBuilder<List<dynamic>?>(
+          FutureBuilder<List<UserAccount>?>(
               future: favoriteFuture,
               builder: (context, snapshot) {
                 var data = snapshot.data;
@@ -124,22 +160,26 @@ class _DelegateChildState extends State<DelegateChild>
                   if (snapshot.hasError) {
                     return const Text('Error');
                   } else if (snapshot.hasData) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: data?.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          textColor: Color.fromRGBO(84, 112, 126, 1),
-                          title: Text('${data?[index].title}'),
-                          leading: Text(
-                            '0${index}',
-                            style: TextStyle(color: Palette.main),
-                          ),
-                          onTap: () {},
-                          contentPadding: EdgeInsets.only(right: 10.0),
-                        );
-                      },
+                    return Expanded(
+                      child: Container(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: data?.length,
+                          itemBuilder: (context, index) {
+                            if (data![index]
+                                .type!
+                                .contains(types[drawableIndex])) {
+                              return buildList(
+                                  text: data[index].content, index: index);
+                            }
+                            return Container(
+                              width: 0.1,
+                              height: 0.1,
+                            );
+                          },
+                        ),
+                      ),
                     );
                   } else {
                     return const Text('Empty data');
@@ -185,17 +225,9 @@ class _DelegateChildState extends State<DelegateChild>
                   isScrollable: true,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 15),
                   onTap: (index) {
-                    // setState(() {
-                    //   characters
-                    //           .toString()
-                    //           .toLowerCase()
-                    //           .contains(listAccountElements.elementAt(index))
-                    //       ? audioLibraryByCharacters =
-                    //           bookDataProvider.getDataByCharacters(
-                    //               Api.audioLibrariesByCharacters(
-                    //                   listAccountElements.elementAt(index)))
-                    //       : null;
-                    // });
+                    setState(() {
+                      drawableIndex = index;
+                    });
                   },
                   tabs: listAccountElements.map((tabName) {
                     return Tab(
