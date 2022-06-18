@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/home_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 
 import '../../../../config/palette.dart';
-import '../../helper_widgets/actions_widgets.dart';
 import '../../helper_widgets/menuShow.dart';
 
 class Contact extends StatefulWidget {

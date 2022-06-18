@@ -304,7 +304,7 @@ class _ItalianLessonState extends State<ITLesson>
                                 transform: Matrix4.rotationY(math.pi),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  italianLesson.number!,
+                                  '${italianLesson.number}',
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(
                                       color: Colors.white,

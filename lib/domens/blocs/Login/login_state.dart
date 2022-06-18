@@ -3,7 +3,6 @@ import 'package:formz/formz.dart';
 import 'package:mashtoz_flutter/domens/models/user_input_data_validation/email.dart';
 import 'package:mashtoz_flutter/domens/models/user_input_data_validation/passowrd.dart';
 
-
 class LoginState extends Equatable {
   const LoginState({
     this.email = const Email.pure(),

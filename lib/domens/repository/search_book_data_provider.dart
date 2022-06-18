@@ -13,7 +13,7 @@ class SearchBookProvider {
   static Future<List<Search>> fetchAllBooks(String query) async {
     // var searchList = <Search>[];
     var response = await http
-        .get(Uri.parse("https://mashtoz.org/api/v1/search?search=$query"));
+        .get(Uri.parse("https://mashtoz/api/v1/search?search=$query"));
     //var body =
     if (response.statusCode == 200) {
       List books = json.decode(response.body)['data'];
@@ -26,7 +26,7 @@ class SearchBookProvider {
       //   final searchLover = query.toLowerCase();
       //   return bookName.toString().contains(searchLover);
       // }).toList();
-        return (books).map((e) => Search.fromJson(e)).toList();
+      return (books).map((e) => Search.fromJson(e)).toList();
     } else {
       return [];
     }

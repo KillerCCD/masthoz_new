@@ -19,7 +19,6 @@ class CoupleButtons extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   print('gmail taped');
-                  
                 },
                 child: SizedBox(
                   child: SvgPicture.asset('assets/images/gmail.svg'),

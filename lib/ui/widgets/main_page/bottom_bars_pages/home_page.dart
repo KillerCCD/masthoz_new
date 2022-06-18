@@ -1741,7 +1741,7 @@ class _HomePageState extends State<HomePage> {
 //                                       child: Scaffold(
 //                                         body: AppBar(
 //                                           title: SvgPicture.asset(
-//                                               'assets/images/mashtoz_org.svg'),
+//                                               'assets/images/mashtoz_flutter_org.svg'),
 //                                           leading: Container(),
 //                                           toolbarHeight: 63,
 //                                           actions: [

@@ -12,7 +12,6 @@ import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/word_of_day.dart';
 
 import '../../globals.dart';
-import '../models/book_data/by_caracters_data.dart';
 import '../models/book_data/content_list.dart';
 import '../models/book_data/data.dart';
 
@@ -35,10 +34,8 @@ class BookDataProvider {
     var success = body['success'];
     if (success == true) {
       var data = body['data'];
-      sessionDataProvider.setShowMenuList([
-        (data as List).map((e) => BookCategory.fromJson(e)).toList().toString()
-      ]);
-      return (data).map((e) => BookCategory.fromJson(e)).toList();
+
+      return (data as List).map((e) => BookCategory.fromJson(e)).toList();
 
       // print(newData);
       // libraryList.addAll(newData);

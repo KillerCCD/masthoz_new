@@ -9,12 +9,13 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/palette.dart';
 
 import '../../../../domens/models/book_data/content_list.dart';
-import '../../helper_widgets/actions_widgets.dart';
+import '../../../../domens/models/user.dart';
+import '../../../../domens/repository/user_data_provider.dart';
+
 import 'book_inherited_widget.dart';
 import 'book_read_screen.dart';
 
@@ -31,10 +32,17 @@ class BookInitalScreen extends StatefulWidget {
 
 class _BookInitalScreenState extends State<BookInitalScreen> {
   _BookInitalScreenState({required this.book, required this.category});
-
+  final userDataProvider = UserDataProvider();
   Content book;
   final BookCategory category;
   bool isValid = false;
+  int? custemerId;
+  @override
+  void initState() {
+    userDataProvider.fetchUserInfo().then((value) => custemerId = value.id);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -253,16 +261,14 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              print('share anel paterin');
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      SaveShowDialog(
-                                        isShow: true,
-                                      ));
+                              var data = <String, dynamic>{
+                                'type': 'libraries',
+                                'type_id': book.id,
+                                'customer_id': custemerId,
+                              };
+                              setState(() {
+                                userIsSign(data);
+                              });
                             },
                             child: Row(
                               children: [
@@ -556,6 +562,23 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
       );
     } else {
       return BookReadScreen(readScreen: book);
+    }
+  }
+
+  Future<void> userIsSign(Map<String, dynamic> data) async {
+    User hasId = await userDataProvider.fetchUserInfo();
+    bool isSign = await userDataProvider.saveFavorite(data);
+
+    if (!isSign || hasId == null) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (
+            context,
+          ) =>
+              SaveShowDialog(
+                isShow: true,
+              ));
     }
   }
 }

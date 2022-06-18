@@ -21,7 +21,7 @@ class RegisterState extends Equatable {
   final FormzStatus status;
 
   @override
-  List<Object?> get props => [fullName,email, password, status, errorMessage];
+  List<Object?> get props => [fullName, email, password, status, errorMessage];
 
   RegisterState copyWith({
     FullName? fullName,
@@ -32,7 +32,7 @@ class RegisterState extends Equatable {
   }) {
     print("from Login State : $status");
     return RegisterState(
-      fullName: fullName??this.fullName,
+      fullName: fullName ?? this.fullName,
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,

@@ -3,13 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../../../domens/models/book_data/data.dart';
+import '../../../../../domens/models/user.dart';
+import '../../../../../domens/repository/user_data_provider.dart';
 import '../../../helper_widgets/menuShow.dart';
+import '../../../helper_widgets/save_show_dialog.dart';
 import '/config/palette.dart';
 
 class DictionaryArmItl extends StatefulWidget {
@@ -151,6 +152,8 @@ class _DelegateChildState extends State<DelegateChild>
   final String characterByindex;
   final int characterIndex;
   final Object characters;
+  final userDataProvider = UserDataProvider();
+  int? custemerId;
   Future<List<Data>?>? charctersDataArmenian;
   Future<List<Data>?>? charctersDataItalian;
   final bool isShow;
@@ -169,60 +172,122 @@ class _DelegateChildState extends State<DelegateChild>
             Api.armenianDictionaryByCharacters(characterByindex))
         : charctersDataItalian = bookDataProvider.getDataByCharacters(
             Api.italianDictionaryByCharacters(characterByindex));
+    userDataProvider.fetchUserInfo().then((value) => custemerId = value.id);
+
     super.initState();
   }
 
   Widget buildData() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-      child: FutureBuilder<List<Data>?>(
-          future: isShow ? charctersDataArmenian : charctersDataItalian,
-          builder: (context, snapshot) {
-            var data = snapshot.data;
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                  child: Center(
-                      child: CircularProgressIndicator(
-                strokeWidth: 2.0,
-                color: Palette.main,
-              )));
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return const Text('Error');
-              } else if (snapshot.hasData) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: data?.length,
-                  itemBuilder: (context, index) {
-                    return ExpansionTile(
-                      title: Text(
-                        '${data?[index].title}',
-                        style: TextStyle(
-                          fontFamily: 'GHEAGrapalat',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1,
-                        ),
+    return FutureBuilder<List<Data>?>(
+      future: isShow ? charctersDataArmenian : charctersDataItalian,
+      builder: (context, snapshot) {
+        var data = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+              child: Center(
+                  child: CircularProgressIndicator(
+            strokeWidth: 2.0,
+            color: Palette.main,
+          )));
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return const Text('Error');
+          } else if (snapshot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: data?.length,
+              itemBuilder: (context, index) {
+                return ExpansionTile(
+                  title: Text(
+                    '${data?[index].title}',
+                    style: TextStyle(
+                      fontFamily: 'GHEAGrapalat',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  leading: SvgPicture.asset('assets/images/line24.svg'),
+                  initiallyExpanded: false,
+                  children: [
+                    Container(
+                      color: Color.fromRGBO(246, 246, 246, 1),
+                      child: ListTile(
+                        title: Text('${data?[index].body}'),
                       ),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      leading: SvgPicture.asset('assets/images/line24.svg'),
-                      initiallyExpanded: false,
-                      children: [
-                        ListTile(
-                          title: Text('${data?[index].body}'),
-                        )
-                      ],
-                    );
-                  },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                      color: Color.fromRGBO(255, 255, 255, 1),
+                      width: double.infinity,
+                      height: 49,
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              print('kisvel');
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      SaveShowDialog(
+                                        isShow: false,
+                                      ));
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/images/այքըններ.svg'),
+                                const SizedBox(width: 6),
+                                const Text('Կիսվել')
+                              ],
+                            ),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              var saveData = <String, dynamic>{
+                                'type': isShow ? 'armenians' : 'italians',
+                                'type_id': data?[index].id,
+                                'customer_id': custemerId,
+                              };
+                              setState(() {
+                                userIsSign(saveData);
+                              });
+                              print('share anel paterin');
+                              //    showDialog(
+                              // context: context,
+                              // barrierDismissible: false,
+                              // builder: (
+                              //   context,
+                              // ) =>
+                              //     SaveShowDialog(isShow: true));
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/images/վելացնել1.svg'),
+                                const SizedBox(width: 6),
+                                const Text('Պահել'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
-              } else {
-                return const Text('Empty data');
-              }
-            } else {
-              return Text('State: ${snapshot.connectionState}');
-            }
-          }),
+              },
+            );
+          } else {
+            return const Text('Empty data');
+          }
+        } else {
+          return Text('State: ${snapshot.connectionState}');
+        }
+      },
     );
   }
 
@@ -309,7 +374,7 @@ class _DelegateChildState extends State<DelegateChild>
                                     tabName,
                                     style: TextStyle(
                                       fontFamily: 'ArshaluyseArtU',
-                                      fontSize: 35,
+                                      fontSize: 30,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
                                       color: characters
@@ -325,7 +390,7 @@ class _DelegateChildState extends State<DelegateChild>
                       ),
                     ))),
             body: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: isShow
                     ? wordsArm
@@ -357,6 +422,23 @@ class _DelegateChildState extends State<DelegateChild>
                                 ))),
                         )
                         .toList())));
+  }
+
+  void userIsSign(Map<String, dynamic> data) async {
+    User hasId = await userDataProvider.fetchUserInfo();
+    bool isSign = await userDataProvider.saveFavorite(data);
+
+    if (!isSign || hasId == null) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (
+            context,
+          ) =>
+              SaveShowDialog(
+                isShow: true,
+              ));
+    }
   }
 }
 

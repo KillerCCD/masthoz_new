@@ -4,14 +4,13 @@ import 'dart:developer';
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
-import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
 import '../../globals.dart';
 import 'package:http/http.dart' as http;
 
 class UserDataProvider {
   final sessionDataProvider = SessionDataProvider();
-
+  bool isTrue = false;
   //Sign Up
   Future<bool> signUp(
       {required String email,
@@ -68,8 +67,8 @@ class UserDataProvider {
       var body = jsonDecode(response.body);
       var token = body['access_token'];
       print(token);
+      // sessionDataProvider.deleteAllToken();
       if (response.statusCode == 200) {
-        sessionDataProvider.deleteAllToken();
         print('success');
         var access_token = body['access_token'];
         var refresh_token = body['refresh_token'];
@@ -94,10 +93,6 @@ class UserDataProvider {
       'password': password,
       'full_name': fullName,
     };
-    // var token = await sessionDataProvider.gettRegtoken();
-    // var token =
-    //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbWFzaHRvei5vcmdcL2FwaVwvdjFcL2xvZ2luIiwiaWF0IjoxNjQ3NjI2NDYyLCJleHAiOjE2NDc2MzAwNjIsIm5iZiI6MTY0NzYyNjQ2MiwianRpIjoiSWVQRUZ6cVFnRUxUaFhwZCIsInN1YiI6MjUsInBydiI6ImEzZDg2OGQ4OTEyOTZhZTMwNzM2NjJiMmYwMjRkY2Y2YzY3YjUzZmMiLCJyb2xlIjoiY3VzdG9tZXIifQ.4K5NQ7rIXFvwLVGaySPopyniR_oiycBwzxeSMP_6eg8";
-    //print('$token object');
 
     try {
       var response = await http.post(
@@ -225,11 +220,11 @@ class UserDataProvider {
       if (response.statusCode == 200) {
         print('success');
         Map.from(body).forEach((key, value) {
-          user = User.fromJson(value);
+          user = User.fromJson(body);
         });
         return user;
       } else if (response.statusCode == 401) {
-        bool isTrue = await refreshToken();
+        isTrue = await refreshToken();
         if (isTrue) {
           fetchUserInfo();
         }
@@ -365,7 +360,7 @@ class UserDataProvider {
       try {
         final response = await http.post(Uri.parse(Api.refreshToken), headers: {
           'Authorization': 'bearer $access_token',
-          'Contnet-type': "application/json"
+          'Contnet-type': "application/json",
         }, body: <String, dynamic>{
           'refresh_token': '$refresh_token',
         });
@@ -379,7 +374,7 @@ class UserDataProvider {
 
           return true;
         } else {
-          sessionDataProvider.deleteAllToken();
+          // sessionDataProvider.deleteAllToken();
           return false;
         }
       } catch (e) {

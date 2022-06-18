@@ -3,18 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-import 'package:mashtoz_flutter/globals.dart';
-import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/italian_lesson/italian_data_show.dart';
+
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../../../../config/palette.dart';
-import '../../../../domens/models/book_data/by_caracters_data.dart';
-import '../../../../domens/repository/book_data_provdier.dart';
-import '../../helper_widgets/actions_widgets.dart';
+
 import '../../helper_widgets/menuShow.dart';
 
 class AccountPage extends StatelessWidget {
@@ -107,22 +105,33 @@ class _DelegateChildState extends State<DelegateChild>
   ];
 
   int drawableIndex = 0;
-  Widget buildList({required Content text, required int index}) {
+  Widget buildList({required Content data, required int index}) {
     if (drawableIndex == 0) {
       return BookCard(
-          book: text,
-          isOdd: false,
+          book: data,
+          isOdd: index % 2 != 0 ? false : true,
           categorys: BookCategory(
-            categoryTitle: 'dadas',
-            id: 1,
-            title: '',
-            type: '',
+            categoryTitle: data.title!,
+            id: data.id!,
+            title: data.title!,
+            type: 'librarian',
           ));
     } else if (drawableIndex == 1) {
+      return carachtersList(data, index);
     } else if (drawableIndex == 2) {
-      return ItalianPage();
+      return ITLesson(
+        italianLesson: Lessons(
+            id: data.id,
+            image: data.image,
+            title: data.title,
+            link: data.videoLink,
+            number: data.number),
+        isOdd: index % 2 != 0 ? false : true,
+      );
     } else if (drawableIndex == 3) {
+      return carachtersList(data, index);
     } else if (drawableIndex == 4) {
+      return carachtersList(data, index);
     } else if (drawableIndex == 5) {}
     return Text('data');
   }
@@ -137,6 +146,72 @@ class _DelegateChildState extends State<DelegateChild>
     favoriteFuture = userDataProvider.getFavorites();
 
     super.initState();
+  }
+
+  Widget carachtersList(Content data, int index) {
+    return GestureDetector(
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (_) => BookReadScreen(
+        //               encyclopediaBody: data[index],
+        //             )));
+      },
+      child: Container(
+        padding: EdgeInsets.only(right: 20.0, left: 22.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: Text(
+                      '0${index + 1}',
+                      style: TextStyle(
+                        color: Palette.main,
+                        fontFamily: 'GHEAGrapalat',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      width: 260,
+                      child: Text(
+                        '${data.title}',
+                        style: TextStyle(
+                            fontFamily: 'GHEAGrapalat',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(113, 141, 156, 1)),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+              thickness: 1,
+              color: Color.fromRGBO(226, 224, 224, 1),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildData() {
@@ -171,7 +246,7 @@ class _DelegateChildState extends State<DelegateChild>
                                 .type!
                                 .contains(types[drawableIndex])) {
                               return buildList(
-                                  text: data[index].content, index: index);
+                                  data: data[index].content, index: index);
                             }
                             return Container(
                               width: 0.1,

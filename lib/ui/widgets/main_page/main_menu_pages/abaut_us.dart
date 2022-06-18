@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 import 'package:mashtoz_flutter/domens/repository/info_data_provider.dart';
 import 'package:mashtoz_flutter/globals.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/contact_page.dart';
 import '../../../../config/palette.dart';
-import '../../helper_widgets/actions_widgets.dart';
 
 class InfoPage extends StatefulWidget {
   final bool isShow;

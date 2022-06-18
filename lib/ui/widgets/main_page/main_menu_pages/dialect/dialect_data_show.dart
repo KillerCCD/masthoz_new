@@ -1,13 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
-import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../../../../domens/models/book_data/data.dart';
 import '../../../helper_widgets/menuShow.dart';

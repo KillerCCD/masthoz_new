@@ -11,13 +11,12 @@ class InfoDataProvider {
   //About_Us  //Donation
   Future<Data> getInfoAbaoutUs_Donation(String url) async {
     Data? data;
- 
+
     try {
       var response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-         
         },
       );
       // var body = json.decode(response.body);

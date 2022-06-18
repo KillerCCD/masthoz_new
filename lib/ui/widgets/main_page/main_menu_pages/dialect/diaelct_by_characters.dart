@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_read_screen.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_librar_data_show.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dialect/dialect_data_show.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../../../domens/models/book_data/data.dart';
@@ -384,7 +379,7 @@ class _DelegateChildState extends State<DelegateChild>
           ),
         ),
         body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: wordsArm
                 .map(

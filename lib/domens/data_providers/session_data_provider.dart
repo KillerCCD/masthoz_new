@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class _Keys {
@@ -11,51 +12,40 @@ abstract class _Keys {
 }
 
 class SessionDataProvider {
-  final _storage = SharedPreferences.getInstance();
+  final _storage = const FlutterSecureStorage();
   Future<void> setAccessToken(String value) async {
     final storage = await _storage;
-    storage.setString(_Keys.accessToken, value);
+    storage.write(key: _Keys.accessToken, value: value);
   }
 
   Future<String?> readsAccessToken() async {
     final storage = await _storage;
-    return storage.getString(_Keys.accessToken);
+    return storage.read(key: _Keys.accessToken);
   }
 
   Future<void> setRefreshToken(String value) async {
     final storage = await _storage;
-    storage.setString(_Keys.refreshToken, value);
+    storage.write(key: _Keys.refreshToken, value: value);
   }
 
   Future<String?> readRefreshToken() async {
     final storage = await _storage;
-    return storage.getString(_Keys.refreshToken);
+    return storage.read(key: _Keys.refreshToken);
   }
 
   Future<void> setCustomerId(int value) async {
     final storage = await _storage;
-    storage.setInt(_Keys.cutsomerId, value);
+    storage.write(key: _Keys.cutsomerId, value: value.toString());
   }
 
-  Future<int?> readCustomerId() async {
+  Future<String?> readCustomerId() async {
     final storage = await _storage;
-    return storage.getInt(_Keys.cutsomerId);
-  }
-
-  Future<void> setShowMenuList(List<String> list) async {
-    final storage = await _storage;
-    storage.setStringList(_Keys.menuList, list);
-  }
-
-  Future<List<String>?> readShowMenuList() async {
-    final storage = await _storage;
-    return storage.getStringList(_Keys.menuList);
+    return storage.read(key: _Keys.cutsomerId);
   }
 
   deleteAllToken() async {
     final storage = await _storage;
-    storage.remove(_Keys.refreshToken);
-    storage.remove(_Keys.accessToken);
+    storage.deleteAll();
   }
 
   void setRegtoken(token) {}

@@ -8,6 +8,9 @@ class Content {
     required this.explanation,
     required this.author,
     required this.content,
+    this.number,
+    this.first_character,
+    this.summary,
   });
 
   final int? id;
@@ -17,6 +20,10 @@ class Content {
   final String? videoLink;
   final String? explanation;
   final String? author;
+  final String? number;
+  final String? summary;
+  final String? first_character;
+
   final Map<String, Content>? content;
 
   factory Content.fromJson(Map<String, dynamic> json) {
@@ -28,6 +35,10 @@ class Content {
       videoLink: json["video_link"] == null ? null : json["video_link"],
       explanation: json["explanation"] == null ? null : json["explanation"],
       author: json["author"] == null ? null : json["author"],
+      number: json['number'] == null ? null : json['number'],
+      first_character:
+          json['first_character'] == null ? null : json['first_character'],
+      summary: json['summary'] == null ? null : json['summary'],
       content: json['content'] == null
           ? null
           : Map.from(json['content'])
@@ -39,9 +50,13 @@ class Content {
 class UserAccount {
   final String? type;
   final String? type_id;
-  final Content content;
-  const UserAccount(
-      {required this.content, required this.type, required this.type_id});
+  final dynamic content;
+
+  const UserAccount({
+    required this.content,
+    required this.type,
+    required this.type_id,
+  });
 
   factory UserAccount.fromJson(Map<String, dynamic> json) {
     return UserAccount(

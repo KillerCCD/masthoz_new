@@ -8,8 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/search_data.dart';
 import 'package:mashtoz_flutter/domens/repository/search_book_data_provider.dart';
 import 'dart:math' as math;
-import '../../../../domens/models/book_data/book.dart';
-import '../../helper_widgets/actions_widgets.dart';
+
 import '../../helper_widgets/menuShow.dart';
 import '../library_pages/book_read_screen.dart';
 import '/config/palette.dart';
@@ -176,9 +175,8 @@ class _SearchPageState extends State<SearchPage> {
                                 final book = searchbooks[index];
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
+                                    Navigator.of(context, rootNavigator: true)
+                                        .push(MaterialPageRoute(
                                             builder: (_) => BookReadScreen(
                                                   searchData: book,
                                                 )));
@@ -188,7 +186,7 @@ class _SearchPageState extends State<SearchPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                          width: 288,
+                                          width: double.infinity,
                                           height: 180,
                                           child: Stack(children: <Widget>[
                                             Positioned(
@@ -205,20 +203,24 @@ class _SearchPageState extends State<SearchPage> {
                                             Positioned(
                                                 top: 63,
                                                 left: 126,
-                                                child: Text(
-                                                  "  ${book.id} : ${book.type}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          25, 4, 18, 1),
-                                                      fontFamily:
-                                                          'GHEA GHEAGrapalat',
-                                                      fontSize: 12,
-                                                      letterSpacing:
-                                                          0 /*percentages not used in flutter. defaulting to zero*/,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      height: 1),
+                                                child: Container(
+                                                  width: 200,
+                                                  child: Text(
+                                                    "  ${book.title}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            25, 4, 18, 1),
+                                                        fontFamily:
+                                                            'GHEA GHEAGrapalat',
+                                                        fontSize: 12,
+                                                        letterSpacing:
+                                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        height: 1),
+                                                    maxLines: 4,
+                                                  ),
                                                 )),
                                             Positioned(
                                                 top: 156,

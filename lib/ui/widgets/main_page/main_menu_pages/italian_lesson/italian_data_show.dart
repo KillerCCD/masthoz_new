@@ -27,9 +27,11 @@ class ItaliaLessonShow extends StatefulWidget {
 class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
   final Lessons? lessons;
   final bool? isShow;
+  int? custemerId = 0;
   _ItaliaLessonShowState({this.lessons, this.isShow});
   @override
   void initState() {
+    userDataProvider.fetchUserInfo().then((value) => custemerId = value.id);
     super.initState();
   }
 
@@ -38,7 +40,8 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
   @override
   Widget build(BuildContext context) {
     final orentation = MediaQuery.of(context).orientation;
-    var data = context.watch<UserInfoNotify>();
+    print("CustomerId  : ${custemerId}");
+
     return Padding(
       padding: const EdgeInsets.only(right: 20, left: 20.0),
       child: Scaffold(
@@ -107,6 +110,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                               .push(MaterialPageRoute(
                                   builder: (context) => YoutubePlayers(
                                         lessons: lessons,
+                                        isShow: true,
                                       )));
                         },
                         child: Stack(
@@ -185,11 +189,13 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                                     var data = <String, dynamic>{
                                       'type': 'lessons',
                                       'type_id': lessons?.id,
-                                      'customer_id': 38,
+                                      'customer_id': custemerId,
                                     };
                                     setState(() {
                                       userIsSign(data);
                                     });
+
+                                    //      userDataProvider.fetchUserInfo();
                                     //  data.userData();
                                     // _showMyDialog();
                                   },

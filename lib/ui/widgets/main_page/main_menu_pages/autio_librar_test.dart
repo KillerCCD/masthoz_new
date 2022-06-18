@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
 import '../../helper_widgets/menuShow.dart';
@@ -203,14 +201,14 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                           onTap: () {
                             print('kisvel');
                             showDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      SaveShowDialog(
-                                        isShow: false,
-                                      ));
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (
+                                  context,
+                                ) =>
+                                    SaveShowDialog(
+                                      isShow: false,
+                                    ));
                           },
                           child: Row(
                             children: [

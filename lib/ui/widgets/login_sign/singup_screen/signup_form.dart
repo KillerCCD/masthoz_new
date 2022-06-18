@@ -6,9 +6,6 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_state.dart';
 
-
-
-
 class SignupForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

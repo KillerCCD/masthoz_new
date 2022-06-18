@@ -51,7 +51,7 @@ class _LibraryPageState extends State<LibraryPage> {
               style: TextStyle(
                   fontFamily: 'GHEAGrapalat',
                   fontSize: 18,
-                  letterSpacing: 1.5 ,
+                  letterSpacing: 1.5,
                   fontWeight: FontWeight.bold,
                   color: Palette.textLineOrBackGroundColor),
             ),

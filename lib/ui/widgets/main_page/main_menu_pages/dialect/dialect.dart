@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
 
 import '../../../helper_widgets/menuShow.dart';
 import 'diaelct_by_characters.dart';
@@ -74,17 +73,20 @@ class _DialectState extends State<Dialect> with SingleTickerProviderStateMixin {
                   children: [
                     Positioned.fill(
                       top: 43,
-                      bottom: 380,
-                      child: Container(
-                        color: Color.fromRGBO(246, 246, 246, 1),
-                        padding: EdgeInsets.only(
-                            left: 16, right: 16, top: 13, bottom: 13),
-                        width: double.infinity,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Սեղմելով ցանկացած տառի վրա կարող եք ընթերցել այդ տառին համապատասխան նյութերը',
-                            textAlign: TextAlign.center,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          height: 130,
+                          color: Color.fromRGBO(246, 246, 246, 1),
+                          padding: EdgeInsets.only(
+                              left: 16, right: 16, top: 13, bottom: 13),
+                          width: double.infinity,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              'Սեղմելով ցանկացած տառի վրա կարող եք ընթերցել այդ տառին համապատասխան նյութերը',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

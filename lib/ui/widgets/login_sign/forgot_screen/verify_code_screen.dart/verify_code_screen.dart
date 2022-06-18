@@ -190,7 +190,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        duration: Duration(microseconds: 200),
+                                          duration: Duration(microseconds: 200),
                                           content: Text('Invald Data')),
                                     );
                                   }

@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
+
 import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dictionary_screen/dictionary.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 
+import '../../../../../domens/models/user.dart';
+import '../../../../../domens/repository/user_data_provider.dart';
 import '../../../helper_widgets/menuShow.dart';
 import '../../../helper_widgets/save_show_dialog.dart';
+import '../../../helper_widgets/size_config.dart';
+import '../../bottom_bars_pages/italian_lessons_screen/italian_lesson_page.dart';
 
 class AudioLibraryDataShow extends StatefulWidget {
   final Data? dataCharacter;
@@ -27,15 +29,21 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
       '135, 112. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26';
 
   final Data? dataCharacter;
+  int? custemerId;
+
+  final userDataProvider = UserDataProvider();
   _AudioLibraryDataShowState({this.dataCharacter});
   @override
   void initState() {
+    userDataProvider.fetchUserInfo().then((value) => custemerId = value.id);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+    print(dataCharacter?.link);
     return Container(
       width: mediaQuery.width,
       height: mediaQuery.height,
@@ -214,15 +222,15 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                     InkWell(
                                       onTap: () {
                                         print('kisvel');
-                                           showDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      SaveShowDialog(
-                                        isShow: false,
-                                      ));
+                                        showDialog(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            builder: (
+                                              context,
+                                            ) =>
+                                                SaveShowDialog(
+                                                  isShow: false,
+                                                ));
                                       },
                                       child: Row(
                                         children: [
@@ -236,14 +244,14 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                     Spacer(),
                                     InkWell(
                                       onTap: () {
-                                        print('share anel paterin');
-                                           showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (
-                                          context,
-                                        ) =>
-                                            SaveShowDialog(isShow: true));
+                                        var data = <String, dynamic>{
+                                          'type': 'audiolibraries',
+                                          'type_id': dataCharacter?.id,
+                                          'customer_id': 38,
+                                        };
+                                        setState(() {
+                                          userIsSign(data);
+                                        });
                                       },
                                       child: Row(
                                         children: [
@@ -267,13 +275,100 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
               ),
             ),
             SliverToBoxAdapter(
-              child: YoutubePlayers(
-                dataCharacters: dataCharacter,
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                height: 300,
+                width: 485,
+                child: Column(
+                  children: [
+                    Container(
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: CachedNetworkImage(
+                              imageUrl: dataCharacter!.image!,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              // height: SizeConfig
+                              //             .orentation ==
+                              //         Orientation
+                              //             .landscape
+                              //     ? (SizeConfig
+                              //                 .screenHeight! /
+                              //             3.55) *
+                              //         2
+                              height: SizeConfig.screenHeight! / 3.55,
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (_) => YoutubePlayers(
+                                                isShow: false,
+                                                dataCharacters: dataCharacter,
+                                              )));
+                                },
+                                child: Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 50.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            '0007- Որոշյալ և անորոշ հոդերը ',
+                            style: TextStyle(
+                                fontFamily: 'GHEAGrapalat',
+                                fontSize: 14.0,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void userIsSign(Map<String, dynamic> data) async {
+    User hasId = await userDataProvider.fetchUserInfo();
+    bool isSign = await userDataProvider.saveFavorite(data);
+
+    if (!isSign || hasId == null) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (
+            context,
+          ) =>
+              SaveShowDialog(
+                isShow: true,
+              ));
+    }
   }
 }

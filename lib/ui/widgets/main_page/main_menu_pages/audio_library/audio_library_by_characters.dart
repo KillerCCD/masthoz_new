@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/by_caracters_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
-import 'package:mashtoz_flutter/ui/widgets/helper_widgets/actions_widgets.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_read_screen.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_librar_data_show.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../helper_widgets/menuShow.dart';
@@ -186,121 +182,125 @@ class _DelegateChildState extends State<DelegateChild>
   Widget buildData() {
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      child: Column(
-        children: [
-          SizedBox(height: 52),
-          FutureBuilder<List<Data>?>(
-              future: audioLibraryByCharacters,
-              builder: (context, snapshot) {
-                var data = snapshot.data;
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                      child: Center(
-                          child: CircularProgressIndicator(
-                    strokeWidth: 2.0,
-                    color: Palette.main,
-                  )));
-                } else if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return const Text('Error');
-                  } else if (snapshot.hasData) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: data?.length,
-                      itemBuilder: (context, index) {
-                        // return ListTile(
-                        //   textColor: Color.fromRGBO(84, 112, 126, 1),
-                        //   title: Text('${data?[index].title}'),
-                        //   leading: Text(
-                        //     '0${index}',
-                        //     style: TextStyle(color: Palette.main),
-                        //   ),
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (_) => AudioLibraryDataShow(
-                        //                   dataCharacter: data?[index],
-                        //                 )));
-                        //   },
-                        //   contentPadding: EdgeInsets.only(right: 10.0),
-                        // );
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => AudioLibraryDataShow(
-                                          dataCharacter: data?[index],
-                                        )));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(right: 20.0, left: 22.0),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topCenter,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 0.0),
-                                        child: Text(
-                                          '0${index + 1}',
-                                          style: TextStyle(
-                                            color: Palette.main,
-                                            fontFamily: 'GHEAGrapalat',
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10.0),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Container(
-                                          width: 260,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 52),
+            FutureBuilder<List<Data>?>(
+                future: audioLibraryByCharacters,
+                builder: (context, snapshot) {
+                  var data = snapshot.data;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                        child: Center(
+                            child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                      color: Palette.main,
+                    )));
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: data?.length,
+                        itemBuilder: (context, index) {
+                          // return ListTile(
+                          //   textColor: Color.fromRGBO(84, 112, 126, 1),
+                          //   title: Text('${data?[index].title}'),
+                          //   leading: Text(
+                          //     '0${index}',
+                          //     style: TextStyle(color: Palette.main),
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (_) => AudioLibraryDataShow(
+                          //                   dataCharacter: data?[index],
+                          //                 )));
+                          //   },
+                          //   contentPadding: EdgeInsets.only(right: 10.0),
+                          // );
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => AudioLibraryDataShow(
+                                            dataCharacter: data?[index],
+                                          )));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(right: 20.0, left: 22.0),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topCenter,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 0.0),
                                           child: Text(
-                                            '${data?[index].title}',
+                                            '0${index + 1}',
                                             style: TextStyle(
-                                                fontFamily: 'GHEAGrapalat',
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color.fromRGBO(
-                                                    113, 141, 156, 1)),
-                                            textAlign: TextAlign.start,
+                                              color: Palette.main,
+                                              fontFamily: 'GHEAGrapalat',
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w400,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Color.fromRGBO(226, 224, 224, 1),
-                                )
-                              ],
+                                      SizedBox(width: 10.0),
+                                      Expanded(
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            width: 260,
+                                            child: Text(
+                                              '${data?[index].title}',
+                                              style: TextStyle(
+                                                  fontFamily: 'GHEAGrapalat',
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color.fromRGBO(
+                                                      113, 141, 156, 1)),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Divider(
+                                    thickness: 1,
+                                    color: Color.fromRGBO(226, 224, 224, 1),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
+                          );
+                        },
+                      );
+                    } else {
+                      return const Text('Empty data');
+                    }
                   } else {
-                    return const Text('Empty data');
+                    return Text('State: ${snapshot.connectionState}');
                   }
-                } else {
-                  return Text('State: ${snapshot.connectionState}');
-                }
-              }),
-        ],
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -372,7 +372,7 @@ class _DelegateChildState extends State<DelegateChild>
           ),
         ),
         body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: wordsArm
                 .map(
