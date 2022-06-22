@@ -141,7 +141,7 @@ class _MenuShowState extends State<MenuShow>
                                         top: 20.0,
                                       ),
                                       child: SvgPicture.asset(
-                                        'assets/images/mashtoz_flutter_org.svg',
+                                        'assets/images/mashtoz_org.svg',
                                         width: 250,
                                         color: Colors.white,
                                       ),

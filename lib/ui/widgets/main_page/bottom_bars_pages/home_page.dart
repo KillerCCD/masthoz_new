@@ -1,21 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/word_of_day.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
-import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-
+import 'dart:math' as math;
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_library.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 
+import '../../../../domens/models/book_data/content_list.dart';
 import '../../helper_widgets/size_config.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,36 +86,35 @@ class _HomePageState extends State<HomePage> {
                       child: Center(
                     child: Column(
                       children: [
-                        Positioned.fill(
-                            child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  padding:
-                                      EdgeInsets.only(left: 20.0, right: 20.0),
-                                  height: 53,
-                                  width: SizeConfig.screenWidth! >= 1200
-                                      ? 1200
-                                      : SizeConfig.screenWidth,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Օրվա խոսք',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            letterSpacing: 1,
-                                            fontFamily: 'GHEAGrapalat',
-                                            fontWeight: FontWeight.bold,
-                                            color: Palette.appBarTitleColor),
-                                      ),
-                                      Spacer(),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: MenuShow(),
-                                      ),
-                                    ],
+                        // //!!header Օրվա խոսք
+                        Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                              height: 53,
+                              width: SizeConfig.screenWidth! >= 1200
+                                  ? 1200
+                                  : SizeConfig.screenWidth,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Օրվա խոսք',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        letterSpacing: 1,
+                                        fontFamily: 'GHEAGrapalat',
+                                        fontWeight: FontWeight.bold,
+                                        color: Palette.appBarTitleColor),
                                   ),
-                                ))),
+                                  Spacer(),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: MenuShow(),
+                                  ),
+                                ],
+                              ),
+                            )),
                         Container(
                           padding: EdgeInsets.only(
                               left: SizeConfig.screenWidth! >= 1200
@@ -355,58 +352,90 @@ class _HomePageState extends State<HomePage> {
                                                   122, 108, 115, 1)),
                                         ))),
                                 Positioned.fill(
-                                  top: 70,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      width: double.infinity,
-                                      child: GridView.builder(
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio:
-                                                SizeConfig.orentation ==
-                                                        Orientation.portrait
-                                                    ? 1.7
-                                                    : (1 / .4),
-                                            crossAxisCount:
-                                                SizeConfig.orentation ==
-                                                        Orientation.portrait
-                                                    ? 1
-                                                    : 2,
-                                            crossAxisSpacing: 15,
-                                          ),
-                                          addAutomaticKeepAlives: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: 2,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            return BookCard(
-                                                isOdd: false,
-                                                categorys: BookCategory(
-                                                    categoryTitle:
-                                                        'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
-                                                    id: 1,
-                                                    title:
-                                                        'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
-                                                    type: 'libraries'),
-                                                book: Content(
-                                                  videoLink: null,
-                                                  content: null,
-                                                  body: '',
-                                                  id: 1,
-                                                  image:
-                                                      'https://picsum.photos/200',
-                                                  title:
-                                                      'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
-                                                  author:
-                                                      'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
-                                                  explanation: '',
-                                                ));
-                                          }),
-                                    ),
-                                  ),
-                                ),
+                                    top: 70,
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          width: double.infinity,
+                                          child: ResponsiveGridList(
+                                              horizontalGridSpacing:
+                                                  16, // Horizontal space between grid items
+                                              // Vertical space between grid items
+
+                                              verticalGridMargin:
+                                                  10, // Vertical space around the grid
+                                              minItemWidth:
+                                                  300, // The minimum item width (can be smaller, if the layout constraints are smaller)
+                                              minItemsPerRow:
+                                                  1, // The minimum items to show in a single row. Takes precedence over minItemWidth
+                                              maxItemsPerRow: 2, // The m
+                                              children:
+                                                  List.generate(2, (index) {
+                                                return index % 2 != 0
+                                                    ? Transform(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        transform:
+                                                            Matrix4.rotationY(
+                                                                math.pi),
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
+                                                            child: BookCard(
+                                                                isOdd: true,
+                                                                categorys: BookCategory(
+                                                                    categoryTitle:
+                                                                        'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
+                                                                    id: 1,
+                                                                    title:
+                                                                        'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
+                                                                    type:
+                                                                        'libraries'),
+                                                                book: Content(
+                                                                  videoLink:
+                                                                      null,
+                                                                  content: null,
+                                                                  body: '',
+                                                                  id: 1,
+                                                                  image:
+                                                                      'https://picsum.photos/200',
+                                                                  title:
+                                                                      'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
+                                                                  author:
+                                                                      'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
+                                                                  explanation:
+                                                                      '',
+                                                                ))))
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(15.0),
+                                                        child: BookCard(
+                                                            isOdd: false,
+                                                            categorys: BookCategory(
+                                                                categoryTitle:
+                                                                    'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
+                                                                id: 1,
+                                                                title:
+                                                                    'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
+                                                                type:
+                                                                    'libraries'),
+                                                            book: Content(
+                                                              videoLink: null,
+                                                              content: null,
+                                                              body: '',
+                                                              id: 1,
+                                                              image:
+                                                                  'https://picsum.photos/200',
+                                                              title:
+                                                                  'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
+                                                              author:
+                                                                  'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
+                                                              explanation: '',
+                                                            )));
+                                              })),
+                                        ))),
                                 Positioned.fill(
                                   bottom: 16,
                                   right: 10,
@@ -1741,7 +1770,7 @@ class _HomePageState extends State<HomePage> {
 //                                       child: Scaffold(
 //                                         body: AppBar(
 //                                           title: SvgPicture.asset(
-//                                               'assets/images/mashtoz_flutter_org.svg'),
+//                                               'assets/images/mashtoz_org.svg'),
 //                                           leading: Container(),
 //                                           toolbarHeight: 63,
 //                                           actions: [

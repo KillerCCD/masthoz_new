@@ -12,6 +12,7 @@ import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/buttons/bottom_navigation_bar/bottom_app_bar.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import '../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
@@ -50,7 +51,8 @@ class _BooksScreenState extends State<BooksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final orentation = MediaQuery.of(context).size;
+    final orentation = MediaQuery.of(context).size.width;
+    print(orentation);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -142,45 +144,40 @@ class _BooksScreenState extends State<BooksScreen> {
                 var conentList = snapshot.data;
                 inspect(conentList);
                 if (snapshot.hasData) {
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.7,
-                        crossAxisCount:
-                            orentation.width >= 800 && orentation.width < 1300
-                                ? 2
-                                : orentation.width >= 1300 &&
-                                        orentation.width < 1600
-                                    ? 3
-                                    : orentation.width >= 1600
-                                        ? 4
-                                        : 1,
-                      ),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        Content book = conentList![index];
-                        return index % 2 != 0
-                            ? Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(math.pi),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: BookCard(
-                                    isOdd: true,
-                                    book: book,
-                                    categorys: category!,
-                                  ),
-                                ))
-                            : Padding(
+                  return ResponsiveGridList(
+                    horizontalGridSpacing:
+                        16, // Horizontal space between grid items
+
+                    verticalGridMargin: 50, // Vertical space around the grid
+                    minItemWidth:
+                        300, // The minimum item width (can be smaller, if the layout constraints are smaller)
+                    minItemsPerRow:
+                        1, // The minimum items to show in a single row. Takes precedence over minItemWidth
+                    maxItemsPerRow: 2, // The m
+                    children: List.generate(snapshot.data!.length, (index) {
+                      Content book = conentList![index];
+                      return index % 2 != 0
+                          ? Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: BookCard(
-                                  isOdd: false,
+                                  isOdd: true,
                                   book: book,
                                   categorys: category!,
                                 ),
-                              );
-                      });
+                              ))
+                          : Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: BookCard(
+                                isOdd: false,
+                                book: book,
+                                categorys: category!,
+                              ),
+                            );
+                    }),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -227,23 +224,25 @@ class BookCard extends StatelessWidget {
           context.read<ContentProvider>().getContentList(book);
           print(book.title);
         },
-        child: SizedBox(
-          width: 388,
+        child: Container(
+          //color: Colors.black,
+          width: SizeConfig.screenWidth! <= 360 ? 320 : 388,
           height: 169,
           child: Stack(
             children: [
-              Positioned(
+              Positioned.fill(
                   top: 147,
                   left: 0,
-                  child: SizedBox(
-                      width: 320,
+                  child: Container(
+                      width: SizeConfig.screenWidth! <= 360 ? 320 : 388,
                       height: 14,
                       child: Stack(children: <Widget>[
                         Positioned(
                             top: 0,
                             left: 0,
                             child: Container(
-                                width: 320,
+                                width:
+                                    SizeConfig.screenWidth! <= 360 ? 320 : 388,
                                 height: 14,
                                 child: Stack(children: <Widget>[
                                   Positioned(
@@ -251,44 +250,15 @@ class BookCard extends StatelessWidget {
                                     left: 0,
                                     child: Container(
                                       height: 14,
-                                      width: 320,
+                                      width: SizeConfig.screenWidth! <= 360
+                                          ? 320
+                                          : 388,
                                       child: CustomPaint(
                                         foregroundPainter: BookBox(),
                                       ),
                                     ),
                                   ),
-                                  // child: Stack(children: <Widget>[
-                                  //   Positioned(
-                                  //     top: 0,
-                                  //     left: 0,
-                                  //     child: SizedBox(
-                                  //       width: 388,
-                                  //       child:
-                                  //     ),
-                                  //   ),
-                                  //   // Positioned(
-                                  //   //     top: 14,
-                                  //   //     child: SizedBox(
-                                  //   //       width: 388,
-                                  //   //       child: Transform.rotate(
-                                  //   //         angle: 179.99999499104388 *
-                                  //   //             (math.pi / 180),
-                                  //   //         child: SvgPicture.asset(
-                                  //   //           'assets/images/rectangle3649.svg',
-                                  //   //         ),
-                                  //   //       ),
-                                  //   //     )),
-                                  // ]
                                 ]))),
-
-                        // Positioned(
-                        //   top: 0,
-                        //   left: 0,
-                        //   child: SvgPicture.asset(
-                        //     'assets/images/group5040.svg',
-                        //     width: 330,
-                        //   ),
-                        // ),
                       ]))),
               Positioned(
                   top: 0,
@@ -323,48 +293,30 @@ class BookCard extends StatelessWidget {
                   child: SizedBox(
                     width: 83,
                     height: 104.0,
-                    child: Expanded(
-                      child: isOdd
-                          ? Transform(
-                              transform: Matrix4.rotationY(math.pi),
-                              alignment: Alignment.center,
-                              child: CachedNetworkImage(
-                                imageUrl: book.image!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : CachedNetworkImage(
+                    child: isOdd
+                        ? Transform(
+                            transform: Matrix4.rotationY(math.pi),
+                            alignment: Alignment.center,
+                            child: CachedNetworkImage(
                               imageUrl: book.image!,
                               fit: BoxFit.cover,
                             ),
-                    ),
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: book.image!,
+                            fit: BoxFit.cover,
+                          ),
                   )),
-
-              // Positioned(
-              //     top: 155,
-              //     right: 0,
-              //     child: Container(
-              //       width: 388,
-              //       height: 14,
-              //       child: Positioned(
-              //         top: 0,
-              //         left: 0,
-              //         child: SvgPicture.asset(
-              //           'assets/images/group5040.svg',
-              //           color: null,
-              //         ),
-              //       ),
-              //     )),
               Positioned.fill(
                 bottom: 30.0,
                 child: Align(
-                  alignment: Alignment.bottomRight,
+                  alignment: Alignment.centerRight,
                   child: Container(
-                    width: 200,
-                    height: 10,
+                    //color: Colors.red,
+                    width: SizeConfig.screenWidth! <= 360 ? 250 / 2 : 300 / 2,
                     child: isOdd
                         ? Align(
-                            alignment: Alignment.bottomCenter,
+                            alignment: Alignment.bottomLeft,
                             child: Transform(
                               transform: Matrix4.rotationY(math.pi),
                               alignment: Alignment.center,
@@ -377,7 +329,7 @@ class BookCard extends StatelessWidget {
                             ),
                           )
                         : Align(
-                            alignment: Alignment.bottomCenter,
+                            alignment: Alignment.bottomLeft,
                             child: SvgPicture.asset(
                               'assets/images/vector81.svg',
                               color: Palette.main,
@@ -388,7 +340,6 @@ class BookCard extends StatelessWidget {
                   ),
                 ),
               ),
-
               Positioned.fill(
                 left: 100,
                 child: isOdd

@@ -100,7 +100,7 @@ class _DictionaryState extends State<Dictionary>
                 child: Scaffold(
                   appBar: AppBar(
                     elevation: 0.0,
-                    toolbarHeight: 11,
+                    toolbarHeight: 10,
                     backgroundColor: const Color.fromRGBO(246, 246, 246, 1),
                     bottom: TabBar(
                       indicatorWeight: 2,
@@ -110,9 +110,10 @@ class _DictionaryState extends State<Dictionary>
                       indicatorColor: Colors.amber,
                       controller: _controller,
                       tabs: const <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5),
-                          child: Tab(
+                        Tab(
+                          height: 55,
+                          child: Align(
+                            alignment: Alignment.topCenter,
                             child: Text(
                               'Հայերեն-\nԻտալերեն',
                               textAlign: TextAlign.center,
@@ -124,9 +125,10 @@ class _DictionaryState extends State<Dictionary>
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5),
-                          child: Tab(
+                        Tab(
+                          height: 55,
+                          child: Align(
+                            alignment: Alignment.topCenter,
                             child: Text(
                               'Իտալերեն-\nՀայերեն',
                               textAlign: TextAlign.center,

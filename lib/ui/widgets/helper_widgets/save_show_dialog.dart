@@ -133,103 +133,100 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
                             height: 152,
                             width: double.infinity,
                             child: Material(
-                              child: Expanded(
-                                  child: Container(
-                                color: Palette.textLineOrBackGroundColor,
-                                height: MediaQuery.of(context).size.height,
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 15.0),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 20.0, left: 20.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (
-                                                context,
-                                              ) =>
-                                                  SaveShowDialog(
-                                                    isShow: true,
-                                                  ));
-                                        },
-                                        child: Text(
-                                          'Կիսվել',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing: 1),
-                                          textAlign: TextAlign.center,
-                                        ),
+                                child: Container(
+                              color: Palette.textLineOrBackGroundColor,
+                              height: MediaQuery.of(context).size.height,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 15.0),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 20.0, left: 20.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (
+                                              context,
+                                            ) =>
+                                                SaveShowDialog(
+                                                  isShow: true,
+                                                ));
+                                      },
+                                      child: Text(
+                                        'Կիսվել',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 20.0, left: 20.0),
-                                      child: Divider(
-                                        color: Color.fromRGBO(226, 224, 224, 1),
-                                        thickness: 1,
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 20.0, left: 20.0),
+                                    child: Divider(
+                                      color: Color.fromRGBO(226, 224, 224, 1),
+                                      thickness: 1,
                                     ),
-                                    Container(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(height: 10.0),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            InkWell(
-                                                onTap: () async {
-                                                  // final urlImage =
-                                                  //     'https://picsum.photos/200/300/?blur';
-                                                  // await launchUrl(Uri.parse(
-                                                  //     'https://https://www.facebook.com/sharer?u=&$urlImage'));
-                                                  onButtonTap(Share.messenger);
-                                                  // final url =
-                                                  //     Uri.parse(urlImage);
-                                                  // final response =
-                                                  //     await http.get(url);
-
-                                                  // await Share.share(urlImage);
-                                                },
-                                                child: SvgPicture.asset(
-                                                    'assets/images/messenger 2.svg')),
-                                            InkWell(
+                                  ),
+                                  Container(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(height: 10.0),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          InkWell(
                                               onTap: () async {
-                                                onButtonTap(Share.messenger);
                                                 // final urlImage =
                                                 //     'https://picsum.photos/200/300/?blur';
                                                 // await launchUrl(Uri.parse(
                                                 //     'https://https://www.facebook.com/sharer?u=&$urlImage'));
+                                                onButtonTap(Share.messenger);
+                                                // final url =
+                                                //     Uri.parse(urlImage);
+                                                // final response =
+                                                //     await http.get(url);
+
+                                                // await Share.share(urlImage);
                                               },
                                               child: SvgPicture.asset(
-                                                  'assets/images/whatsapp 2.svg'),
-                                            ),
-                                            SvgPicture.asset(
-                                                'assets/images/gmail 2.svg'),
-                                            SvgPicture.asset(
-                                                'assets/images/messenger 2.svg'),
-                                            SvgPicture.asset(
-                                                'assets/images/vk-social-logotype (1) 2.svg'),
-                                            SvgPicture.asset(
-                                                'assets/images/facebook (1) 4.svg'),
-                                            SvgPicture.asset(
-                                                'assets/images/twitter (1) 4.svg'),
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                                  ],
-                                ),
-                              )),
-                            ),
+                                                  'assets/images/messenger 2.svg')),
+                                          InkWell(
+                                            onTap: () async {
+                                              onButtonTap(Share.messenger);
+                                              // final urlImage =
+                                              //     'https://picsum.photos/200/300/?blur';
+                                              // await launchUrl(Uri.parse(
+                                              //     'https://https://www.facebook.com/sharer?u=&$urlImage'));
+                                            },
+                                            child: SvgPicture.asset(
+                                                'assets/images/whatsapp 2.svg'),
+                                          ),
+                                          SvgPicture.asset(
+                                              'assets/images/gmail 2.svg'),
+                                          SvgPicture.asset(
+                                              'assets/images/messenger 2.svg'),
+                                          SvgPicture.asset(
+                                              'assets/images/vk-social-logotype (1) 2.svg'),
+                                          SvgPicture.asset(
+                                              'assets/images/facebook (1) 4.svg'),
+                                          SvgPicture.asset(
+                                              'assets/images/twitter (1) 4.svg'),
+                                        ],
+                                      )
+                                    ],
+                                  )),
+                                ],
+                              ),
+                            )),
                           ),
                         ),
                       ),

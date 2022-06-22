@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +106,7 @@ class _BookReadScreenState extends State<BookReadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    inspect(textList.first);
+    //  print("TExt List Lencght :${textList.length}");
     // print(SizeConfig.screenHeight);
     return searchData != null
         ? FutureBuilder<Data?>(
@@ -116,16 +115,22 @@ class _BookReadScreenState extends State<BookReadScreen> {
               if (snapshot.hasData) {
                 var data = snapshot.data;
                 textList = bookGengerator(data?.body)!;
-                inspect(data);
+                //    inspect(data);
                 return PageView(
                     controller: _pageController,
+                    onPageChanged: (int pgCount) {
+                      print("PGCount ${pgCount + 1}");
+                      //count = pgCount;
+                    },
                     children: textList.map((e) {
-                      print('EEEEEEEEEEEEE : ${e[0]}');
                       return BookPages(
                         listText: e,
                         readScreen: readScreen,
                         encyclopediaBody: encyclopediaBody,
                         controller: _pageController,
+                        searchData: searchData,
+                        pageCounts: textList.length,
+                        dynamicPageCounts: count,
                         //   isVisiblty: isVisiblty,
                       );
                     }).toList());
@@ -141,12 +146,22 @@ class _BookReadScreenState extends State<BookReadScreen> {
         : PageView.builder(
             controller: _pageController,
             itemCount: textList.length,
+            onPageChanged: (int pgCount) {
+              print("PGCount ${pgCount + 1}");
+
+              setState(() {
+                count = pgCount + 1;
+              });
+              print("Count ${count}");
+            },
             itemBuilder: (BuildContext context, index) {
               return BookPages(
                 listText: textList[index],
                 readScreen: readScreen,
                 encyclopediaBody: encyclopediaBody,
                 controller: _pageController, index: index,
+                pageCounts: textList.length,
+                dynamicPageCounts: count,
                 //   isVisiblty: isVisiblty,
               );
             },
@@ -160,8 +175,11 @@ class BookPages extends StatefulWidget {
     required this.listText,
     this.encyclopediaBody,
     this.readScreen,
+    this.searchData,
     this.controller,
     this.index,
+    this.pageCounts,
+    this.dynamicPageCounts,
   }) : super(key: key);
 
   final PageController? controller;
@@ -169,14 +187,19 @@ class BookPages extends StatefulWidget {
   final int? index;
   final String listText;
   final Content? readScreen;
-
+  final Search? searchData;
+  final int? pageCounts;
+  final int? dynamicPageCounts;
   @override
   State<BookPages> createState() => _BookPagesState(
       listText: listText,
       readScreen: readScreen,
+      searchData: searchData,
       encyclopediaBody: encyclopediaBody,
       controller: controller,
-      index: index);
+      index: index,
+      pageCounts: pageCounts,
+      dynamicPageCounts: dynamicPageCounts);
 }
 
 class _BookPagesState extends State<BookPages> {
@@ -185,9 +208,14 @@ class _BookPagesState extends State<BookPages> {
     this.readScreen,
     this.encyclopediaBody,
     this.controller,
+    this.searchData,
     this.index,
+    this.pageCounts,
+    this.dynamicPageCounts,
   });
-
+  final Search? searchData;
+  final int? pageCounts;
+  final int? dynamicPageCounts;
   final PageController? controller;
   int? custemerId;
   final Data? encyclopediaBody;
@@ -254,7 +282,7 @@ class _BookPagesState extends State<BookPages> {
             isSettings = false;
             isShare = false;
             isYoutubeActive = false;
-            print("BovandakMenu :: $isBovandakMenu");
+            //  print("BovandakMenu :: $isBovandakMenu");
           }),
           child: SvgPicture.asset(
             'assets/images/bovandakutyun_menu.svg',
@@ -279,7 +307,7 @@ class _BookPagesState extends State<BookPages> {
                         isSettings = false;
                         isShare = false;
                         isYoutubeActive = false;
-                        print("Favorite :: $isFavorite");
+                        //  print("Favorite :: $isFavorite");
                       });
                     },
                     child: SvgPicture.asset(
@@ -328,7 +356,7 @@ class _BookPagesState extends State<BookPages> {
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              '${book?.title}',
+                              '${searchData?.title}',
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -345,16 +373,14 @@ class _BookPagesState extends State<BookPages> {
                           // height: 50,
                           child: Align(
                             alignment: Alignment.topCenter,
-                            child: Expanded(
-                              child: Text(
-                                '${book?.author}',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1),
-                              ),
+                            child: Text(
+                              '${book?.author}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1),
                             ),
                           )),
                     ],
@@ -419,7 +445,9 @@ class _BookPagesState extends State<BookPages> {
                                         ),
                                       )),
                                       SizedBox(width: 80),
-                                      Expanded(child: Text('11/365')),
+                                      Expanded(
+                                          child: Text(
+                                              '${dynamicPageCounts}/${pageCounts}')),
                                       Expanded(
                                           child: InkWell(
                                         onTap: () {
@@ -985,8 +1013,6 @@ class _BookPagesState extends State<BookPages> {
                                                             textSize + 2.0;
                                                       });
                                                     }
-                                                    print(
-                                                        "aklsdfjasdlkfjadskkkkkkkk$textSize");
                                                   },
                                                   child: Padding(
                                                     padding:
@@ -1314,7 +1340,7 @@ class _BookPagesState extends State<BookPages> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      print('dark theme');
+                                                      // print('dark theme');
                                                       setState(() {
                                                         isPhoneturnVertical =
                                                             !isPhoneturnVertical;
@@ -1593,8 +1619,8 @@ class _BookPagesState extends State<BookPages> {
                                                             textSize + 2.0;
                                                       });
                                                     }
-                                                    print(
-                                                        "kolikolkioki$textSize");
+                                                    // print(
+                                                    //     "kolikolkioki$textSize");
                                                   },
                                                   child: Padding(
                                                     padding:
@@ -1922,7 +1948,7 @@ class _BookPagesState extends State<BookPages> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      print('dark theme');
+                                                      //print('dark theme');
                                                       setState(() {
                                                         isPhoneturnVertical =
                                                             !isPhoneturnVertical;
@@ -2120,7 +2146,6 @@ class _BookPagesState extends State<BookPages> {
   Widget build(BuildContext context) {
     final appTheme = context.read<ThemeNotifier>();
     var theme = appTheme.theme != null ? appTheme.theme : appTheme.lightTheme;
-    var pageIndex = context.read<ContentProvider>().pageIndex;
 
     return Theme(
       data: theme,

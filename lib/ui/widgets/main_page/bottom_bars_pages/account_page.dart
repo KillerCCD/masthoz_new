@@ -107,15 +107,25 @@ class _DelegateChildState extends State<DelegateChild>
   int drawableIndex = 0;
   Widget buildList({required Content data, required int index}) {
     if (drawableIndex == 0) {
-      return BookCard(
-          book: data,
-          isOdd: index % 2 != 0 ? false : true,
-          categorys: BookCategory(
-            categoryTitle: data.title!,
-            id: data.id!,
-            title: data.title!,
-            type: 'librarian',
-          ));
+      return index % 2 != 0
+          ? BookCard(
+              book: data,
+              isOdd: false,
+              categorys: BookCategory(
+                categoryTitle: data.title!,
+                id: data.id!,
+                title: data.title!,
+                type: 'librarian',
+              ))
+          : BookCard(
+              book: data,
+              isOdd: false,
+              categorys: BookCategory(
+                categoryTitle: data.title!,
+                id: data.id!,
+                title: data.title!,
+                type: 'librarian',
+              ));
     } else if (drawableIndex == 1) {
       return carachtersList(data, index);
     } else if (drawableIndex == 2) {
@@ -242,9 +252,7 @@ class _DelegateChildState extends State<DelegateChild>
                           scrollDirection: Axis.vertical,
                           itemCount: data?.length,
                           itemBuilder: (context, index) {
-                            if (data![index]
-                                .type!
-                                .contains(types[drawableIndex])) {
+                            if (data![index].type! == types[drawableIndex]) {
                               return buildList(
                                   data: data[index].content, index: index);
                             }

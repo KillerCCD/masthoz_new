@@ -164,19 +164,17 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                   Positioned.fill(
                                       child: Align(
                                     alignment: Alignment.topCenter,
-                                    child: Expanded(
-                                      child: Container(
-                                        child: Text(
-                                          "${book.title}",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(25, 4, 18, 1),
-                                            fontSize: 12,
-                                            letterSpacing: 1,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "GEHAGrapalat",
-                                            height: 1,
-                                          ),
+                                    child: Container(
+                                      child: Text(
+                                        "${book.title}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(25, 4, 18, 1),
+                                          fontSize: 12,
+                                          letterSpacing: 1,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "GEHAGrapalat",
+                                          height: 1,
                                         ),
                                       ),
                                     ),
@@ -186,29 +184,27 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
-                                        child: Expanded(
-                                          child: Align(
-                                            alignment: Alignment.topCenter,
-                                            child: Container(
-                                              child: Text(
-                                                book.author ?? '',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      25, 4, 18, 1),
-                                                  fontSize: 12,
-                                                  letterSpacing: 1,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'GHEAGrapalat',
-                                                  height: 1,
-                                                ),
-                                                maxLines: MediaQuery.of(context)
-                                                            .size
-                                                            .width <
-                                                        360
-                                                    ? 2
-                                                    : null,
+                                        child: Align(
+                                          alignment: Alignment.topCenter,
+                                          child: Container(
+                                            child: Text(
+                                              book.author ?? '',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    25, 4, 18, 1),
+                                                fontSize: 12,
+                                                letterSpacing: 1,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: 'GHEAGrapalat',
+                                                height: 1,
                                               ),
+                                              maxLines: MediaQuery.of(context)
+                                                          .size
+                                                          .width <
+                                                      360
+                                                  ? 2
+                                                  : null,
                                             ),
                                           ),
                                         ),
@@ -523,20 +519,17 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(left: 20.0),
-                                child: Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '${bovandak?[index].title}',
-                                      style: TextStyle(
-                                          fontFamily: 'GHEAGrapalat',
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w700,
-                                          color:
-                                              Color.fromRGBO(84, 112, 126, 1)),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 3,
-                                    ),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '${bovandak?[index].title}',
+                                    style: TextStyle(
+                                        fontFamily: 'GHEAGrapalat',
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromRGBO(84, 112, 126, 1)),
+                                    textAlign: TextAlign.start,
+                                    maxLines: 3,
                                   ),
                                 ),
                               ),
@@ -775,19 +768,17 @@ class _GlobalBovandakListsState extends State<GlobalBovandakLists> {
                       },
                       child: Container(
                         padding: const EdgeInsets.only(left: 20.0),
-                        child: Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '${bovandak?[index].title}',
-                              style: TextStyle(
-                                  fontFamily: 'GHEAGrapalat',
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromRGBO(84, 112, 126, 1)),
-                              textAlign: TextAlign.start,
-                              maxLines: 3,
-                            ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${bovandak?[index].title}',
+                            style: TextStyle(
+                                fontFamily: 'GHEAGrapalat',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w700,
+                                color: Color.fromRGBO(84, 112, 126, 1)),
+                            textAlign: TextAlign.start,
+                            maxLines: 3,
                           ),
                         ),
                       ),

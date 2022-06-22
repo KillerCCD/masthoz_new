@@ -68,7 +68,7 @@ class _DictionaryArmItlState extends State<DictionaryArmItl>
                   child: Text(
                     isShow ? 'Հայերեն-իտալերեն' : 'Իտալերեն- Հայերեն',
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         letterSpacing: 1,
                         fontFamily: 'GHEAGrapalat',
                         fontWeight: FontWeight.w700,
@@ -178,6 +178,7 @@ class _DelegateChildState extends State<DelegateChild>
   }
 
   Widget buildData() {
+    print('dadas');
     return FutureBuilder<List<Data>?>(
       future: isShow ? charctersDataArmenian : charctersDataItalian,
       builder: (context, snapshot) {
@@ -227,7 +228,6 @@ class _DelegateChildState extends State<DelegateChild>
                         children: [
                           InkWell(
                             onTap: () {
-                              print('kisvel');
                               showDialog(
                                   context: context,
                                   barrierDismissible: true,
@@ -242,7 +242,7 @@ class _DelegateChildState extends State<DelegateChild>
                               children: [
                                 SvgPicture.asset('assets/images/այքըններ.svg'),
                                 const SizedBox(width: 6),
-                                const Text('Կիսվել')
+                                const Text('Կիսվել ')
                               ],
                             ),
                           ),
@@ -257,7 +257,7 @@ class _DelegateChildState extends State<DelegateChild>
                               setState(() {
                                 userIsSign(saveData);
                               });
-                              print('share anel paterin');
+
                               //    showDialog(
                               // context: context,
                               // barrierDismissible: false,
@@ -293,6 +293,7 @@ class _DelegateChildState extends State<DelegateChild>
 
   @override
   Widget build(BuildContext context) {
+    print("dadas");
     return DefaultTabController(
         initialIndex: characterIndex,
         length: isShow ? wordsArm.length : wordsIt.length,

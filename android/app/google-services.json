@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "367447965764",
+    "project_id": "mashtoz",
+    "storage_bucket": "mashtoz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367447965764:android:bdec09ad44431e7d18bc11",
+        "android_client_info": {
+          "package_name": "com.example.mashtoz_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367447965764-g11oo62hso9q2jnuaakdclbs1ugm0sgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTUPagEnXTue1W4te5r4PH5g8-FTEsMkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367447965764-g11oo62hso9q2jnuaakdclbs1ugm0sgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
