@@ -156,6 +156,7 @@ class _InfoPageState extends State<InfoPage> {
                       SizedBox(height: 20.0),
                       isShow
                           ? Container(
+                              padding: EdgeInsets.only(top: 20),
                               alignment: Alignment(0.0, -1.0),
                               color: Color.fromRGBO(226, 224, 224, 1),
                               height: 100,

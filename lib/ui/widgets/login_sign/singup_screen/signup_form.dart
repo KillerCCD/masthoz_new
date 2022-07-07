@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_state.dart';
+import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/home_page.dart';
 
 class SignupForm extends StatelessWidget {
   @override
@@ -13,7 +14,8 @@ class SignupForm extends StatelessWidget {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.popAndPushNamed(context, '/homepage');
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => HomePage()));
         } else if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -31,7 +33,7 @@ class SignupForm extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                        height: 20,
+                        height: 15,
                         width: 20,
                         child: CircularProgressIndicator(
                           valueColor:

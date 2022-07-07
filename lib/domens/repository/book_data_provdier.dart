@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/book.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';

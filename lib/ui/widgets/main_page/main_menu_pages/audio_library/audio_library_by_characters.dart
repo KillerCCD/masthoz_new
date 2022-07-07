@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
 
 import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_librar_data_show.dart';
+import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
@@ -47,6 +49,9 @@ class _AudioLibraryByCharactersState extends State<AudioLibraryByCharacters>
 
   @override
   Widget build(BuildContext context) {
+    final charcterNotifire = Provider.of<BookNotifire>(context, listen: true)
+        .firstCharactersAudioLib;
+    ;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(slivers: [
@@ -80,7 +85,9 @@ class _AudioLibraryByCharactersState extends State<AudioLibraryByCharacters>
                   height: 73,
                   padding: EdgeInsets.only(top: 18),
                   child: Text(
-                    '${characterByindex.toUpperCase()}',
+                    charcterNotifire.isNotEmpty
+                        ? '${charcterNotifire.toUpperCase()}'
+                        : '${characterByindex.toUpperCase()}',
                     style: TextStyle(
                         fontSize: 16,
                         letterSpacing: 1,
@@ -347,6 +354,9 @@ class _DelegateChildState extends State<DelegateChild>
                                   Api.audioLibrariesByCharacters(
                                       wordsArm.elementAt(index)))
                           : null;
+                      context
+                          .read<BookNotifire>()
+                          .charactersSetAudioLib(wordsArm.elementAt(index));
                     });
                   },
                   tabs: wordsArm.map((tabName) {

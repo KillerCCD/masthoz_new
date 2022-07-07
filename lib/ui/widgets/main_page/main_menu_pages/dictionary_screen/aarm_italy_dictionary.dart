@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../../../domens/models/book_data/data.dart';
 import '../../../../../domens/models/user.dart';
@@ -227,16 +228,17 @@ class _DelegateChildState extends State<DelegateChild>
                       child: Row(
                         children: [
                           InkWell(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      SaveShowDialog(
-                                        isShow: false,
-                                      ));
+                            onTap: () async {
+                              await Share.share(data![index].body!); 
+                              // showDialog(
+                              //     context: context,
+                              //     barrierDismissible: true,
+                              //     builder: (
+                              //       context,
+                              //     ) =>
+                              //         SaveShowDialog(
+                              //           isShow: false,
+                              //         ));
                             },
                             child: Row(
                               children: [
@@ -426,7 +428,7 @@ class _DelegateChildState extends State<DelegateChild>
   }
 
   void userIsSign(Map<String, dynamic> data) async {
-    User hasId = await userDataProvider.fetchUserInfo();
+    Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
     if (!isSign || hasId == null) {

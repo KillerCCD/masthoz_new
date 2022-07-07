@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../../config/palette.dart';
 
@@ -126,60 +128,36 @@ class _ItalianPageState extends State<ItalianPage>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var listsLesson = snapshot.data;
+                  return ResponsiveGridListBuilder(
+                    horizontalGridSpacing:
+                        16, // Horizontal space between grid items
 
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1, childAspectRatio: (2 / 1.3)),
-                    reverse: isTurnLesson,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: snapshot.data!.length,
-                    physics: ClampingScrollPhysics(),
-                    itemBuilder: (
-                      BuildContext context,
-                      int index,
-                    ) {
-                      final Lessons italianLesson = listsLesson![index];
-
-                      if (index % 2 != 0) {
-                        return GridTile(
-                          child: Transform(
+                    verticalGridMargin: 50, // Vertical space around the grid
+                    minItemWidth:
+                        300, // The minimum item width (can be smaller, if the layout constraints are smaller)
+                    minItemsPerRow:
+                        1, // The minimum items to show in a single row. Takes precedence over minItemWidth
+                    maxItemsPerRow: 4, // T The m`
+                    gridItems: List.generate(listsLesson!.length, (index) {
+                      final Lessons italianLesson = listsLesson[index];
+                      return index % 2 != 0
+                          ? Transform(
                               alignment: Alignment.center,
                               transform: Matrix4.rotationY(math.pi),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Expanded(
-                                          child: SizedBox(
-                                            child: ITLesson(
-                                              isOdd: true,
-                                              italianLesson: italianLesson,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        );
-                      } else {
-                        return GridTile(
-                          child: SizedBox(
-                            child: Expanded(
                               child: ITLesson(
-                                isOdd: false,
-                                italianLesson: italianLesson,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
+                                  isOdd: true, italianLesson: italianLesson),
+                            )
+                          : ITLesson(
+                              isOdd: false, italianLesson: italianLesson);
+                    }),
+                    builder: (context, items) {
+                      return ListView(
+                        reverse: isTurnLesson,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: items,
+                      );
                     },
                   );
                 } else {
@@ -254,16 +232,13 @@ class _ItalianLessonState extends State<ITLesson>
 
   @override
   Widget build(BuildContext context) {
-    sizeRibbonAnimation =
-        Tween<double>(begin: 0.0, end: MediaQuery.of(context).size.width - 20)
-            .animate(_controller);
-    sizeNumberAnimation =
-        Tween<double>(begin: 0.0, end: MediaQuery.of(context).size.width / 1.2)
-            .animate(_controller);
-    sizeImageAnimation = Tween<double>(
-            begin: -220.0, end: MediaQuery.of(context).size.width / 30)
+    sizeRibbonAnimation = Tween<double>(begin: 0.0, end: 340) //340
         .animate(_controller);
-    print(SizeConfig.screenWidth! - SizeConfig.screenWidth! + 20);
+    sizeNumberAnimation = Tween<double>(begin: 0.0, end: 300) //300
+        .animate(_controller);
+    sizeImageAnimation = Tween<double>(begin: -220.0, end: 12) //12
+        .animate(_controller);
+    print(MediaQuery.of(context).size.width / 1.34);
     return InkWell(
       onTap: () {
         print('dadas youtube');
@@ -276,7 +251,7 @@ class _ItalianLessonState extends State<ITLesson>
                     )));
       },
       child: SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: 304,
           height: 218,
           child: Stack(children: <Widget>[
             Positioned(
@@ -331,9 +306,7 @@ class _ItalianLessonState extends State<ITLesson>
                 top: 0,
                 left: sizeImageAnimation.value,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width > 300
-                      ? MediaQuery.of(context).size.width / 1.3
-                      : 300,
+                  width: MediaQuery.of(context).size.width > 300 ? 276 : 300,
                   height: 150,
                   child: Stack(children: <Widget>[
                     Positioned(
@@ -341,11 +314,11 @@ class _ItalianLessonState extends State<ITLesson>
                         left: 0,
                         child: Container(
                             width: MediaQuery.of(context).size.width > 300
-                                ? MediaQuery.of(context).size.width / 1.3
+                                ? 276
                                 : 300,
                             height: 150,
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(255, 255, 255, 1),
+                              color: Color.fromRGBO(255, 255, 255, 1),
                               border: Border.all(
                                 color: const Color.fromRGBO(25, 4, 18, 1),
                                 width: 1,
@@ -356,7 +329,7 @@ class _ItalianLessonState extends State<ITLesson>
                         left: 4,
                         child: Container(
                           width: MediaQuery.of(context).size.width > 300
-                              ? MediaQuery.of(context).size.width / 1.34
+                              ? 268
                               : 300,
                           height: 142,
                           child: CachedNetworkImage(

@@ -71,38 +71,36 @@ class _ContactState extends State<Contact> {
                 MenuShow(),
               ],
             ),
-            SliverToBoxAdapter(
-              child: SingleChildScrollView(
-                child: Container(
-                  color: Color.fromRGBO(226, 224, 224, 1),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:',
-                            style: TextStyle(
-                                fontFamily: 'GHEAGrapalat',
-                                fontSize: 12.0,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.left,
-                          ),
-                          const SizedBox(height: 20),
-                          fullName(),
-                          const SizedBox(height: 30),
-                          email(),
-                          const SizedBox(height: 30),
-                          message(),
-                          const SizedBox(height: 30),
-                          sendButton(),
-                          const SizedBox(height: 30),
-                        ],
-                      ),
+            SliverFillRemaining(
+              child: Container(
+                color: Color.fromRGBO(226, 224, 224, 1),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Մեզ նամակ ուղարկելու համար՝ լրացրեք ստորև բերված ձևը:',
+                          style: TextStyle(
+                              fontFamily: 'GHEAGrapalat',
+                              fontSize: 12.0,
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 20),
+                        fullName(),
+                        const SizedBox(height: 30),
+                        email(),
+                        const SizedBox(height: 30),
+                        message(),
+                        const SizedBox(height: 30),
+                        sendButton(),
+                        const SizedBox(height: 30),
+                      ],
                     ),
                   ),
                 ),
@@ -215,7 +213,8 @@ class _ContactState extends State<Contact> {
       validator: (value) {
         if (!value!
             .contains(RegExp("[ա-ֆԱ-Ֆա-ֆԱ-Ֆ+а-яА-Яа-яА-Яa-zA-Za-zA-Z0-9]"))) {
-          return null;
+          return 'Մուտքագրված տվյալները սխալ են ';
+          ;
         }
         return null;
       },

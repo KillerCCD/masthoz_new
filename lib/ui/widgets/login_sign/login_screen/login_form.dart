@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       _ForgotButton(),
-                      Expanded(child: _LoginButton()),
+                      _LoginButton(),
                     ]),
               ],
             ),
@@ -251,8 +251,15 @@ class _LoginButtonState extends State<_LoginButton> {
                           splashColor: Palette.whenTapedButton,
                           onPressed: () async {
                             if (state.status.isValidated) {
-                              isActive();
                               context.read<LoginCubit>().loginWithCredentials();
+                              isActive();
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      duration: Duration(milliseconds: 500),
+                                      content: Text(
+                                        'Տվյալները գտնված չեն։',
+                                      )));
                             }
                             // userDataProvider.logOut();
                           },

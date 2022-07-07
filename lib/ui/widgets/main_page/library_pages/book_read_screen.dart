@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,31 +12,42 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_page.dar
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../domens/models/book_data/content_list.dart';
 import '../../../../domens/models/user.dart';
 import '../../../../domens/repository/user_data_provider.dart';
 import '../../helper_widgets/save_show_dialog.dart';
 import 'book_inherited_widget.dart';
+import 'book_utils/hide_menu_bar.dart';
 
 class BookReadScreen extends StatefulWidget {
   const BookReadScreen(
-      {Key? key, this.readScreen, this.encyclopediaBody, this.searchData})
+      {Key? key,
+      this.readScreen,
+      this.encyclopediaBody,
+      this.searchData,
+      this.isShowTitle})
       : super(key: key);
 
   final Data? encyclopediaBody;
   final Content? readScreen;
   final Search? searchData;
+  final bool? isShowTitle;
 
   @override
   State<BookReadScreen> createState() => _BookReadScreenState(
       readScreen: readScreen,
       encyclopediaBody: encyclopediaBody,
+      isShowTitle: isShowTitle,
       searchData: searchData);
 }
 
 class _BookReadScreenState extends State<BookReadScreen> {
   _BookReadScreenState(
-      {this.readScreen, this.encyclopediaBody, this.searchData});
+      {this.readScreen,
+      this.encyclopediaBody,
+      this.searchData,
+      this.isShowTitle});
 
   var bookPartsLengt;
   Future<Content?>? content;
@@ -47,10 +57,11 @@ class _BookReadScreenState extends State<BookReadScreen> {
   Future<Data?>? futureSearchText;
   bool isVisiblty = false;
   int pageindex = 0;
+  final bool? isShowTitle;
   final Content? readScreen;
   final searchBookProvider = SearchBookProvider();
   final Search? searchData;
-  var textList = <String>[];
+  var textList;
 
   PageController _pageController = PageController(initialPage: 0);
 
@@ -65,9 +76,9 @@ class _BookReadScreenState extends State<BookReadScreen> {
   void initState() {
     _pageController;
     futureSearchText = getSearchBook();
-    textList = bookGengerator(
-      readScreen?.body != null ? readScreen?.body : encyclopediaBody?.body,
-    )!;
+    textList = (readScreen?.body != null
+        ? readScreen?.body
+        : encyclopediaBody?.body) as String;
 
     super.initState();
   }
@@ -77,32 +88,32 @@ class _BookReadScreenState extends State<BookReadScreen> {
         type: searchData?.type, id: searchData?.id);
   }
 
-  //Book data add
-  List<String>? bookGengerator(String? x) {
-    var textList = <String>[];
+  // //Book data add
+  // List<String>? bookGengerator(String? x) {
+  //   var textList = <String>[];
 
-    print(x?.length);
-    var indexCharacter;
-    var cutCount = SizeConfig.screenWidth!.floor();
+  //   print(x?.length);
+  //   var indexCharacter;
+  //   var cutCount = SizeConfig.screenWidth!.floor();
 
-    if (x != null && x.length < cutCount) {
-      cutCount = x.length;
-      indexCharacter = x.indexOf(' ', cutCount);
-    } else {
-      indexCharacter = x?.indexOf(' ', cutCount);
-    }
+  //   if (x != null && x.length < cutCount) {
+  //     cutCount = x.length;
+  //     indexCharacter = x.indexOf(' ', cutCount);
+  //   } else {
+  //     indexCharacter = x?.indexOf(' ', cutCount);
+  //   }
 
-    var count = x != null ? (x.length / indexCharacter).floor() : 0;
+  //   var count = x != null ? (x.length / indexCharacter).floor() : 0;
 
-    for (var i = 0; i < count; i++) {
-      final a = x!.substring(0, indexCharacter);
-      textList.add(a);
+  //   for (var i = 0; i < count; i++) {
+  //     final a = x!.substring(0, indexCharacter);
+  //     textList.add(a);
 
-      x = x.substring(cutCount, x.length);
-    }
-    textList.add(x ?? '');
-    return textList;
-  }
+  //     x = x.substring(cutCount, x.length);
+  //   }
+  //   textList.add(x ?? '');
+  //   return textList;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,26 +125,18 @@ class _BookReadScreenState extends State<BookReadScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var data = snapshot.data;
-                textList = bookGengerator(data?.body)!;
+                textList = data?.body as List<String>;
                 //    inspect(data);
-                return PageView(
-                    controller: _pageController,
-                    onPageChanged: (int pgCount) {
-                      print("PGCount ${pgCount + 1}");
-                      //count = pgCount;
-                    },
-                    children: textList.map((e) {
-                      return BookPages(
-                        listText: e,
-                        readScreen: readScreen,
-                        encyclopediaBody: encyclopediaBody,
-                        controller: _pageController,
-                        searchData: searchData,
-                        pageCounts: textList.length,
-                        dynamicPageCounts: count,
-                        //   isVisiblty: isVisiblty,
-                      );
-                    }).toList());
+                return BookPages(
+                  listText: textList,
+                  readScreen: readScreen,
+                  encyclopediaBody: encyclopediaBody,
+
+                  searchData: searchData,
+                  pageCounts: textList.length,
+                  dynamicPageCounts: count,
+                  //   isVisiblty: isVisiblty,
+                );
               } else {
                 return Container(
                     child: Center(
@@ -143,28 +146,14 @@ class _BookReadScreenState extends State<BookReadScreen> {
               }
             },
           )
-        : PageView.builder(
-            controller: _pageController,
-            itemCount: textList.length,
-            onPageChanged: (int pgCount) {
-              print("PGCount ${pgCount + 1}");
+        : BookPages(
+            listText: textList,
+            readScreen: readScreen,
+            encyclopediaBody: encyclopediaBody,
 
-              setState(() {
-                count = pgCount + 1;
-              });
-              print("Count ${count}");
-            },
-            itemBuilder: (BuildContext context, index) {
-              return BookPages(
-                listText: textList[index],
-                readScreen: readScreen,
-                encyclopediaBody: encyclopediaBody,
-                controller: _pageController, index: index,
-                pageCounts: textList.length,
-                dynamicPageCounts: count,
-                //   isVisiblty: isVisiblty,
-              );
-            },
+            dynamicPageCounts: count,
+            isShowTitle: isShowTitle,
+            //   isVisiblty: isVisiblty,
           );
   }
 }
@@ -180,6 +169,7 @@ class BookPages extends StatefulWidget {
     this.index,
     this.pageCounts,
     this.dynamicPageCounts,
+    this.isShowTitle,
   }) : super(key: key);
 
   final PageController? controller;
@@ -190,6 +180,7 @@ class BookPages extends StatefulWidget {
   final Search? searchData;
   final int? pageCounts;
   final int? dynamicPageCounts;
+  final bool? isShowTitle;
   @override
   State<BookPages> createState() => _BookPagesState(
       listText: listText,
@@ -199,12 +190,14 @@ class BookPages extends StatefulWidget {
       controller: controller,
       index: index,
       pageCounts: pageCounts,
-      dynamicPageCounts: dynamicPageCounts);
+      dynamicPageCounts: dynamicPageCounts,
+      isShowTitle: isShowTitle);
 }
 
 class _BookPagesState extends State<BookPages> {
   _BookPagesState({
     required this.listText,
+    this.isShowTitle,
     this.readScreen,
     this.encyclopediaBody,
     this.controller,
@@ -215,6 +208,7 @@ class _BookPagesState extends State<BookPages> {
   });
   final Search? searchData;
   final int? pageCounts;
+  final bool? isShowTitle;
   final int? dynamicPageCounts;
   final PageController? controller;
   int? custemerId;
@@ -338,8 +332,13 @@ class _BookPagesState extends State<BookPages> {
                   : Palette.textLineOrBackGroundColor,
               child: Container(
                 alignment: Alignment(0, -1),
-                color: isBovandakMenu || isFavorite
-                    ? Color.fromRGBO(31, 31, 31, 0.5)
+                color: isBovandakMenu &&
+                            encyclopediaBody?.body == null &&
+                            isBovandakMenu &&
+                            searchData?.title == null &&
+                            isBovandakMenu ||
+                        readScreen?.body != null && isFavorite
+                    ? Color.fromRGBO(35, 35, 35, 0.5)
                     : theme.backgroundColor != null
                         ? theme.backgroundColor
                         : Palette.textLineOrBackGroundColor,
@@ -351,12 +350,20 @@ class _BookPagesState extends State<BookPages> {
                     children: [
                       SizedBox(height: 15.0),
                       hideMenuAppBar(),
+                      // HideMenuAppBar(
+                      //   isBovandakMenu: isBovandakMenu,
+                      //   isFavorite: isFavorite,
+                      // ),
                       SizedBox(
                           width: 250,
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              '${searchData?.title}',
+                              searchData?.title != null
+                                  ? "${searchData?.title} "
+                                  : isShowTitle == true && book?.title != null
+                                      ? "${book?.title}"
+                                      : "${encyclopediaBody?.title}",
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -366,7 +373,7 @@ class _BookPagesState extends State<BookPages> {
                             ),
                           )),
                       SizedBox(
-                        height: 5.0,
+                        height: 10.0,
                       ),
                       SizedBox(
                           width: 300,
@@ -374,7 +381,11 @@ class _BookPagesState extends State<BookPages> {
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              '${book?.author}',
+                              searchData?.title != null
+                                  ? ""
+                                  : isShowTitle == true && book?.title != null
+                                      ? "${book?.author}"
+                                      : "",
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -410,9 +421,7 @@ class _BookPagesState extends State<BookPages> {
                                     alignment: Alignment.topCenter,
                                     child: Container(
                                       height: 3.0,
-                                      color: isYoutubeActive ||
-                                              isSettings ||
-                                              isShare
+                                      color: isYoutubeActive || isSettings
                                           ? Colors.amber
                                           : theme.backgroundColor != null
                                               ? theme.backgroundColor
@@ -423,6 +432,11 @@ class _BookPagesState extends State<BookPages> {
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
+                                  color: isYoutubeActive || isSettings
+                                      ? Color.fromRGBO(31, 31, 31, 0.5)
+                                      : theme.backgroundColor != null
+                                          ? theme.backgroundColor
+                                          : Palette.textLineOrBackGroundColor,
                                   height: 77.0,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -450,7 +464,16 @@ class _BookPagesState extends State<BookPages> {
                                               '${dynamicPageCounts}/${pageCounts}')),
                                       Expanded(
                                           child: InkWell(
-                                        onTap: () {
+                                        onTap: () async {
+                                          if (!isShare)
+                                            await Share.share(
+                                              searchData?.title != null
+                                                  ? "${searchData?.title} "
+                                                  : isShowTitle == true &&
+                                                          book?.title != null
+                                                      ? "${book?.title}"
+                                                      : "${encyclopediaBody?.title}",
+                                            );
                                           setState(() {
                                             isShare = !isShare;
                                             isYoutubeActive = false;
@@ -531,7 +554,6 @@ class _BookPagesState extends State<BookPages> {
             isYoutubeActive ? youtubrShow() : Container(),
             isFavorite ? favoriteShow() : Container(),
             isSettings ? settingsShow() : Container(),
-            isShare ? shareShow() : Container(),
           ],
         ),
       ],
@@ -583,7 +605,9 @@ class _BookPagesState extends State<BookPages> {
                                       Align(
                                         alignment: Alignment.topCenter,
                                         child: CachedNetworkImage(
-                                          imageUrl: readScreen!.image!,
+                                          imageUrl: readScreen?.image != null
+                                              ? readScreen!.image!
+                                              : searchData!.image!,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                           // height: SizeConfig
@@ -2057,15 +2081,15 @@ class _BookPagesState extends State<BookPages> {
                                 const EdgeInsets.only(right: 20.0, left: 20.0),
                             child: GestureDetector(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (
-                                      context,
-                                    ) =>
-                                        SaveShowDialog(
-                                          isShow: true,
-                                        ));
+                                // showDialog(
+                                //     context: context,
+                                //     barrierDismissible: false,
+                                //     builder: (
+                                //       context,
+                                //     ) =>
+                                //         SaveShowDialog(
+                                //           isShow: true,
+                                //         ));
                               },
                               child: Text(
                                 'Կիսվել',
@@ -2126,7 +2150,7 @@ class _BookPagesState extends State<BookPages> {
   }
 
   void userIsSign(Map<String, dynamic> data) async {
-    User hasId = await userDataProvider.fetchUserInfo();
+    Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
     if (!isSign || hasId == null) {
@@ -2174,165 +2198,154 @@ class _BookPagesState extends State<BookPages> {
                         child: SingleChildScrollView(
                             child: Column(
                           children: [
-                            index == 0
-                                ? Container(
-                                    height: 238,
-                                    width: double.infinity,
-                                    child: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                            bottom: 49,
-                                            child: Align(
-                                                alignment: Alignment.center,
-                                                child: Container(
-                                                  height: 94,
-                                                  width: double.infinity,
-                                                  color: Color.fromRGBO(
-                                                      164, 171, 189, 1),
-                                                ))),
-                                        Positioned.fill(
-                                            child: Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Container(
-                                                  height: 180,
-                                                  width: 140,
-                                                  decoration: BoxDecoration(
-                                                    color: Palette
-                                                        .textLineOrBackGroundColor,
-                                                    border: Border.all(
-                                                      color: Color.fromRGBO(
-                                                          51, 51, 51, 1),
-                                                      width: 01,
+                            Container(
+                              height: 238,
+                              width: double.infinity,
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                      bottom: 49,
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Container(
+                                            height: 94,
+                                            width: double.infinity,
+                                            color: Color.fromRGBO(
+                                                164, 171, 189, 1),
+                                          ))),
+                                  Positioned.fill(
+                                      child: Align(
+                                          alignment: Alignment.topCenter,
+                                          child: Container(
+                                            height: 180,
+                                            width: 140,
+                                            decoration: BoxDecoration(
+                                              color: Palette
+                                                  .textLineOrBackGroundColor,
+                                              border: Border.all(
+                                                color: Color.fromRGBO(
+                                                    51, 51, 51, 1),
+                                                width: 01,
+                                              ),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Positioned.fill(
+                                                    child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Container(
+                                                    height: 164.0,
+                                                    width: 122.0,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: encyclopediaBody !=
+                                                              null
+                                                          ? '${encyclopediaBody?.image}'
+                                                          : '${readScreen?.image}',
+                                                      fit: BoxFit.fill,
                                                     ),
                                                   ),
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned.fill(
-                                                          child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Container(
-                                                          height: 164.0,
-                                                          width: 122.0,
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            imageUrl: encyclopediaBody !=
-                                                                    null
-                                                                ? '${encyclopediaBody?.image}'
-                                                                : '${readScreen?.image}',
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ))
-                                                    ],
-                                                  ),
-                                                ))),
-                                        encyclopediaBody != null
-                                            ? Positioned.fill(
-                                                child: Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20.0,
-                                                        right: 20.0),
-                                                    color: Palette
-                                                        .textLineOrBackGroundColor,
-                                                    width: double.infinity,
-                                                    height: 49,
+                                                ))
+                                              ],
+                                            ),
+                                          ))),
+                                  encyclopediaBody != null
+                                      ? Positioned.fill(
+                                          child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 20.0, right: 20.0),
+                                              color: Palette
+                                                  .textLineOrBackGroundColor,
+                                              width: double.infinity,
+                                              height: 49,
+                                              child: Row(
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      await Share.share(
+                                                          encyclopediaBody!
+                                                              .image!);
+                                                      print('dadas');
+                                                      // showDialog(
+                                                      //     context:
+                                                      //         context,
+                                                      //     barrierDismissible:
+                                                      //         true,
+                                                      //     builder: (
+                                                      //       context,
+                                                      //     ) =>
+                                                      //         SaveShowDialog(
+                                                      //             isShow:
+                                                      //                 false));
+                                                    },
                                                     child: Row(
                                                       children: [
-                                                        InkWell(
-                                                          onTap: () {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                barrierDismissible:
-                                                                    true,
-                                                                builder: (
-                                                                  context,
-                                                                ) =>
-                                                                    SaveShowDialog(
-                                                                        isShow:
-                                                                            false));
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              //  const SizedBox(width: 16),
-                                                              SvgPicture.asset(
-                                                                  'assets/images/այքըններ.svg'),
-                                                              const SizedBox(
-                                                                  width: 6),
-                                                              const Text(
-                                                                  'Կիսվել')
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Spacer(),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            var data = <String,
-                                                                dynamic>{
-                                                              'type':
-                                                                  'encyclopedias',
-                                                              'type_id':
-                                                                  encyclopediaBody
-                                                                      ?.id,
-                                                              'customer_id':
-                                                                  custemerId,
-                                                            };
-                                                            setState(() {
-                                                              userIsSign(data);
-                                                            });
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                  'assets/images/վելացնել1.svg'),
-                                                              const SizedBox(
-                                                                  width: 6),
-                                                              const Text(
-                                                                  'Պահել'),
-                                                              //const SizedBox(width: 16),
-                                                            ],
-                                                          ),
-                                                        ),
+                                                        //  const SizedBox(width: 16),
+                                                        SvgPicture.asset(
+                                                            'assets/images/այքըններ.svg'),
+                                                        const SizedBox(
+                                                            width: 6),
+                                                        const Text('Կիսվել')
                                                       ],
-                                                    )),
-                                              ))
-                                            : Container(height: 0.1),
-                                      ],
-                                    ),
-                                  )
-                                : Container(height: 0.1),
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      var data =
+                                                          <String, dynamic>{
+                                                        'type': 'encyclopedias',
+                                                        'type_id':
+                                                            encyclopediaBody
+                                                                ?.id,
+                                                        'customer_id':
+                                                            custemerId,
+                                                      };
+                                                      setState(() {
+                                                        userIsSign(data);
+                                                      });
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            'assets/images/վելացնել1.svg'),
+                                                        const SizedBox(
+                                                            width: 6),
+                                                        const Text('Պահել'),
+                                                        //const SizedBox(width: 16),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                        ))
+                                      : Container(height: 0.1),
+                                ],
+                              ),
+                            ),
                             SizedBox(height: 16.0),
-                            index == 0
-                                ? Center(
-                                    child: SizedBox(
-                                        width: 235,
-                                        height: 60,
-                                        child: Text(
-                                          encyclopediaBody != null
-                                              ? '${encyclopediaBody?.title}'
-                                              : '${readScreen?.title}',
-                                          style: TextStyle(
-                                              fontFamily: "GHEAGrapalat",
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing: 1),
-                                          textAlign: TextAlign.center,
-                                        )))
-                                : Container(
-                                    height: 0.1,
-                                    width: 0.1,
-                                  ),
-                            SizedBox(height: 16.0),
+                            Center(
+                                child: SizedBox(
+                                    width: 235,
+                                    child: Text(
+                                      encyclopediaBody != null
+                                          ? '${encyclopediaBody?.title}'
+                                          : '${readScreen?.title}',
+                                      style: TextStyle(
+                                          fontFamily: "GHEAGrapalat",
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 1),
+                                      textAlign: TextAlign.center,
+                                    ))),
                             Padding(
                               padding: EdgeInsets.only(left: 16.0, right: 16.0),
                               child: RichText(
                                 textAlign: TextAlign.justify,
                                 text: TextSpan(
-                                  text: '$listText',
+                                  text:
+                                      "${listText.replaceAll(RegExp(r"[&nbsp]"), '')}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       height: 2.5,

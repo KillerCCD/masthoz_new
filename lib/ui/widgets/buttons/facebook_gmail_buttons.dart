@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
+import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/login_sign/login_screen/login_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../login_sign/singup_screen/singup_screen.dart';
 
@@ -19,6 +21,7 @@ class CoupleButtons extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   print('gmail taped');
+                  context.read<UserDataProvider>().signInWithGoogle(context);
                 },
                 child: SizedBox(
                   child: SvgPicture.asset('assets/images/gmail.svg'),
@@ -29,6 +32,7 @@ class CoupleButtons extends StatelessWidget {
             Ink(
               child: InkWell(
                 onTap: () {
+                  context.read<UserDataProvider>().signInWithFacebook(context);
                   print('facebook taped');
                 },
                 child: SvgPicture.asset('assets/images/Facebook.svg'),

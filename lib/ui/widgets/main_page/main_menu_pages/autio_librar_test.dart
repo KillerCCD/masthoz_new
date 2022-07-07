@@ -200,15 +200,7 @@ class _TestBookDataYutubePlayerState extends State<TestBookDataYutubePlayer> {
                         InkWell(
                           onTap: () {
                             print('kisvel');
-                            showDialog(
-                                context: context,
-                                barrierDismissible: true,
-                                builder: (
-                                  context,
-                                ) =>
-                                    SaveShowDialog(
-                                      isShow: false,
-                                    ));
+                           
                           },
                           child: Row(
                             children: [

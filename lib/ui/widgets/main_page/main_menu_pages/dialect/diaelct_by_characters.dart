@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
 
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dialect/dialect_data_show.dart';
+import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../../../../domens/models/book_data/data.dart';
 import '/config/palette.dart';
@@ -46,6 +48,9 @@ class _DialectByCharactersState extends State<DialectByCharacters>
 
   @override
   Widget build(BuildContext context) {
+    final charcterNotifire =
+        Provider.of<BookNotifire>(context, listen: true).firstCharactersDialect;
+    ;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(slivers: [
@@ -60,7 +65,9 @@ class _DialectByCharactersState extends State<DialectByCharacters>
                   height: 73,
                   padding: EdgeInsets.only(top: 18),
                   child: Text(
-                    '${characterByindex.toUpperCase()}',
+                    charcterNotifire.isNotEmpty
+                        ? '${charcterNotifire.toUpperCase()}'
+                        : '${characterByindex.toUpperCase()}',
                     style: TextStyle(
                         fontSize: 16,
                         letterSpacing: 1,
@@ -211,22 +218,6 @@ class _DelegateChildState extends State<DelegateChild>
                   scrollDirection: Axis.vertical,
                   itemCount: data?.length,
                   itemBuilder: (context, index) {
-                    // return ListTile(
-                    //   textColor: Color.fromRGBO(84, 112, 126, 1),
-                    //   title: Text('${data?[index].title}'),
-                    //   leading: Text(
-                    //     '0${index}',
-                    //     style: TextStyle(color: Palette.main),
-                    //   ),
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (_) => DialectDataShow(
-                    //                   dataCharacter: data?[index],
-                    //                 )));
-                    //   },
-                    // );
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -354,6 +345,9 @@ class _DelegateChildState extends State<DelegateChild>
                               .getDataByCharacters(Api.dialectBYCharacters(
                                   wordsArm.elementAt(index)))
                           : null;
+                      context
+                          .read<BookNotifire>()
+                          .charactersSetDialect(wordsArm.elementAt(index));
                     });
                   },
                   tabs: wordsArm.map((tabName) {

@@ -11,13 +11,13 @@ import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
 
 ///sharing platform
-enum Share {
-  messenger,
-  whatsapp,
-  share_system,
-  share_instagram,
-  share_telegram
-}
+// enum Share {
+//   messenger,
+//   whatsapp,
+//   share_system,
+//   share_instagram,
+//   share_telegram
+// }
 
 class SaveShowDialog extends StatefulWidget {
   final bool? isShow;
@@ -82,7 +82,7 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
+                                  builder: (_) => const LoginScreen()));
                             },
                             child: Container(
                                 color: Palette.main,
@@ -144,6 +144,7 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
                                         right: 20.0, left: 20.0),
                                     child: GestureDetector(
                                       onTap: () {
+                                        // await Share.share_system;
                                         showDialog(
                                             context: context,
                                             barrierDismissible: false,
@@ -189,7 +190,7 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
                                                 //     'https://picsum.photos/200/300/?blur';
                                                 // await launchUrl(Uri.parse(
                                                 //     'https://https://www.facebook.com/sharer?u=&$urlImage'));
-                                                onButtonTap(Share.messenger);
+                                                
                                                 // final url =
                                                 //     Uri.parse(urlImage);
                                                 // final response =
@@ -201,7 +202,7 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
                                                   'assets/images/messenger 2.svg')),
                                           InkWell(
                                             onTap: () async {
-                                              onButtonTap(Share.messenger);
+                                             
                                               // final urlImage =
                                               //     'https://picsum.photos/200/300/?blur';
                                               // await launchUrl(Uri.parse(
@@ -238,40 +239,5 @@ class _SaveShowDialogState extends State<SaveShowDialog> {
           );
   }
 
-  Future<void> onButtonTap(Share share) async {
-    String msg =
-        'Flutter share is great!!\n Check out full example at https://pub.dev/packages/flutter_share_me';
-    String url = 'https://pub.dev/packages/flutter_share_me';
-
-    String? response;
-    final FlutterShareMe flutterShareMe = FlutterShareMe();
-    switch (share) {
-      case Share.messenger:
-        response = await flutterShareMe.shareToMessenger(url: url, msg: msg);
-        break;
-
-      case Share.whatsapp:
-        if (file != null) {
-          response = await flutterShareMe.shareToWhatsApp(
-              imagePath: file!.path,
-              fileType: videoEnable ? FileType.video : FileType.image);
-        } else {
-          response = await flutterShareMe.shareToWhatsApp(msg: msg);
-        }
-        break;
-
-      case Share.share_instagram:
-        response = await flutterShareMe.shareToInstagram(
-            filePath: file!.path,
-            fileType: videoEnable ? FileType.video : FileType.image);
-        break;
-      case Share.share_telegram:
-        response = await flutterShareMe.shareToTelegram(msg: msg);
-        break;
-      case Share.share_system:
-        // TODO: Handle this case.
-        break;
-    }
-    debugPrint(response);
-  }
+ 
 }

@@ -1,12 +1,18 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:mashtoz_flutter/config/palette.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
+import 'package:mashtoz_flutter/domens/models/bottom_bar_color_notifire.dart';
 import 'package:mashtoz_flutter/tab_navigator.dart';
+import 'package:provider/provider.dart';
 
 import '../buttons/bottom_navigation_bar/bottom_app_bar.dart';
 
+import '../notifications/notification_service.dart';
 import 'bottom_bars_pages/bottom_bar_menu_pages.dart';
 
 enum BottomIcons {
@@ -32,7 +38,6 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   BottomIcons icons = BottomIcons.initall;
-  ScreenName secrenName = ScreenName.book;
   bool isAccount = false;
   bool isHome = false;
   bool isItalian = false;
@@ -45,6 +50,11 @@ class HomeScreenState extends State<HomeScreen> {
     "italianpage",
     'accountpage'
   ];
+
+  ScreenName secrenName = ScreenName.book;
+
+  var _currentIndex = 0;
+  String _currentPage = "homepage";
   Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "homepage": GlobalKey<NavigatorState>(),
     "librarypage": GlobalKey<NavigatorState>(),
@@ -52,17 +62,36 @@ class HomeScreenState extends State<HomeScreen> {
     "italianpage": GlobalKey<NavigatorState>(),
     "accountpage": GlobalKey<NavigatorState>(),
   };
-  String _currentPage = "homepage";
-  var _currentIndex = 0;
-  void _selectTab(String tabItem, int index) {
-    if (tabItem == _currentIndex) {
-      _navigatorKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
-    } else {
-      setState(() {
-        _currentPage = pageKeys[index];
-        _currentIndex = index;
-      });
-    }
+
+  NotificationService _notificationService = NotificationService();
+
+  @override
+  void initState() {
+    NotificationService.initialize(context);
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        final routeFromMessage = message.data["route"];
+
+        Navigator.of(context).pushNamed(routeFromMessage);
+      }
+    });
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+
+      NotificationService.display(message);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data["route"];
+
+      Navigator.of(context).pushNamed(routeFromMessage);
+    });
+    
+    super.initState();
   }
 
   tirgleColor() {
@@ -79,58 +108,18 @@ class HomeScreenState extends State<HomeScreen> {
                         : null;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
-        if (isFirstRouteInCurrentTab) {
-          if (_currentPage != "homepage") {
-            _selectTab("homepage", 1);
-
-            return false;
-          }
-        }
-        // let system handle back button if we're on the first route
-        return isFirstRouteInCurrentTab;
-      },
-      child: Scaffold(
-          backgroundColor: Palette.textLineOrBackGroundColor,
-          body: Stack(
-            children: [
-              _buildOffstageNavigator(
-                  _navigatorKeys.keys.elementAt(_currentIndex)),
-            ],
-          ),
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar: buildMyNavBar(
-            context,
-          )),
-    );
-  }
-
-  Widget _buildOffstageNavigator(String tabItem) {
-    print(tabItem);
-    return Offstage(
-      offstage: _currentPage != tabItem,
-      child: TabNavigator(
-        navigatorKey: _navigatorKeys[tabItem],
-        tabItem: tabItem,
-      ),
-    );
-  }
-
   Widget buildMyNavBar(
     BuildContext context,
   ) {
+    final color =
+        Provider.of<BottomColorNotifire>(context, listen: true).barColor;
     return SizedBox(
       height: 80,
       // padding: const EdgeInsets.only(top: 14),
       child: Stack(
         children: [
           Container(
-            color: tirgleColor(),
+            color: color,
             width: double.infinity,
             height: 20,
             // color: Colors.black,
@@ -202,6 +191,10 @@ class HomeScreenState extends State<HomeScreen> {
                                   // print('home');
                                   setState(() {
                                     // onItemTaped(0);
+                                    context
+                                        .read<BottomColorNotifire>()
+                                        .setColor(
+                                            Palette.textLineOrBackGroundColor);
                                     _selectTab(pageKeys[0], 0);
                                     setState(() {
                                       icons = BottomIcons.home;
@@ -232,6 +225,9 @@ class HomeScreenState extends State<HomeScreen> {
                                 setState(() {
                                   icons = BottomIcons.library;
                                   // onItemTaped(1);
+                                  context
+                                      .read<BottomColorNotifire>()
+                                      .setColor(Palette.libraryBacgroundColor);
                                   _selectTab(pageKeys[1], 1);
                                   isLibrary = true;
 
@@ -258,6 +254,9 @@ class HomeScreenState extends State<HomeScreen> {
                                   // print('search');
 
                                   //onItemTaped(2);
+                                  context
+                                      .read<BottomColorNotifire>()
+                                      .setColor(Palette.searchBackGroundColor);
                                   _selectTab(pageKeys[2], 2);
                                   icons = BottomIcons.search;
                                   isSearch = true;
@@ -280,6 +279,8 @@ class HomeScreenState extends State<HomeScreen> {
                             child: BottomBar(
                               onPressed: () {
                                 //    print('italian');
+                                context.read<BottomColorNotifire>().setColor(
+                                    Palette.textLineOrBackGroundColor);
                                 setState(() {
                                   icons = BottomIcons.italian;
                                   // _currentIndex = 3;
@@ -308,6 +309,8 @@ class HomeScreenState extends State<HomeScreen> {
                                 //    print('account');
                                 setState(() {
                                   //    onItemTaped(4);
+                                  context.read<BottomColorNotifire>().setColor(
+                                      Palette.textLineOrBackGroundColor);
                                   _selectTab(pageKeys[4], 4);
                                   icons = BottomIcons.account;
                                   isAccount = true;
@@ -338,6 +341,57 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _selectTab(String tabItem, int index) {
+    if (tabItem == _currentIndex) {
+      _navigatorKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _currentPage = pageKeys[index];
+        _currentIndex = index;
+      });
+    }
+  }
+
+  Widget _buildOffstageNavigator(String tabItem) {
+    print(tabItem);
+    return Offstage(
+      offstage: _currentPage != tabItem,
+      child: TabNavigator(
+        navigatorKey: _navigatorKeys[tabItem],
+        tabItem: tabItem,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        final isFirstRouteInCurrentTab =
+            !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
+        if (isFirstRouteInCurrentTab) {
+          if (_currentPage != "homepage") {
+            _selectTab("homepage", 1);
+
+            return false;
+          }
+        }
+        // let system handle back button if we're on the first route
+        return isFirstRouteInCurrentTab;
+      },
+      child: Scaffold(
+          backgroundColor: Palette.textLineOrBackGroundColor,
+          body: Stack(
+            children: [
+              _buildOffstageNavigator(
+                  _navigatorKeys.keys.elementAt(_currentIndex)),
+            ],
+          ),
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: buildMyNavBar(context)),
     );
   }
 }

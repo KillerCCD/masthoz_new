@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
@@ -10,11 +11,17 @@ import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_library.dart';
+import 'package:mashtoz_flutter/ui/widgets/notifications/notification_service.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import '../../../../domens/data_providers/internet_status_provider.dart';
 import '../../../../domens/models/book_data/content_list.dart';
 import '../../helper_widgets/size_config.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,11 +30,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<WordOfDay?>? wordsOfDayFuture;
+  // NotificationService _notificationService = NotificationService();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   final bookDataProvider = BookDataProvider();
   @override
   void initState() {
     wordsOfDayFuture = bookDataProvider.getWordsOfDay();
+    NetworkStatusService.checkConnectivity();
+    NetworkStatusService.initila(context);
     super.initState();
+  }
+
+  void getToken() async {
+    String? token = await messaging.getToken();
+  }
+
+  @override
+  void dispose() {
+    NetworkStatusService.subscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -124,37 +145,42 @@ class _HomePageState extends State<HomePage> {
                           width: SizeConfig.screenWidth,
                           child: Row(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Palette.whenTapedButton,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                                        blurRadius: 1.0,
-                                        spreadRadius: 0.0,
-                                        offset: Offset(-4, 4),
-                                      ),
-                                    ]),
-                                width: 50,
-                                height: 44,
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Stack(
-                                      children: [
-                                        Center(
-                                          child: SvgPicture.asset(
-                                              'assets/images/Group5202.svg'),
+                              GestureDetector(
+                                onTap: () async {
+                                  print('dadas');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Palette.whenTapedButton,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.1),
+                                          blurRadius: 1.0,
+                                          spreadRadius: 0.0,
+                                          offset: Offset(-4, 4),
                                         ),
-                                        Center(
-                                          child: Text(
-                                            '25',
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
+                                      ]),
+                                  width: 50,
+                                  height: 44,
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: SvgPicture.asset(
+                                                'assets/images/Group5202.svg'),
                                           ),
-                                        )
-                                      ],
-                                    )),
+                                          Center(
+                                            child: Text(
+                                              '25',
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                ),
                               ),
                               SizedBox(width: 14.0),
                               Expanded(
@@ -354,10 +380,20 @@ class _HomePageState extends State<HomePage> {
                                 Positioned.fill(
                                     top: 70,
                                     child: Align(
-                                        alignment: Alignment.center,
+                                        alignment: Alignment.centerLeft,
                                         child: Container(
                                           width: double.infinity,
-                                          child: ResponsiveGridList(
+                                          child: ResponsiveGridListBuilder(
+                                              builder: (context, items) {
+                                                return ListView(
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  children: items,
+                                                );
+                                              },
                                               horizontalGridSpacing:
                                                   16, // Horizontal space between grid items
                                               // Vertical space between grid items
@@ -369,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                                               minItemsPerRow:
                                                   1, // The minimum items to show in a single row. Takes precedence over minItemWidth
                                               maxItemsPerRow: 2, // The m
-                                              children:
+                                              gridItems:
                                                   List.generate(2, (index) {
                                                 return index % 2 != 0
                                                     ? Transform(
@@ -379,38 +415,38 @@ class _HomePageState extends State<HomePage> {
                                                             Matrix4.rotationY(
                                                                 math.pi),
                                                         child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(15.0),
-                                                            child: BookCard(
-                                                                isOdd: true,
-                                                                categorys: BookCategory(
-                                                                    categoryTitle:
-                                                                        'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
-                                                                    id: 1,
-                                                                    title:
-                                                                        'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
-                                                                    type:
-                                                                        'libraries'),
-                                                                book: Content(
-                                                                  videoLink:
-                                                                      null,
-                                                                  content: null,
-                                                                  body: '',
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 20),
+                                                          child: BookCard(
+                                                              isOdd: true,
+                                                              categorys: BookCategory(
+                                                                  categoryTitle:
+                                                                      'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
                                                                   id: 1,
-                                                                  image:
-                                                                      'https://picsum.photos/200',
                                                                   title:
                                                                       'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
-                                                                  author:
-                                                                      'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
-                                                                  explanation:
-                                                                      '',
-                                                                ))))
+                                                                  type:
+                                                                      'libraries'),
+                                                              book: Content(
+                                                                videoLink: null,
+                                                                content: null,
+                                                                body: '',
+                                                                id: 1,
+                                                                image:
+                                                                    'https://picsum.photos/200',
+                                                                title:
+                                                                    'Որոգինես Ադամանցիուս Ալեքսանդրացի (185-253)',
+                                                                author:
+                                                                    'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
+                                                                explanation: '',
+                                                              )),
+                                                        ))
                                                     : Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(15.0),
+                                                                .only(top: 20),
                                                         child: BookCard(
                                                             isOdd: false,
                                                             categorys: BookCategory(
@@ -433,7 +469,8 @@ class _HomePageState extends State<HomePage> {
                                                               author:
                                                                   'ՀԱՏԸՆՏԻՐ ՀԱՏՎԱԾՆԵՐ ՈՐՈԳԻՆԵՍ Ա. ԱԼԵՔՍԱՆԴՐԱՑՈՒ ԱՇԽԱՏՈՒԹՅՈՒՆՆԵՐԻՑ',
                                                               explanation: '',
-                                                            )));
+                                                            )),
+                                                      );
                                               })),
                                         ))),
                                 Positioned.fill(

@@ -10,6 +10,7 @@ import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../helper_widgets/menuShow.dart';
 
@@ -161,17 +162,19 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
                             child: Row(
                               children: [
                                 InkWell(
-                                  onTap: () {
-                                    print('kisvel');
-                                    showDialog(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        builder: (
-                                          context,
-                                        ) =>
-                                            SaveShowDialog(
-                                              isShow: false,
-                                            ));
+                                  onTap: () async {
+                                    await Share.share(lessons!.link!);
+                                    // print('kisvel');
+
+                                    // showDialog(
+                                    //     context: context,
+                                    //     barrierDismissible: true,
+                                    //     builder: (
+                                    //       context,
+                                    //     ) =>
+                                    //         SaveShowDialog(
+                                    //           isShow: false,
+                                    //         ));
                                   },
                                   child: Row(
                                     children: [
@@ -225,7 +228,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
   }
 
   void userIsSign(Map<String, dynamic> data) async {
-    User hasId = await userDataProvider.fetchUserInfo();
+    Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
     if (!isSign || hasId == null) {

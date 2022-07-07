@@ -5,9 +5,10 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
-
+import 'dart:math' as math;
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -105,7 +106,8 @@ class _DelegateChildState extends State<DelegateChild>
   ];
 
   int drawableIndex = 0;
-  Widget buildList({required Content data, required int index}) {
+  Widget buildList(
+      {required Content data, required int index, required int listCount}) {
     if (drawableIndex == 0) {
       return index % 2 != 0
           ? BookCard(
@@ -129,15 +131,58 @@ class _DelegateChildState extends State<DelegateChild>
     } else if (drawableIndex == 1) {
       return carachtersList(data, index);
     } else if (drawableIndex == 2) {
-      return ITLesson(
-        italianLesson: Lessons(
-            id: data.id,
-            image: data.image,
-            title: data.title,
-            link: data.videoLink,
-            number: data.number),
-        isOdd: index % 2 != 0 ? false : true,
+      return ResponsiveGridListBuilder(
+        horizontalGridSpacing: 16, // Horizontal space between grid items
+
+        verticalGridMargin: 50, // Vertical space around the grid
+        minItemWidth:
+            300, // The minimum item width (can be smaller, if the layout constraints are smaller)
+        minItemsPerRow:
+            1, // The minimum items to show in a single row. Takes precedence over minItemWidth
+        maxItemsPerRow: 4, // T The m`
+        gridItems: List.generate(listCount, (index) {
+          return index % 2 != 0
+              ? Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(math.pi),
+                  child: ITLesson(
+                    isOdd: true,
+                    italianLesson: Lessons(
+                        id: data.id,
+                        image: data.image,
+                        title: data.title,
+                        link: data.videoLink,
+                        number: data.number),
+                  ),
+                )
+              : ITLesson(
+                  isOdd: false,
+                  italianLesson: Lessons(
+                      id: data.id,
+                      image: data.image,
+                      title: data.title,
+                      link: data.videoLink,
+                      number: data.number),
+                );
+        }),
+        builder: (context, items) {
+          return ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            physics: AlwaysScrollableScrollPhysics(),
+            children: items,
+          );
+        },
       );
+      // return ITLesson(
+      //   italianLesson: Lessons(
+      //       id: data.id,
+      //       image: data.image,
+      //       title: data.title,
+      //       link: data.videoLink,
+      //       number: data.number),
+      //   isOdd: index % 2 != 0 ? false : true,
+      // );
     } else if (drawableIndex == 3) {
       return carachtersList(data, index);
     } else if (drawableIndex == 4) {
@@ -254,7 +299,9 @@ class _DelegateChildState extends State<DelegateChild>
                           itemBuilder: (context, index) {
                             if (data![index].type! == types[drawableIndex]) {
                               return buildList(
-                                  data: data[index].content, index: index);
+                                  data: data[index].content,
+                                  index: index,
+                                  listCount: data.length);
                             }
                             return Container(
                               width: 0.1,

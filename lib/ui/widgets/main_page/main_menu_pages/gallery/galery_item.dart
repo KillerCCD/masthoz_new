@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'dart:math' as math;
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart'
     as Gallery;
@@ -11,12 +10,9 @@ import 'package:mashtoz_flutter/domens/models/book_data/gallery_data.dart'
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
-import '../../../../../domens/models/book_data/gallery_data.dart';
-import '../../../helper_widgets/save_show_dialog.dart';
+import 'package:share_plus/share_plus.dart';
 
 class GalleryItem extends StatefulWidget {
   const GalleryItem({Key? key}) : super(key: key);
@@ -199,17 +195,21 @@ class _GalleryItemState extends State<GalleryItem> {
                                     child: Row(
                                       children: [
                                         InkWell(
-                                          onTap: () {
+                                          onTap: () async {
                                             print('kisvel');
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible: true,
-                                                builder: (
-                                                  context,
-                                                ) =>
-                                                    SaveShowDialog(
-                                                      isShow: false,
-                                                    ));
+                                            await Share.share(
+                                                (galery is Gallery.Gallery)
+                                                    ? galery.images![index].img
+                                                    : 'empty');
+                                            // showDialog
+                                            //     context: context,
+                                            //     barrierDismissible: true,
+                                            //     builder: (
+                                            //       context,
+                                            //     ) =>
+                                            //         SaveShowDialog(
+                                            //           isShow: false,
+                                            //         ));
                                           },
                                           child: Row(
                                             children: [
@@ -419,13 +419,51 @@ class _GalleryViewState extends State<GalleryView> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-            top: 82,
+            top: 35,
             left: 46,
             right: 64,
-            bottom: 140,
-            child: Container(
-                color: Color.fromRGBO(51, 51, 51, 1),
-                child: _buildPhotoViewGallery())),
+            bottom: 130,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                  color: Color.fromRGBO(51, 51, 51, 1),
+                  child: Stack(
+                    children: [
+                      Align(
+                          alignment: Alignment.topCenter,
+                          child: _buildPhotoViewGallery()),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    _pageController?.previousPage(
+                                        duration: Duration(milliseconds: 500));
+                                  },
+                                  icon: SvgPicture.asset(
+                                    'assets/images/Vector 96.svg',
+                                    fit: BoxFit.none,
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    print('dadas');
+                                    _pageController?.nextPage(
+                                        duration: Duration(milliseconds: 500));
+                                  },
+                                  icon: SvgPicture.asset(
+                                    'assets/images/Vector 97.svg',
+                                    fit: BoxFit.none,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+            )),
         isShowCanc
             ? Positioned.fill(
                 top: 400,
@@ -450,7 +488,7 @@ class _GalleryViewState extends State<GalleryView> {
       itemCount: widget.imagesUrl!.length,
       itemBuilder: (ctx, index, realIndex) {
         return Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(bottom: 50),
           child: isShowFullScreen
               ? null
               : CachedNetworkImage(imageUrl: widget.imagesUrl![index].img),
@@ -462,31 +500,12 @@ class _GalleryViewState extends State<GalleryView> {
           autoPlay: isShowPlay,
           autoPlayInterval: Duration(seconds: 2),
           viewportFraction: 1,
+          enableInfiniteScroll: false,
           initialPage: _currnetInex!,
           onPageChanged: (int value, CarouselPageChangedReason) {
             _currnetInex = value;
           }),
     );
-    // return PhotoViewGallery.builder(
-    //   itemCount: widget.imagesUrl!.length,
-    //   builder: (BuildContext context, int index) {
-    //     return PhotoViewGalleryPageOptions(
-    //       imageProvider: NetworkImage(
-    //         '${widget.imagesUrl![index].img}',
-    //       ),
-    //       minScale: PhotoViewComputedScale.contained * 0.8,
-    //     );
-    //   },
-    //   backgroundDecoration: BoxDecoration(color: Color.fromRGBO(51, 51, 51, 1)),
-    //   enableRotation: false,
-    //   scrollPhysics: const BouncingScrollPhysics(),
-    //   pageController: _pageController,
-    //   onPageChanged: (int index) {
-    //     setState(() {
-    //       _currnetInex = index;
-    //     });
-    //   },
-    // );
   }
 
   Widget _buildIndicator() {

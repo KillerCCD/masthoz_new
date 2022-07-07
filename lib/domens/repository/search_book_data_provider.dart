@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 
 import 'package:mashtoz_flutter/domens/models/book_data/search_data.dart';
 import 'package:http/http.dart' as http;

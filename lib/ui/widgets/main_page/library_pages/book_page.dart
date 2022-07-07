@@ -9,6 +9,7 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../config/palette.dart';
 
@@ -20,10 +21,10 @@ import 'book_inherited_widget.dart';
 import 'book_read_screen.dart';
 
 class BookInitalScreen extends StatefulWidget {
-  const BookInitalScreen({Key? key, required this.category, required this.book})
+  const BookInitalScreen({Key? key, this.category, this.book})
       : super(key: key);
-  final BookCategory category;
-  final Content book;
+  final BookCategory? category;
+  final Content? book;
 
   @override
   State<BookInitalScreen> createState() =>
@@ -31,10 +32,10 @@ class BookInitalScreen extends StatefulWidget {
 }
 
 class _BookInitalScreenState extends State<BookInitalScreen> {
-  _BookInitalScreenState({required this.book, required this.category});
+  _BookInitalScreenState({this.book, this.category});
   final userDataProvider = UserDataProvider();
-  Content book;
-  final BookCategory category;
+  Content? book;
+  final BookCategory? category;
   bool isValid = false;
   int? custemerId;
   @override
@@ -47,7 +48,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
-    if (book.content != null) {
+    if (book?.content != null) {
       return Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         body: CustomScrollView(
@@ -65,7 +66,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                     width: MediaQuery.of(context).size.width - 100,
                     padding: EdgeInsets.only(top: 18),
                     child: Text(
-                      '${category.categoryTitle}',
+                      '${category?.categoryTitle}',
                       style: TextStyle(
                           fontSize: 16,
                           letterSpacing: 1,
@@ -148,7 +149,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                       width: 144,
                                       height: 174,
                                       child: CachedNetworkImage(
-                                        imageUrl: book.image!,
+                                        imageUrl: book!.image!,
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -166,7 +167,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                     alignment: Alignment.topCenter,
                                     child: Container(
                                       child: Text(
-                                        "${book.title}",
+                                        "${book?.title}",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Color.fromRGBO(25, 4, 18, 1),
@@ -188,7 +189,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                           alignment: Alignment.topCenter,
                                           child: Container(
                                             child: Text(
-                                              book.author ?? '',
+                                              book?.author ?? '',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Color.fromRGBO(
@@ -228,17 +229,9 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              await Share.share(book!.image!);
                               print('kisvel');
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      SaveShowDialog(
-                                        isShow: false,
-                                      ));
                             },
                             child: Row(
                               children: [
@@ -259,7 +252,7 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                             onTap: () {
                               var data = <String, dynamic>{
                                 'type': 'libraries',
-                                'type_id': book.id,
+                                'type_id': book?.id,
                                 'customer_id': custemerId,
                               };
                               setState(() {
@@ -298,13 +291,13 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
               child: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
                 child: ListView.builder(
-                    itemCount: book.content?.length,
+                    itemCount: book?.content?.length,
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       final bovandak =
-                          book.content?.values.map((e) => e).toList();
+                          book?.content?.values.map((e) => e).toList();
                       final subBovandak = bovandak?[index]
                           .content
                           ?.values
@@ -394,8 +387,11 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                                                 MaterialPageRoute(
                                                                   builder: (_) =>
                                                                       BookReadScreen(
-                                                                          readScreen:
-                                                                              readContent),
+                                                                    readScreen:
+                                                                        readContent,
+                                                                    isShowTitle:
+                                                                        true,
+                                                                  ),
                                                                 ),
                                                               );
                                                               print('Coco');
@@ -465,9 +461,10 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                                   MaterialPageRoute(
                                                     builder: (_) =>
                                                         BookReadScreen(
-                                                            readScreen:
-                                                                subBovandak![
-                                                                    index2]),
+                                                      readScreen:
+                                                          subBovandak![index2],
+                                                      isShowTitle: true,
+                                                    ),
                                                   ),
                                                 );
                                                 print('Coco');
@@ -515,7 +512,9 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => BookReadScreen(
-                                            readScreen: bovandak![index])));
+                                              readScreen: bovandak![index],
+                                              isShowTitle: true,
+                                            )));
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(left: 20.0),
@@ -554,12 +553,15 @@ class _BookInitalScreenState extends State<BookInitalScreen> {
         ),
       );
     } else {
-      return BookReadScreen(readScreen: book);
+      return BookReadScreen(
+        readScreen: book,
+        isShowTitle: true,
+      );
     }
   }
 
   Future<void> userIsSign(Map<String, dynamic> data) async {
-    User hasId = await userDataProvider.fetchUserInfo();
+    Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
     if (!isSign || hasId == null) {
@@ -667,8 +669,10 @@ class _GlobalBovandakListsState extends State<GlobalBovandakLists> {
                                                         MaterialPageRoute(
                                                           builder: (_) =>
                                                               BookReadScreen(
-                                                                  readScreen:
-                                                                      readContent),
+                                                            readScreen:
+                                                                readContent,
+                                                            isShowTitle: true,
+                                                          ),
                                                         ),
                                                       );
                                                       print('Coco');
@@ -726,8 +730,9 @@ class _GlobalBovandakListsState extends State<GlobalBovandakLists> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (_) => BookReadScreen(
-                                                readScreen:
-                                                    subBovandak![index2]),
+                                              readScreen: subBovandak![index2],
+                                              isShowTitle: true,
+                                            ),
                                           ),
                                         );
                                         print('Coco');
@@ -764,7 +769,9 @@ class _GlobalBovandakListsState extends State<GlobalBovandakLists> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => BookReadScreen(
-                                    readScreen: bovandak![index])));
+                                      readScreen: bovandak![index],
+                                      isShowTitle: true,
+                                    )));
                       },
                       child: Container(
                         padding: const EdgeInsets.only(left: 20.0),

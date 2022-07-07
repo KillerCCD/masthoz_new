@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:mashtoz_flutter/config/palette.dart';
+import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
+import 'package:provider/provider.dart';
 
 import '../../../helper_widgets/menuShow.dart';
 
@@ -25,6 +27,9 @@ class _AudioLibraryState extends State<AudioLibrary>
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<BookNotifire>(
+      context,
+    ).resetDatas();
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(

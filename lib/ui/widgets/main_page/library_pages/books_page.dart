@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
@@ -14,6 +15,7 @@ import 'package:mashtoz_flutter/ui/widgets/buttons/bottom_navigation_bar/bottom_
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
+import '../../../../domens/models/bottom_bar_color_notifire.dart';
 import '../../helper_widgets/menuShow.dart';
 import '/config/palette.dart';
 
@@ -23,7 +25,7 @@ import 'book_page.dart';
 class BooksScreen extends StatefulWidget {
   const BooksScreen({
     Key? key,
-    required this.category,
+    this.category,
   }) : super(key: key);
 
   final BookCategory? category;
@@ -54,143 +56,155 @@ class _BooksScreenState extends State<BooksScreen> {
     final orentation = MediaQuery.of(context).size.width;
     print(orentation);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Palette.textLineOrBackGroundColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            flexibleSpace: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 50.0, top: 20.0),
-                child: Container(
-                  height: 73,
-                  width: MediaQuery.of(context).size.width - 90,
-                  padding: EdgeInsets.only(top: 18),
-                  child: Text(
-                    '${category?.categoryTitle}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 1,
-                      fontFamily: 'GHEAGrapalat',
-                      fontWeight: FontWeight.w700,
-                      color: Palette.appBarTitleColor,
+    return WillPopScope(
+      onWillPop: () async {
+        context
+            .read<BottomColorNotifire>()
+            .setColor(Palette.libraryBacgroundColor);
+
+        return true;
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Palette.textLineOrBackGroundColor,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              flexibleSpace: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 50.0, top: 20.0),
+                  child: Container(
+                    height: 73,
+                    width: MediaQuery.of(context).size.width - 90,
+                    padding: EdgeInsets.only(top: 18),
+                    child: Text(
+                      '${category?.categoryTitle}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 1,
+                        fontFamily: 'GHEAGrapalat',
+                        fontWeight: FontWeight.w700,
+                        color: Palette.appBarTitleColor,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            leading: SizedBox(
-              width: 8,
-              height: 14,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: Palette.appBarTitleColor,
+              leading: SizedBox(
+                width: 8,
+                height: 14,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    context
+                        .read<BottomColorNotifire>()
+                        .setColor(Palette.libraryBacgroundColor);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Palette.appBarTitleColor,
+                  ),
                 ),
               ),
+              expandedHeight: 73,
+              backgroundColor: Palette.textLineOrBackGroundColor,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: MenuShow(),
+                ),
+              ],
             ),
-            expandedHeight: 73,
-            backgroundColor: Palette.textLineOrBackGroundColor,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: MenuShow(),
-              ),
-            ],
-          ),
-          // SliverAppBar(
-          //   expandedHeight: 73,
-          //   backgroundColor: Palette.textLineOrBackGroundColor,
-          //   pinned: false,
-          //   floating: true,
-          //   elevation: 0,
-          //   automaticallyImplyLeading: false,
-          //   systemOverlayStyle: SystemUiOverlayStyle(
-          //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-          //   title: Text(
-          //     '${category?.categoryTitle}',
-          //     style: TextStyle(
-          //       fontFamily: 'GHEAGrapalat',
-          //       fontSize: 20,
-          //       letterSpacing: 1,
-          //       fontWeight: FontWeight.bold,
-          //       color: Palette.appBarTitleColor,
-          //     ),
-          //   ),
-          //   leading: IconButton(
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //     icon: Icon(
-          //       Icons.arrow_back_ios_new_outlined,
-          //       color: Palette.appBarTitleColor,
-          //     ),
-          //   ),
-          //   actions: [MenuShow()],
-          // ),
-          SliverFillRemaining(
-            child: FutureBuilder<List<Content>>(
-              future: contentFuture,
-              builder: ((context, snapshot) {
-                var conentList = snapshot.data;
-                inspect(conentList);
-                if (snapshot.hasData) {
-                  return ResponsiveGridList(
-                    horizontalGridSpacing:
-                        16, // Horizontal space between grid items
+            // SliverAppBar(
+            //   expandedHeight: 73,
+            //   backgroundColor: Palette.textLineOrBackGroundColor,
+            //   pinned: false,
+            //   floating: true,
+            //   elevation: 0,
+            //   automaticallyImplyLeading: false,
+            //   systemOverlayStyle: SystemUiOverlayStyle(
+            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
+            //   title: Text(
+            //     '${category?.categoryTitle}',
+            //     style: TextStyle(
+            //       fontFamily: 'GHEAGrapalat',
+            //       fontSize: 20,
+            //       letterSpacing: 1,
+            //       fontWeight: FontWeight.bold,
+            //       color: Palette.appBarTitleColor,
+            //     ),
+            //   ),
+            //   leading: IconButton(
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //     },
+            //     icon: Icon(
+            //       Icons.arrow_back_ios_new_outlined,
+            //       color: Palette.appBarTitleColor,
+            //     ),
+            //   ),
+            //   actions: [MenuShow()],
+            // ),
+            SliverFillRemaining(
+              child: FutureBuilder<List<Content>>(
+                future: contentFuture,
+                builder: ((context, snapshot) {
+                  var conentList = snapshot.data;
+                  inspect(conentList);
+                  if (snapshot.hasData) {
+                    return ResponsiveGridList(
+                      horizontalGridSpacing:
+                          16, // Horizontal space between grid items
 
-                    verticalGridMargin: 50, // Vertical space around the grid
-                    minItemWidth:
-                        300, // The minimum item width (can be smaller, if the layout constraints are smaller)
-                    minItemsPerRow:
-                        1, // The minimum items to show in a single row. Takes precedence over minItemWidth
-                    maxItemsPerRow: 2, // The m
-                    children: List.generate(snapshot.data!.length, (index) {
-                      Content book = conentList![index];
-                      return index % 2 != 0
-                          ? Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.rotationY(math.pi),
-                              child: Padding(
+                      verticalGridMargin: 50, // Vertical space around the grid
+                      minItemWidth:
+                          388, // The minimum item width (can be smaller, if the layout constraints are smaller)
+                      minItemsPerRow:
+                          1, // The minimum items to show in a single row. Takes precedence over minItemWidth
+                      maxItemsPerRow: 4, // The m
+                      children: List.generate(snapshot.data!.length, (index) {
+                        Content book = conentList![index];
+                        return index % 2 != 0
+                            ? Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.rotationY(math.pi),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: BookCard(
+                                    isOdd: true,
+                                    book: book,
+                                    categorys: category!,
+                                  ),
+                                ))
+                            : Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: BookCard(
-                                  isOdd: true,
+                                  isOdd: false,
                                   book: book,
                                   categorys: category!,
                                 ),
-                              ))
-                          : Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: BookCard(
-                                isOdd: false,
-                                book: book,
-                                categorys: category!,
-                              ),
-                            );
-                    }),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return Container(
-                    child: Center(
-                        child: CircularProgressIndicator(
-                  strokeWidth: 2.0,
-                  color: Palette.main,
-                )));
-              }),
+                              );
+                      }),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return Container(
+                      child: Center(
+                          child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    color: Palette.main,
+                  )));
+                }),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

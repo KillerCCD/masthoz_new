@@ -7,6 +7,7 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/data.dart';
 
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../../domens/models/user.dart';
 import '../../../../../domens/repository/user_data_provider.dart';
@@ -220,17 +221,18 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                                 child: Row(
                                   children: [
                                     InkWell(
-                                      onTap: () {
+                                      onTap: () async {
+                                        await Share.share(dataCharacter?.link);
                                         print('kisvel');
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: true,
-                                            builder: (
-                                              context,
-                                            ) =>
-                                                SaveShowDialog(
-                                                  isShow: false,
-                                                ));
+                                        // showDialog(
+                                        //     context: context,
+                                        //     barrierDismissible: true,
+                                        //     builder: (
+                                        //       context,
+                                        //     ) =>
+                                        //         SaveShowDialog(
+                                        //           isShow: false,
+                                        //         ));
                                       },
                                       child: Row(
                                         children: [
@@ -277,7 +279,6 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.all(20.0),
-                height: 300,
                 width: 485,
                 child: Column(
                   children: [
@@ -330,18 +331,15 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            '0007- Որոշյալ և անորոշ հոդերը ',
-                            style: TextStyle(
-                                fontFamily: 'GHEAGrapalat',
-                                fontSize: 14.0,
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black),
-                            textAlign: TextAlign.start,
-                          ),
+                        child: Text(
+                          '${dataCharacter?.summary}',
+                          style: TextStyle(
+                              fontFamily: 'GHEAGrapalat',
+                              fontSize: 14.0,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                     )
@@ -356,7 +354,7 @@ class _AudioLibraryDataShowState extends State<AudioLibraryDataShow> {
   }
 
   void userIsSign(Map<String, dynamic> data) async {
-    User hasId = await userDataProvider.fetchUserInfo();
+    Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
     if (!isSign || hasId == null) {

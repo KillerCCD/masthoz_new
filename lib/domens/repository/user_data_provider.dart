@@ -1,16 +1,85 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/content_list.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 
 import '../../globals.dart';
-import 'package:http/http.dart' as http;
+import '../../ui/utils/showSnackBar.dart';
 
 class UserDataProvider {
   final sessionDataProvider = SessionDataProvider();
+  final FirebaseAuth? auth;
+  User get user => auth!.currentUser!;
   bool isTrue = false;
+  UserDataProvider({
+    this.auth,
+  });
+
+  // GOOGLE SIGN IN
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      if (kIsWeb) {
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+        googleProvider
+            .addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+        await auth?.signInWithPopup(googleProvider);
+      } else {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
+
+        if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
+          // Create a new credential
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth?.accessToken,
+            idToken: googleAuth?.idToken,
+          );
+          UserCredential userCredential =
+              await auth!.signInWithCredential(credential);
+
+          // if you want to do specific task like storing information in firestore
+          // only for new users using google sign in (since there are no two options
+          // for google sign in and google sign up, only one as of now),
+          // do the following:
+
+          if (userCredential.user != null) {
+            if (userCredential.additionalUserInfo!.isNewUser) {
+              print('mnuma jogenq voncenq anum');
+            }
+          }
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Displaying the error message
+    }
+  }
+
+  // FACEBOOK SIGN IN
+  Future<void> signInWithFacebook(BuildContext context) async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential? facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      await auth?.signInWithCredential(facebookAuthCredential!);
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Displaying the error message
+    }
+  }
+
   //Sign Up
   Future<bool> signUp(
       {required String email,
@@ -205,7 +274,7 @@ class UserDataProvider {
   }
 
   //Fetch User Info
-  Future<User> fetchUserInfo() async {
+  Future<Users> fetchUserInfo() async {
     var token = await sessionDataProvider.readsAccessToken();
     var user;
     try {
@@ -220,7 +289,7 @@ class UserDataProvider {
       if (response.statusCode == 200) {
         print('success');
         Map.from(body).forEach((key, value) {
-          user = User.fromJson(body);
+          user = Users.fromJson(body);
         });
         return user;
       } else if (response.statusCode == 401) {
@@ -265,7 +334,6 @@ class UserDataProvider {
 //Get Favorites
   Future<List<UserAccount>> getFavorites() async {
     var token = await sessionDataProvider.readsAccessToken();
-    var userAccont = <UserAccount>[];
     try {
       var response = await http.get(
         Uri.parse(Api.getFavorites),

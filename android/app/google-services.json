@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "367447965764",
-    "project_id": "mashtoz",
-    "storage_bucket": "mashtoz.appspot.com"
+    "project_number": "653359981833",
+    "project_id": "mashtoz-db813",
+    "storage_bucket": "mashtoz-db813.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:367447965764:android:bdec09ad44431e7d18bc11",
+        "mobilesdk_app_id": "1:653359981833:android:caca6d893f68ef4eda1fd8",
         "android_client_info": {
           "package_name": "com.example.mashtoz_flutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "367447965764-g11oo62hso9q2jnuaakdclbs1ugm0sgj.apps.googleusercontent.com",
+          "client_id": "653359981833-r6iiar89g2jna774mrpaqjr6np56gmel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mashtoz_flutter",
+            "certificate_hash": "ad0e16779ae373bebd817f0044e159e33fa038fd"
+          }
+        },
+        {
+          "client_id": "653359981833-49atlj92spt4dbdqrf1f6j52i8kqbjv5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBTUPagEnXTue1W4te5r4PH5g8-FTEsMkk"
+          "current_key": "AIzaSyDRzv3AWL3DfiR676YD3etCI9RKD0cWc78"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "367447965764-g11oo62hso9q2jnuaakdclbs1ugm0sgj.apps.googleusercontent.com",
+              "client_id": "653359981833-49atlj92spt4dbdqrf1f6j52i8kqbjv5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

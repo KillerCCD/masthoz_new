@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
+import 'package:mashtoz_flutter/domens/models/bottom_bar_color_notifire.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
@@ -27,6 +28,7 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   void initState() {
     categoryFutureList = bookDataProvider.getCategoryLists(Api.categoryListUrl);
+
     super.initState();
   }
 
@@ -90,7 +92,7 @@ class _LibraryPageState extends State<LibraryPage> {
                               return Container(
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.only(right: 26),
+                                padding: const EdgeInsets.only(right: 32),
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -98,7 +100,10 @@ class _LibraryPageState extends State<LibraryPage> {
 
                                       ;
                                     });
-
+                                    context
+                                        .read<BottomColorNotifire>()
+                                        .setColor(
+                                            Palette.textLineOrBackGroundColor);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

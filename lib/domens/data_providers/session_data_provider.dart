@@ -1,14 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class _Keys {
   static const accessToken = 'access_token';
   static const refreshToken = 'refresh_token';
-  static const expiresToken = 'expires_in';
   static const cutsomerId = 'customer_id';
-  static const menuList = 'menu_list';
 }
 
 class SessionDataProvider {
