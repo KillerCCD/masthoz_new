@@ -8,6 +8,7 @@ import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 import 'package:mashtoz_flutter/globals.dart';
+import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/gallery/galery_item.dart';
 import 'package:simple_shadow/simple_shadow.dart';
@@ -49,18 +50,6 @@ class _MenuShowState extends State<MenuShow>
     userDataProvider.fetchUserInfo().then((value) => custemerId = value.id);
     userIsSign();
     super.initState();
-  }
-
-  void mediquerySized() {
-    var height = MediaQuery.of(context).size.height;
-    if (height <= 667) {
-      height / 1.4;
-    }
-    if (height <= 740) {
-      height / 1.3;
-    } else {
-      height / 1.27;
-    }
   }
 
   bool _isDrawerOpen() {
@@ -110,233 +99,226 @@ class _MenuShowState extends State<MenuShow>
                 _,
                 __,
               ) {
-                return Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 130,
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                              padding: EdgeInsets.only(right: 20.0),
-                              color: Palette.barColor,
-                              child: AppBar(
-                                leading: SizedBox(
-                                  width: 0.1,
-                                ),
-                                systemOverlayStyle: SystemUiOverlayStyle(
-                                    statusBarColor:
-                                        Color.fromRGBO(25, 4, 18, 1)),
-                                elevation: 0.0,
-                                backgroundColor:
-                                    Palette.barColor.withOpacity(0.5),
-                                flexibleSpace: Container(
-                                  padding:
-                                      EdgeInsets.only(right: 30.0, left: 43),
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        top: 20.0,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/mashtoz_org.svg',
-                                        width: 250,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                //toolbarHeight: 63,
-                                actions: [
-                                  Container(
-                                    width: 30,
-                                    height: 51,
-                                    child: InkWell(
-                                      onTap: () {
-                                        _toggleDrawer();
-                                        Navigator.pop(context);
-                                      },
-                                      child: Stack(children: [
-                                        Stack(
-                                          children: [
-                                            SimpleShadow(
-                                              child: SvgPicture.asset(
-                                                'assets/images/app_bar_icon_button.svg',
-
-                                                color: iconAcitve
-                                                    ? Palette
-                                                        .appBarIconMenuColor
-                                                    : const Color.fromRGBO(
-                                                        122, 108, 115, 1),
-                                                fit: BoxFit.cover,
-
-                                                //width: 60,
-                                                //width: 22,
-                                              ),
-                                              opacity: 0.15,
-                                              offset: const Offset(0, 4),
-                                              color:
-                                                  Color.fromRGBO(0, 0, 0, 0.15),
-                                            ),
-                                          ],
-                                        ),
-                                        Align(
-                                            alignment: Alignment.center,
-                                            child: AnimatedBuilder(
-                                              animation: animation,
-                                              builder: (context, child) {
-                                                return Transform.rotate(
-                                                  angle: animation.value
-                                                      .toDouble(),
-                                                  child: _isDrawerOpen() ||
-                                                          _isDrawerOpening()
-                                                      ? SvgPicture.asset(
-                                                          'assets/images/close_bar_icon.svg',
-                                                          fit: BoxFit.none,
-                                                        )
-                                                      : SvgPicture.asset(
-                                                          'assets/images/asset_bar_icon.svg',
-                                                          fit: BoxFit.none,
-                                                        ),
-                                                );
-                                              },
-                                            )),
-                                      ]),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Material(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(83, 66, 77, 1),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromRGBO(31, 31, 31, 1),
-                                blurRadius: 5.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(0.0, 5.0),
-                              ),
-                            ]),
-                        height: orintation == Orientation.landscape
-                            ? 170
-                            : MediaQuery.of(context).size.height <= 667
-                                ? MediaQuery.of(context).size.height / 1.4
-                                : MediaQuery.of(context).size.height / 1.27,
-                        child: SingleChildScrollView(
+                return Container(
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.topCenter,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 1.4,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-
+                            height: 130,
+                            child: Stack(
                               children: [
-                                //!!
-                                Expanded(
+                                Positioned.fill(
                                   child: Container(
-                                    height: orintation == Orientation.landscape
-                                        ? 200
-                                        : 400,
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Container(
-                                        //margin: EdgeInsets.only(right: 75),
+                                    padding: EdgeInsets.only(right: 20.0),
+                                    color: Palette.barColor,
+                                    child: AppBar(
+                                      leading: SizedBox(
+                                        width: 0.1,
+                                      ),
+                                      systemOverlayStyle: SystemUiOverlayStyle(
+                                          statusBarColor:
+                                              Color.fromRGBO(25, 4, 18, 1)),
+                                      elevation: 0.0,
+                                      backgroundColor:
+                                          Palette.barColor.withOpacity(0.5),
+                                      flexibleSpace: Container(
+                                        padding: EdgeInsets.only(
+                                            right: 30.0, left: 43),
+                                        height: 200,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              top: 20.0,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              'assets/images/mashtoz_org.svg',
+                                              width: 250,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
 
-                                        height: double.infinity,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            FutureBuilder<List<dynamic>?>(
-                                                future: menuFuture,
-                                                builder: (context, snapshot) {
-                                                  var data = snapshot.data;
+                                      //toolbarHeight: 63,
+                                      actions: [
+                                        Container(
+                                          width: 30,
+                                          height: 51,
+                                          child: InkWell(
+                                            onTap: () {
+                                              _toggleDrawer();
+                                              Navigator.pop(context);
+                                            },
+                                            child: Stack(children: [
+                                              Stack(
+                                                children: [
+                                                  SimpleShadow(
+                                                    child: SvgPicture.asset(
+                                                      'assets/images/app_bar_icon_button.svg',
 
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return Container(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 50.0),
-                                                        child: Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          strokeWidth: 2.0,
-                                                          color: Palette.main,
-                                                        )));
-                                                  } else if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    if (snapshot.hasError) {
-                                                      return const Text(
-                                                          'Error');
-                                                    } else if (snapshot
-                                                        .hasData) {
-                                                      return Container(
-                                                        height: orintation ==
-                                                                Orientation
-                                                                    .landscape
-                                                            ? 200
-                                                            : 450,
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Stack(
-                                                            children: [
-                                                              Align(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topCenter,
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
+                                                      color: iconAcitve
+                                                          ? Palette
+                                                              .appBarIconMenuColor
+                                                          : const Color
+                                                                  .fromRGBO(
+                                                              122, 108, 115, 1),
+                                                      fit: BoxFit.cover,
+
+                                                      //width: 60,
+                                                      //width: 22,
+                                                    ),
+                                                    opacity: 0.15,
+                                                    offset: const Offset(0, 4),
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 0.15),
+                                                  ),
+                                                ],
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.center,
+                                                  child: AnimatedBuilder(
+                                                    animation: animation,
+                                                    builder: (context, child) {
+                                                      return Transform.rotate(
+                                                        angle: animation.value
+                                                            .toDouble(),
+                                                        child: _isDrawerOpen() ||
+                                                                _isDrawerOpening()
+                                                            ? SvgPicture.asset(
+                                                                'assets/images/close_bar_icon.svg',
+                                                                fit:
+                                                                    BoxFit.none,
+                                                              )
+                                                            : SvgPicture.asset(
+                                                                'assets/images/asset_bar_icon.svg',
+                                                                fit:
+                                                                    BoxFit.none,
+                                                              ),
+                                                      );
+                                                    },
+                                                  )),
+                                            ]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        top: 120,
+                        bottom: 60, //
+                        child: Container(
+                          //padding: EdgeInsets.only(bottom: 130),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(83, 66, 77, 1),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromRGBO(31, 31, 31, 1),
+                                  blurRadius: 5.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ]),
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  child: Column(
+                                    children: [
+                                      //!!
+                                      Expanded(
+                                        child: Container(
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              //margin: EdgeInsets.only(right: 75),
+
+                                              height: double.infinity,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  FutureBuilder<List<dynamic>?>(
+                                                      future: menuFuture,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        var data =
+                                                            snapshot.data;
+
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top:
+                                                                          50.0),
+                                                              child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                strokeWidth:
+                                                                    2.0,
+                                                                color: Palette
+                                                                    .main,
+                                                              )));
+                                                        } else if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .done) {
+                                                          if (snapshot
+                                                              .hasError) {
+                                                            return const Text(
+                                                                'Error');
+                                                          } else if (snapshot
+                                                              .hasData) {
+                                                            return Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Column(
+                                                                children: [
+                                                                  Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topCenter,
+                                                                    child:
+                                                                        Container(
+                                                                      margin: EdgeInsets.only(
                                                                           right:
                                                                               70),
-                                                                  height: MediaQuery.of(context).size.height <= 667
-                                                                      ? MediaQuery.of(context)
-                                                                              .size
-                                                                              .height /
-                                                                          1.6
-                                                                      : MediaQuery.of(context)
-                                                                              .size
-                                                                              .height /
-                                                                          2,
-                                                                  child: ListView
-                                                                      .builder(
-                                                                          scrollDirection: Axis
-                                                                              .vertical,
-                                                                          shrinkWrap:
-                                                                              true,
-                                                                          physics:
-                                                                              AlwaysScrollableScrollPhysics(),
-                                                                          itemCount: data
-                                                                              ?.length,
-                                                                          itemBuilder:
-                                                                              (contesxt, index) {
+                                                                      height: SizeConfig
+                                                                          .screenHeight,
+                                                                      child: ListView.builder(
+                                                                          scrollDirection: Axis.vertical,
+                                                                          shrinkWrap: true,
+                                                                          physics: AlwaysScrollableScrollPhysics(),
+                                                                          itemCount: data?.length,
+                                                                          itemBuilder: (contesxt, index) {
                                                                             return Align(
                                                                               alignment: Alignment.centerRight,
                                                                               child: GestureDetector(
                                                                                 child: Container(
-                                                                                  height: 50,
                                                                                   width: double.infinity,
+                                                                                  height: 50.0,
                                                                                   child: Text(
                                                                                     '${data?[index].title}',
                                                                                     style: TextStyle(
+                                                                                      decoration: TextDecoration.none,
                                                                                       color: Palette.textLineOrBackGroundColor,
                                                                                       fontFamily: 'GHEAGrapalat',
                                                                                       letterSpacing: 1,
@@ -427,100 +409,92 @@ class _MenuShowState extends State<MenuShow>
                                                                               ),
                                                                             );
                                                                           }),
-                                                                ),
-                                                              ),
-                                                              Positioned.fill(
-                                                                top: 350,
-                                                                child: Divider(
-                                                                  color: Color
-                                                                      .fromRGBO(
-                                                                          122,
-                                                                          108,
-                                                                          115,
-                                                                          0.7),
-                                                                  thickness: 1,
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 15.0,
-                                                              ),
-                                                              isture!
-                                                                  ? Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .bottomRight,
-                                                                      child:
-                                                                          Expanded(
-                                                                        child:
-                                                                            Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(right: 70),
-                                                                          height:
-                                                                              50,
-                                                                          child:
-                                                                              Column(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              GestureDetector(
-                                                                                onTap: () {
-                                                                                  sessionDataProvider.deleteAllToken();
-                                                                                },
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                                  children: [
-                                                                                    // padding:
-                                                                                    //     EdgeInsets.only(left: 60.0),
-
-                                                                                    SvgPicture.asset('assets/images/log_out.svg'),
-                                                                                    SizedBox(width: 10.0),
-                                                                                    Text(
-                                                                                      'Դուրս գալ',
-                                                                                      style: TextStyle(color: Color.fromRGBO(186, 166, 177, 1), fontFamily: 'GHEAGrapalat', letterSpacing: 1, fontWeight: FontWeight.w400, fontSize: 17.0),
-                                                                                      textAlign: TextAlign.end,
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                  : Container(
+                                                                    ),
+                                                                  ),
+                                                                  Container(
                                                                       height:
-                                                                          0.1),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      return const Text(
-                                                          'Empty data');
-                                                    }
-                                                  } else {
-                                                    return Text(
-                                                        'State: ${snapshot.connectionState}');
-                                                  }
-                                                }),
-                                          ],
+                                                                          50,
+                                                                      color: Colors
+                                                                          .red,
+                                                                      child: Text(
+                                                                          'dadas')),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        15.0,
+                                                                  ),
+                                                                  isture!
+                                                                      ? Align(
+                                                                          alignment:
+                                                                              Alignment.bottomRight,
+                                                                          child:
+                                                                              Expanded(
+                                                                            child:
+                                                                                Container(
+                                                                              margin: EdgeInsets.only(right: 70),
+                                                                              height: 50,
+                                                                              child: Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                children: [
+                                                                                  GestureDetector(
+                                                                                    onTap: () {
+                                                                                      sessionDataProvider.deleteAllToken();
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                                                      children: [
+                                                                                        // padding:
+                                                                                        //     EdgeInsets.only(left: 60.0),
+
+                                                                                        SvgPicture.asset('assets/images/log_out.svg'),
+                                                                                        SizedBox(width: 10.0),
+                                                                                        Text(
+                                                                                          'Դուրս գալ',
+                                                                                          style: TextStyle(color: Color.fromRGBO(186, 166, 177, 1), fontFamily: 'GHEAGrapalat', letterSpacing: 1, fontWeight: FontWeight.w400, fontSize: 17.0),
+                                                                                          textAlign: TextAlign.end,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      : Container(
+                                                                          height:
+                                                                              0.1),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            return const Text(
+                                                                'Empty data');
+                                                          }
+                                                        } else {
+                                                          return Text(
+                                                              'State: ${snapshot.connectionState}');
+                                                        }
+                                                      }),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    ],
+
+                                    //   ],
+                                    // ),
                                   ),
                                 ),
-                              ],
-
-                              //   ],
-                              // ),
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 );
               },
               transitionBuilder:

@@ -388,26 +388,6 @@ class _GalleryViewState extends State<GalleryView> {
           child: Stack(
             children: [
               _buildContent(),
-              isShowFullScreen
-                  ? Positioned(
-                      child: Center(
-                      child: Container(
-                        width: SizeConfig.screenWidth,
-                        height: SizeConfig.screenHeight,
-                        decoration: isShowFullScreen
-                            ? BoxDecoration(
-                                image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.imagesUrl![_currnetInex!].img),
-                              ))
-                            : null,
-                      ),
-                    ))
-                  : Positioned.fill(
-                      child: Container(
-                      height: 0.1,
-                      width: 0.1,
-                    ))
             ],
           ),
         ),
@@ -420,8 +400,8 @@ class _GalleryViewState extends State<GalleryView> {
       children: <Widget>[
         Positioned.fill(
             top: 35,
-            left: 46,
-            right: 64,
+            left: isShowFullScreen ? 0.0 : 46,
+            right: isShowFullScreen ? 0.0 : 64,
             bottom: 130,
             child: Align(
               alignment: Alignment.topCenter,
@@ -432,35 +412,43 @@ class _GalleryViewState extends State<GalleryView> {
                       Align(
                           alignment: Alignment.topCenter,
                           child: _buildPhotoViewGallery()),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    _pageController?.previousPage(
-                                        duration: Duration(milliseconds: 500));
-                                  },
-                                  icon: SvgPicture.asset(
-                                    'assets/images/Vector 96.svg',
-                                    fit: BoxFit.none,
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    print('dadas');
-                                    _pageController?.nextPage(
-                                        duration: Duration(milliseconds: 500));
-                                  },
-                                  icon: SvgPicture.asset(
-                                    'assets/images/Vector 97.svg',
-                                    fit: BoxFit.none,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      )
+                      !isShowFullScreen
+                          ? Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          _pageController?.previousPage(
+                                              duration:
+                                                  Duration(milliseconds: 500));
+                                        },
+                                        icon: SvgPicture.asset(
+                                          'assets/images/Vector 96.svg',
+                                          fit: BoxFit.none,
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          print('dadas');
+                                          _pageController?.nextPage(
+                                              duration:
+                                                  Duration(milliseconds: 500));
+                                        },
+                                        icon: SvgPicture.asset(
+                                          'assets/images/Vector 97.svg',
+                                          fit: BoxFit.none,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Container(
+                              height: 0.1,
+                              width: 0.1,
+                            )
                     ],
                   )),
             )),
@@ -489,9 +477,7 @@ class _GalleryViewState extends State<GalleryView> {
       itemBuilder: (ctx, index, realIndex) {
         return Container(
           padding: EdgeInsets.only(bottom: 50),
-          child: isShowFullScreen
-              ? null
-              : CachedNetworkImage(imageUrl: widget.imagesUrl![index].img),
+          child: CachedNetworkImage(imageUrl: widget.imagesUrl![index].img),
         );
       },
       carouselController: _pageController,

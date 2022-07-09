@@ -45,6 +45,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up :  ${message.messageId}');
 }
+
 Future<void> execute(
   InternetConnectionChecker internetConnectionChecker,
 ) async {
@@ -87,6 +88,7 @@ Future<void> execute(
   await Future<void>.delayed(const Duration(seconds: 30));
   await listener.cancel();
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

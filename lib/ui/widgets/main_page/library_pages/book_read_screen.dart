@@ -18,7 +18,6 @@ import '../../../../domens/models/user.dart';
 import '../../../../domens/repository/user_data_provider.dart';
 import '../../helper_widgets/save_show_dialog.dart';
 import 'book_inherited_widget.dart';
-import 'book_utils/hide_menu_bar.dart';
 
 class BookReadScreen extends StatefulWidget {
   const BookReadScreen(
@@ -458,10 +457,6 @@ class _BookPagesState extends State<BookPages> {
                                           fit: BoxFit.none,
                                         ),
                                       )),
-                                      SizedBox(width: 80),
-                                      Expanded(
-                                          child: Text(
-                                              '${dynamicPageCounts}/${pageCounts}')),
                                       Expanded(
                                           child: InkWell(
                                         onTap: () async {
@@ -2195,169 +2190,184 @@ class _BookPagesState extends State<BookPages> {
                     children: [
                       SizedBox(height: 50),
                       Expanded(
-                        child: SingleChildScrollView(
-                            child: Column(
-                          children: [
-                            Container(
-                              height: 238,
-                              width: double.infinity,
-                              child: Stack(
+                        child: RawScrollbar(
+                            thumbColor: Palette.whenTapedButton,
+                            thickness: 5,
+                            crossAxisMargin: 5,
+                            radius: const Radius.circular(12),
+                            isAlwaysShown: true,
+                            child: ListView(children: [
+                              Column(
                                 children: [
-                                  Positioned.fill(
-                                      bottom: 49,
-                                      child: Align(
-                                          alignment: Alignment.center,
-                                          child: Container(
-                                            height: 94,
-                                            width: double.infinity,
-                                            color: Color.fromRGBO(
-                                                164, 171, 189, 1),
-                                          ))),
-                                  Positioned.fill(
-                                      child: Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Container(
-                                            height: 180,
-                                            width: 140,
-                                            decoration: BoxDecoration(
-                                              color: Palette
-                                                  .textLineOrBackGroundColor,
-                                              border: Border.all(
-                                                color: Color.fromRGBO(
-                                                    51, 51, 51, 1),
-                                                width: 01,
-                                              ),
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                Positioned.fill(
-                                                    child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Container(
-                                                    height: 164.0,
-                                                    width: 122.0,
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: encyclopediaBody !=
-                                                              null
-                                                          ? '${encyclopediaBody?.image}'
-                                                          : '${readScreen?.image}',
-                                                      fit: BoxFit.fill,
+                                  Container(
+                                    height: 238,
+                                    width: double.infinity,
+                                    child: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                            bottom: 49,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  height: 94,
+                                                  width: double.infinity,
+                                                  color: Color.fromRGBO(
+                                                      164, 171, 189, 1),
+                                                ))),
+                                        Positioned.fill(
+                                            child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Container(
+                                                  height: 180,
+                                                  width: 140,
+                                                  decoration: BoxDecoration(
+                                                    color: Palette
+                                                        .textLineOrBackGroundColor,
+                                                    border: Border.all(
+                                                      color: Color.fromRGBO(
+                                                          51, 51, 51, 1),
+                                                      width: 01,
                                                     ),
                                                   ),
-                                                ))
-                                              ],
-                                            ),
-                                          ))),
-                                  encyclopediaBody != null
-                                      ? Positioned.fill(
-                                          child: Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 20.0, right: 20.0),
-                                              color: Palette
-                                                  .textLineOrBackGroundColor,
-                                              width: double.infinity,
-                                              height: 49,
-                                              child: Row(
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () async {
-                                                      await Share.share(
-                                                          encyclopediaBody!
-                                                              .image!);
-                                                      print('dadas');
-                                                      // showDialog(
-                                                      //     context:
-                                                      //         context,
-                                                      //     barrierDismissible:
-                                                      //         true,
-                                                      //     builder: (
-                                                      //       context,
-                                                      //     ) =>
-                                                      //         SaveShowDialog(
-                                                      //             isShow:
-                                                      //                 false));
-                                                    },
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                          child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Container(
+                                                          height: 164.0,
+                                                          width: 122.0,
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            imageUrl: encyclopediaBody !=
+                                                                    null
+                                                                ? '${encyclopediaBody?.image}'
+                                                                : '${readScreen?.image}',
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                      ))
+                                                    ],
+                                                  ),
+                                                ))),
+                                        encyclopediaBody != null
+                                            ? Positioned.fill(
+                                                child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20.0,
+                                                        right: 20.0),
+                                                    color: Palette
+                                                        .textLineOrBackGroundColor,
+                                                    width: double.infinity,
+                                                    height: 49,
                                                     child: Row(
                                                       children: [
-                                                        //  const SizedBox(width: 16),
-                                                        SvgPicture.asset(
-                                                            'assets/images/այքըններ.svg'),
-                                                        const SizedBox(
-                                                            width: 6),
-                                                        const Text('Կիսվել')
+                                                        InkWell(
+                                                          onTap: () async {
+                                                            await Share.share(
+                                                                encyclopediaBody!
+                                                                    .image!);
+                                                            print('dadas');
+                                                            // showDialog(
+                                                            //     context:
+                                                            //         context,
+                                                            //     barrierDismissible:
+                                                            //         true,
+                                                            //     builder: (
+                                                            //       context,
+                                                            //     ) =>
+                                                            //         SaveShowDialog(
+                                                            //             isShow:
+                                                            //                 false));
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              //  const SizedBox(width: 16),
+                                                              SvgPicture.asset(
+                                                                  'assets/images/այքըններ.svg'),
+                                                              const SizedBox(
+                                                                  width: 6),
+                                                              const Text(
+                                                                  'Կիսվել')
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Spacer(),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            var data = <String,
+                                                                dynamic>{
+                                                              'type':
+                                                                  'encyclopedias',
+                                                              'type_id':
+                                                                  encyclopediaBody
+                                                                      ?.id,
+                                                              'customer_id':
+                                                                  custemerId,
+                                                            };
+                                                            setState(() {
+                                                              userIsSign(data);
+                                                            });
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  'assets/images/վելացնել1.svg'),
+                                                              const SizedBox(
+                                                                  width: 6),
+                                                              const Text(
+                                                                  'Պահել'),
+                                                              //const SizedBox(width: 16),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
-                                                    ),
-                                                  ),
-                                                  Spacer(),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      var data =
-                                                          <String, dynamic>{
-                                                        'type': 'encyclopedias',
-                                                        'type_id':
-                                                            encyclopediaBody
-                                                                ?.id,
-                                                        'customer_id':
-                                                            custemerId,
-                                                      };
-                                                      setState(() {
-                                                        userIsSign(data);
-                                                      });
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            'assets/images/վելացնել1.svg'),
-                                                        const SizedBox(
-                                                            width: 6),
-                                                        const Text('Պահել'),
-                                                        //const SizedBox(width: 16),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                        ))
-                                      : Container(height: 0.1),
+                                                    )),
+                                              ))
+                                            : Container(height: 0.1),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  Center(
+                                      child: SizedBox(
+                                          width: 235,
+                                          child: Text(
+                                            encyclopediaBody != null
+                                                ? '${encyclopediaBody?.title}'
+                                                : '${readScreen?.title}',
+                                            style: TextStyle(
+                                                fontFamily: "GHEAGrapalat",
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w700,
+                                                letterSpacing: 1),
+                                            textAlign: TextAlign.center,
+                                          ))),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 16.0, right: 16.0),
+                                    child: RichText(
+                                      textAlign: TextAlign.justify,
+                                      text: TextSpan(
+                                        text:
+                                            "${listText.replaceAll(RegExp(r"[&nbsp]"), '')}",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            height: 2.5,
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: textSize,
+                                            fontFamily: 'GHEAGrapalat',
+                                            letterSpacing: 1),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            SizedBox(height: 16.0),
-                            Center(
-                                child: SizedBox(
-                                    width: 235,
-                                    child: Text(
-                                      encyclopediaBody != null
-                                          ? '${encyclopediaBody?.title}'
-                                          : '${readScreen?.title}',
-                                      style: TextStyle(
-                                          fontFamily: "GHEAGrapalat",
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1),
-                                      textAlign: TextAlign.center,
-                                    ))),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                              child: RichText(
-                                textAlign: TextAlign.justify,
-                                text: TextSpan(
-                                  text:
-                                      "${listText.replaceAll(RegExp(r"[&nbsp]"), '')}",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      height: 2.5,
-                                      fontWeight: FontWeight.w200,
-                                      fontSize: textSize,
-                                      fontFamily: 'GHEAGrapalat',
-                                      letterSpacing: 1),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+                            ])),
                       ),
                     ],
                   ),
