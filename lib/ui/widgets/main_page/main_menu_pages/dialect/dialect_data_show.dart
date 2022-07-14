@@ -65,7 +65,7 @@ class _DialectDataShowState extends State<DialectDataShow> {
             flexibleSpace: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 50.0, top: 5.0),
+                padding: const EdgeInsets.only(left: 50.0, top: 18.0),
                 child: Text(
                   '${dataCharacter?.firstCharacter}',
                   style: TextStyle(
@@ -78,7 +78,8 @@ class _DialectDataShowState extends State<DialectDataShow> {
               ),
             ),
             pinned: false,
-            floating: true,
+            floating: false,
+            snap: false,
             leading: SizedBox(
               width: 8,
               height: 14.0,

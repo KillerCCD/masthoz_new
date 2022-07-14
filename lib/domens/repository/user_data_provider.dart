@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -23,6 +24,40 @@ class UserDataProvider {
   UserDataProvider({
     this.auth,
   });
+  static const maxAccesSeconds = 3600;
+
+  static const maxRefreshSeconds = 216000000;
+  int seconds = maxAccesSeconds;
+  bool isAcces_Token_TimerActive = false;
+  bool isRefresh_Token_TimerActive = false;
+
+  void startAccessTimer() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (seconds > 0) {
+        seconds--;
+        print(seconds);
+      } else {
+        timer.cancel();
+        isAcces_Token_TimerActive = true;
+
+        print('timer cancel');
+      }
+    });
+  }
+
+  void startRefreshTimer() {
+    Timer.periodic(Duration(milliseconds: 1), (timer) {
+      if (seconds > 0) {
+        seconds--;
+        print(seconds);
+      } else {
+        timer.cancel();
+        isRefresh_Token_TimerActive = true;
+
+        print('timer cancel');
+      }
+    });
+  }
 
   // GOOGLE SIGN IN
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -178,6 +213,8 @@ class UserDataProvider {
         var refresh_token = body['refresh_token'];
         sessionDataProvider.setAccessToken(access_token);
         sessionDataProvider.setRefreshToken(refresh_token);
+        startAccessTimer();
+        startRefreshTimer();
 
         return true;
       } else {
@@ -292,7 +329,7 @@ class UserDataProvider {
           user = Users.fromJson(body);
         });
         return user;
-      } else if (response.statusCode == 401) {
+      } else if (response.statusCode == 401|| isAcces_Token_TimerActive) {
         isTrue = await refreshToken();
         if (isTrue) {
           fetchUserInfo();
@@ -349,7 +386,7 @@ class UserDataProvider {
         inspect(dd);
         return dd;
         // return userAccont;
-      } else if (response.statusCode == 401) {
+      } else if (response.statusCode == 401 || isAcces_Token_TimerActive) {
         bool isTrue = await refreshToken();
         isTrue ? print(true) : print(false);
       } else {
@@ -377,13 +414,12 @@ class UserDataProvider {
       if (response.statusCode == 200) {
         print('success');
         return true;
-      } else if (response.statusCode == 401) {
+      } else if (isAcces_Token_TimerActive || response.statusCode == 401) {
         bool isTrue = await refreshToken();
 
         if (isTrue) {
           saveFavorite(parameters);
           return true;
-          //  UsersIsSign(true);
         } else {
           return false;
         }
@@ -441,16 +477,15 @@ class UserDataProvider {
           sessionDataProvider.setAccessToken(access_token);
 
           return true;
-        } else {
-          // sessionDataProvider.deleteAllToken();
+        } else if (isRefresh_Token_TimerActive) {
+          sessionDataProvider.deleteAllToken();
           return false;
         }
       } catch (e) {
         print(e);
         return false;
       }
-    } else {
-      return false;
     }
+    return false;
   }
 }

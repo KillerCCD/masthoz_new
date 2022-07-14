@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,8 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
 import 'package:mashtoz_flutter/domens/models/app_theme.dart/theme_notifire.dart';
@@ -19,9 +18,10 @@ import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/firebase_options.dart';
+import 'package:mashtoz_flutter/ui/utils/day_change_notifire.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 
-import 'package:mashtoz_flutter/ui/widgets/main_page/home_screen.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_inherited_widget.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/book_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_library.dart';
@@ -30,6 +30,7 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dialect/dia
 import 'package:provider/provider.dart';
 
 import 'domens/models/book_data/book_channgeNotifire.dart';
+import 'ui/splash_screen/splash_screen.dart';
 import 'ui/widgets/main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -90,6 +91,8 @@ Future<void> execute(
 }
 
 void main() async {
+  // NotificationService().init();
+  //await execute(InternetConnectionChecker());
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -108,19 +111,23 @@ void main() async {
     sound: true,
   );
 
-  // NotificationService().init();
-  await execute(InternetConnectionChecker());
-
   // Create customized instance which can be registered via dependency injection
-  final InternetConnectionChecker customInstance = InternetConnectionChecker();
+  // final InternetConnectionChecker customInstance = InternetConnectionChecker();
 
   // Check internet connection with created instance
-  await execute(customInstance);
-  runApp(const MyApp());
+  // await execute(customInstance);
+  initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
 
   @override
   Widget build(BuildContext context) {
@@ -143,16 +150,18 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<BottomColorNotifire>(
               create: (_) => BottomColorNotifire()),
           ChangeNotifierProvider<BookNotifire>(create: (_) => BookNotifire()),
+        ChangeNotifierProvider<FocuseDay>(create: (_) => FocuseDay()),
         ],
         child: MaterialApp(
+          locale: _locale,
           debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
+          home: const SplashScreen(),
           routes: {
-            "lessons": (_) => ItalianPage(),
-            "libraries": (_) => BookInitalScreen(),
-            "encyclopedias": (_) => Ecyclopedia(),
-            "audiolibraries": (_) => AudioLibrary(),
-            "dialects": (_) => Dialect(),
+            "lessons": (_) => const ItalianPage(),
+            "libraries": (_) => const BookInitalScreen(),
+            "encyclopedias": (_) => const Ecyclopedia(),
+            "audiolibraries": (_) => const AudioLibrary(),
+            "dialects": (_) => const Dialect(),
           },
         ),
       ),
@@ -160,47 +169,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class AuthWrapper extends StatelessWidget {
-//   const AuthWrapper({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final firebaseUser = context.watch<User?>();
-
-//     if (firebaseUser != null) {
-//       return const HomeScreen();
-//     }
-//     return const LoginScreen();
-//   }
-// }
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      splash: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset('assets/images/surb-hogi.svg'),
-        ],
-      ),
-      nextScreen: HomeScreen(),
-      backgroundColor: Color.fromRGBO(83, 66, 77, 1),
-      duration: 3000,
-      splashTransition: SplashTransition.rotationTransition,
-    );
-  }
-}
-//  BookReadScreen(
-//             readScreen: Content(
-//                 id: 1,
-//                 title: 'DAsdsd',
-//                 image: 'asdf/',
-//                 body: 'okdofkdoklkdlfkdlfkdlfkdlfkldfk',
-//                 videoLink: '',
-//                 explanation: 'ikilikikdkfdf',
-//                 author: 'dasdsaidonf',
-//                 content: null),
-//           ),

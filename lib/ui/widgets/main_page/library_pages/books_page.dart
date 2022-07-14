@@ -70,26 +70,20 @@ class _BooksScreenState extends State<BooksScreen> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              flexibleSpace: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 50.0, top: 20.0),
-                  child: Container(
-                    height: 73,
-                    width: MediaQuery.of(context).size.width - 90,
-                    padding: EdgeInsets.only(top: 18),
-                    child: Text(
-                      '${category?.categoryTitle}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 1,
-                        fontFamily: 'GHEAGrapalat',
-                        fontWeight: FontWeight.w700,
-                        color: Palette.appBarTitleColor,
-                      ),
+              centerTitle: false,
+              title: Transform(
+                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                child:  Text(
+                    '${category?.categoryTitle}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1,
+                      fontFamily: 'GHEAGrapalat',
+                      fontWeight: FontWeight.w700,
+                      color: Palette.appBarTitleColor,
                     ),
                   ),
-                ),
+                
               ),
               leading: SizedBox(
                 width: 8,

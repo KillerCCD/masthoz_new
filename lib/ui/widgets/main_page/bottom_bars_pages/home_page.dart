@@ -6,13 +6,16 @@ import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/word_of_day.dart';
 import 'package:mashtoz_flutter/domens/repository/book_data_provdier.dart';
+import 'package:mashtoz_flutter/ui/utils/complex.dart';
+import 'package:mashtoz_flutter/ui/utils/day_change_notifire.dart';
 import 'dart:math' as math;
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/menuShow.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/library_pages/books_page.dart';
 import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/audio_library/audio_library.dart';
-import 'package:mashtoz_flutter/ui/widgets/notifications/notification_service.dart';
+
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -53,6 +56,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // var day = Provider.of<FocuseDay>(context).day;
+    //  var day = context.read<FocuseDay>().day;
     SizeConfig().init(context);
     print(SizeConfig.screenHeight! * 0.82);
     return SafeArea(
@@ -62,42 +67,6 @@ class _HomePageState extends State<HomePage> {
         body: CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           slivers: [
-            // SliverToBoxAdapter(
-            //   child: Stack(
-            //     children: [
-
-            //     ],
-            //   ),
-            // ),
-            // SliverAppBar(
-            //   flexibleSpace: Padding(
-            //     padding: const EdgeInsets.only(left: 20),
-            //     child: Align(
-            //       alignment: Alignment.centerLeft,
-            //       child: Text(
-            //         'Օրվա խոսք',
-            //         style: TextStyle(
-            //             fontSize: 20,
-            //             letterSpacing: 1,
-            //             fontFamily: 'GHEAGrapalat',
-            //             fontWeight: FontWeight.bold,
-            //             color: Palette.appBarTitleColor),
-            //       ),
-            //     ),
-            //   ),
-            //   expandedHeight: 53,
-            //   backgroundColor: Palette.textLineOrBackGroundColor,
-            //   elevation: 0,
-            //   automaticallyImplyLeading: false,
-            //   systemOverlayStyle: SystemUiOverlayStyle(
-            //       statusBarColor: Color.fromRGBO(25, 4, 18, 1)),
-            //   actions: [
-            //     Padding(
-            //       padding: const EdgeInsets.only(right: 20),
-            //       child: MenuShow(),
-            //     ),
-            //   ],
-            // ),
             SliverFillRemaining(
               child: Center(
                 child: Container(
@@ -148,6 +117,28 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 onTap: () async {
                                   print('dadas');
+                                  await showDialog(
+                                      builder: (BuildContext context) {
+                                        return Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              top: 120,
+                                              child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 20, left: 20),
+                                                    height: 400,
+                                                    width:
+                                                        SizeConfig.screenWidth,
+                                                    child:
+                                                        TableComplexExample()),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      context: context);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -172,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           Center(
                                             child: Text(
-                                              '25',
+                                              '${context.watch<FocuseDay>().day}',
                                               style: TextStyle(
                                                   fontSize: 11,
                                                   color: Colors.white),

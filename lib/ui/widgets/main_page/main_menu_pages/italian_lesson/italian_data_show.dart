@@ -43,31 +43,26 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
     final orentation = MediaQuery.of(context).orientation;
     print("CustomerId  : ${custemerId}");
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 20, left: 20.0),
-      child: Scaffold(
-        backgroundColor: Palette.textLineOrBackGroundColor,
-        body: CustomScrollView(
+    return Scaffold(
+      backgroundColor: Palette.textLineOrBackGroundColor,
+      body: Padding(
+        padding: const EdgeInsets.only(right: 20, left: 20.0),
+        child: CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           slivers: [
             orentation != Orientation.landscape
                 ? SliverAppBar(
-                    flexibleSpace: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25,
-                        ),
-                        child: Text(
-                          '${lessons?.number}',
-                          style: TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 1,
-                              fontFamily: 'GHEAGrapalat',
-                              fontWeight: FontWeight.w700,
-                              color: Palette.appBarTitleColor),
-                        ),
+                    title: Transform(
+                      transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                      child: Text(
+                        '${lessons?.number}',
+                        style: TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 1,
+                            fontFamily: 'GHEAGrapalat',
+                            fontWeight: FontWeight.w700,
+                            color: Palette.appBarTitleColor),
                       ),
                     ),
                     floating: false,

@@ -227,7 +227,7 @@ class _BookPagesState extends State<BookPages> {
   final String listText;
   final Content? readScreen;
   double selectedValue = 0;
-  double textSize = 16.0;
+  double textSize = 18.0;
   final userDataProvider = UserDataProvider();
 
   @override
@@ -601,8 +601,10 @@ class _BookPagesState extends State<BookPages> {
                                         alignment: Alignment.topCenter,
                                         child: CachedNetworkImage(
                                           imageUrl: readScreen?.image != null
-                                              ? readScreen!.image!
-                                              : searchData!.image!,
+                                              ? "${readScreen?.image!}"
+                                              : searchData?.image != null
+                                                  ? "${readScreen?.image!}"
+                                                  : "${encyclopediaBody?.image!}",
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                           // height: SizeConfig
@@ -2354,7 +2356,7 @@ class _BookPagesState extends State<BookPages> {
                                       textAlign: TextAlign.justify,
                                       text: TextSpan(
                                         text:
-                                            "${listText.replaceAll(RegExp(r"[&nbsp]"), '')}",
+                                            "${listText.replaceAll(RegExp(r"[&nbsp;]"), '')}",
                                         style: TextStyle(
                                             color: Colors.black,
                                             height: 2.5,

@@ -33,7 +33,7 @@ class _MenuShowState extends State<MenuShow>
   bool iconAcitve = true;
   Future<List<BookCategory>>? menuFuture;
   final sessionDataProvider = SessionDataProvider();
-  int? custemerId;
+  int custemerId = 0;
   bool? isture;
   late AnimationController _controller;
   final userDataProvider = UserDataProvider();
