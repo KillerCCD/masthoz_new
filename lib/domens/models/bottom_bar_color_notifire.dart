@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BottomColorNotifire extends ChangeNotifier {
-  Color? _color = Colors.white;
+  Color? _color = Colors.transparent;
 
   Color get barColor => _color!;
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:mashtoz_flutter/domens/data_providers/session_data_provider.dart';
@@ -14,12 +15,15 @@ import '../models/book_data/content_list.dart';
 import '../models/book_data/data.dart';
 
 class BookDataProvider {
+  Stream<FileResponse>? fileStream;
+  CacheManager? cacheManager;
   final sessionDataProvider = SessionDataProvider();
 
   //Fetch Category List
   Future<List<BookCategory>> getCategoryLists(String url) async {
     var libraryList = <BookCategory>[];
     //   try {
+
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -46,14 +50,15 @@ class BookDataProvider {
   //Fetch Library Book By Id
   Future<List<Content>> getLibrarayYbooksById(int idCategory) async {
     var libraryList = <Content>[];
-    try {
-      var response = await http.get(
-        Uri.parse(Api.libraryCategoryById(idCategory)),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-      );
+    var response = await http.get(
+      Uri.parse(Api.libraryCategoryById(idCategory)),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
 
+    try {
+      print('Fetching from the network');
       var body = json.decode(response.body);
 
       var success = body['success'];
@@ -71,8 +76,12 @@ class BookDataProvider {
             print("kEEEEEEEEEEEEEEEEEEEEEEY::${key}");
           }
         });
+        Stream<List<int>> source;
+        //cacheManager?.putFile('url', fileBytes)
+        // file.writeAsBytesSync(body, flush: true, mode: FileMode.write);
       } else {
         print("failed");
+        return libraryList;
       }
     } catch (e) {
       print(e);
@@ -114,17 +123,6 @@ class BookDataProvider {
     inspect(galleryList);
     return galleryList;
   }
-  //     Map.from(data).forEach((key, value) => galleryList.add(value is List
-  //         ? value
-  //         : Map.from(value)
-  //             .map((key, value) => MapEntry(key, Gallery.fromJson(value)))));
-  //     inspect(galleryList);
-  //   } else {
-  //     print("failed");
-  //   }
-  //   //inspect(galleryList);
-  //   return galleryList;
-  // }
 
   //Main menu list
   Future<List<Data>?> getMenuList() async {

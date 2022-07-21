@@ -6,8 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mashtoz_flutter/domens/blocs/Login/login_bloc.dart';
 import 'package:mashtoz_flutter/domens/blocs/register_bloc/register_bloc.dart';
@@ -19,6 +19,7 @@ import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/firebase_options.dart';
 import 'package:mashtoz_flutter/ui/utils/day_change_notifire.dart';
+import 'package:mashtoz_flutter/ui/utils/splash_screen.dart';
 
 import 'package:mashtoz_flutter/ui/widgets/main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 
@@ -30,7 +31,6 @@ import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/dialect/dia
 import 'package:provider/provider.dart';
 
 import 'domens/models/book_data/book_channgeNotifire.dart';
-import 'ui/splash_screen/splash_screen.dart';
 import 'ui/widgets/main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -47,53 +47,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up :  ${message.messageId}');
 }
 
-Future<void> execute(
-  InternetConnectionChecker internetConnectionChecker,
-) async {
-  // Simple check to see if we have Internet
-  // ignore: avoid_print
-  print('''The statement 'this machine is connected to the Internet' is: ''');
-  final bool isConnected = await InternetConnectionChecker().hasConnection;
-  // ignore: avoid_print
-  print(
-    isConnected.toString(),
-  );
-  // returns a bool
-
-  // We can also get an enum instead of a bool
-  // ignore: avoid_print
-  print(
-    'Current status: ${await InternetConnectionChecker().connectionStatus}',
-  );
-  // Prints either InternetConnectionStatus.connected
-  // or InternetConnectionStatus.disconnected
-
-  // actively listen for status updates
-  final StreamSubscription<InternetConnectionStatus> listener =
-      InternetConnectionChecker().onStatusChange.listen(
-    (InternetConnectionStatus status) {
-      switch (status) {
-        case InternetConnectionStatus.connected:
-          // ignore: avoid_print
-          print('Data connection is available.');
-          break;
-        case InternetConnectionStatus.disconnected:
-          // ignore: avoid_print
-          print('You are disconnected from the internet.');
-          break;
-      }
-    },
-  );
-
-  // close listener after 30 seconds, so the program doesn't run forever
-  await Future<void>.delayed(const Duration(seconds: 30));
-  await listener.cancel();
-}
-
 void main() async {
   // NotificationService().init();
   //await execute(InternetConnectionChecker());
   WidgetsFlutterBinding.ensureInitialized();
+
+  CacheManager.logLevel = CacheManagerLogLevel.verbose;
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -111,11 +70,6 @@ void main() async {
     sound: true,
   );
 
-  // Create customized instance which can be registered via dependency injection
-  // final InternetConnectionChecker customInstance = InternetConnectionChecker();
-
-  // Check internet connection with created instance
-  // await execute(customInstance);
   initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
@@ -150,12 +104,15 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<BottomColorNotifire>(
               create: (_) => BottomColorNotifire()),
           ChangeNotifierProvider<BookNotifire>(create: (_) => BookNotifire()),
-        ChangeNotifierProvider<FocuseDay>(create: (_) => FocuseDay()),
+          ChangeNotifierProvider<FocuseDay>(create: (_) => FocuseDay()),
         ],
         child: MaterialApp(
           locale: _locale,
           debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+          home: const MySplashScreen(),
+          // builder: (context, child) {
+          //   return HomeScreen();
+          // },
           routes: {
             "lessons": (_) => const ItalianPage(),
             "libraries": (_) => const BookInitalScreen(),
@@ -168,5 +125,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-

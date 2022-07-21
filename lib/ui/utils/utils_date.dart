@@ -33,7 +33,8 @@ final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
       Event('Today\'s Event 2'),
     ],
   });
-
+gbgfngfdfrrrrrgrbgrbgrbggrbg
+a
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
@@ -49,4 +50,4 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+final kLastDay = DateTime(2200, 1, kToday.day);

@@ -1,11 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:mashtoz_flutter/config/palette.dart';
-import 'package:mashtoz_flutter/domens/models/book_data/book_channgeNotifire.dart';
 import 'package:mashtoz_flutter/domens/models/bottom_bar_color_notifire.dart';
 import 'package:mashtoz_flutter/tab_navigator.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../buttons/bottom_navigation_bar/bottom_app_bar.dart';
 
 import '../notifications/notification_service.dart';
-import 'bottom_bars_pages/bottom_bar_menu_pages.dart';
 
 enum BottomIcons {
   home,
@@ -63,7 +59,6 @@ class HomeScreenState extends State<HomeScreen> {
     "accountpage": GlobalKey<NavigatorState>(),
   };
 
-  NotificationService _notificationService = NotificationService();
 
   @override
   void initState() {

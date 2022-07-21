@@ -19,7 +19,6 @@ import 'package:provider/provider.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../../../../domens/data_providers/internet_status_provider.dart';
 import '../../../../domens/models/book_data/content_list.dart';
 import '../../helper_widgets/size_config.dart';
 
@@ -39,8 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     wordsOfDayFuture = bookDataProvider.getWordsOfDay();
-    NetworkStatusService.checkConnectivity();
-    NetworkStatusService.initila(context);
     super.initState();
   }
 
@@ -50,7 +47,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    NetworkStatusService.subscription.cancel();
     super.dispose();
   }
 

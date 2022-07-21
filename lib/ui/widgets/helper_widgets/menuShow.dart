@@ -9,16 +9,18 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
-import 'package:mashtoz_flutter/ui/widgets/main_page/main_menu_pages/gallery/galery_item.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_shadow/simple_shadow.dart';
+import '../../../domens/models/bottom_bar_color_notifire.dart';
 import '../../../domens/repository/book_data_provdier.dart';
 import '../../../domens/repository/user_data_provider.dart';
-import '../main_page/bottom_bars_pages/italian_lessons_screen/italian_lesson_page.dart';
+import '../main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
 import '../main_page/main_menu_pages/abaut_us.dart';
 import '../main_page/main_menu_pages/audio_library/audio_library.dart';
 import '../main_page/main_menu_pages/contact_page.dart';
 import '../main_page/main_menu_pages/dialect/dialect.dart';
+import '../main_page/main_menu_pages/encyclopedia/encyclopedia.dart';
+import '../main_page/main_menu_pages/gallery/galery_item.dart';
 
 class MenuShow extends StatefulWidget {
   const MenuShow({Key? key}) : super(key: key);
@@ -77,13 +79,15 @@ class _MenuShowState extends State<MenuShow>
   @override
   Widget build(BuildContext context) {
     final animation = Tween(begin: 0, end: 0.5 * pi).animate(_controller);
-    final orintation = MediaQuery.of(context).orientation;
     return Container(
       height: double.infinity,
       width: 30,
       child: InkWell(
         onTap: () {
           print('dadasion');
+          // context
+          //     .read<BottomColorNotifire>()
+          //     .setColor(Palette.libraryBacgroundColor);
           setState(() {
             _toggleDrawer();
             menuFuture = bookDataProvider.getCategoryLists(Api.menu);
@@ -103,15 +107,17 @@ class _MenuShowState extends State<MenuShow>
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 130,
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
+                        bottom: 5,
+                        child: Container(
+                          color: Palette.barColor,
+                          width: MediaQuery.of(context).size.width,
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: Alignment.topCenter,
                                   child: Container(
+                                    height: 150,
                                     padding: EdgeInsets.only(right: 20.0),
                                     color: Palette.barColor,
                                     child: AppBar(
@@ -124,22 +130,26 @@ class _MenuShowState extends State<MenuShow>
                                       elevation: 0.0,
                                       backgroundColor:
                                           Palette.barColor.withOpacity(0.5),
-                                      flexibleSpace: Container(
-                                        padding: EdgeInsets.only(
-                                            right: 30.0, left: 43),
-                                        height: 200,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                              top: 20.0,
-                                            ),
-                                            child: SvgPicture.asset(
-                                              'assets/images/mashtoz_org.svg',
-                                              width: 250,
-                                              color: Colors.white,
+                                      centerTitle: false,
+                                      flexibleSpace: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              right: 30.0, left: 43),
+                                          height: 150,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 20.0,
+                                              ),
+                                              child: SvgPicture.asset(
+                                                'assets/images/mashtoz_org.svg',
+                                                width: 250,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -210,14 +220,14 @@ class _MenuShowState extends State<MenuShow>
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       Positioned.fill(
-                        top: 120,
-                        bottom: 60, //
+                        top: 170,
+                        bottom: 5, //
                         child: Container(
                           //padding: EdgeInsets.only(bottom: 130),
                           decoration: BoxDecoration(
@@ -299,8 +309,9 @@ class _MenuShowState extends State<MenuShow>
                                                                     child:
                                                                         Container(
                                                                       margin: EdgeInsets.only(
-                                                                          right:
-                                                                              70),
+                                                                          right: SizeConfig.screenWidth! >= 320 && SizeConfig.screenWidth! <= 425
+                                                                              ? 113
+                                                                              : 60),
                                                                       height: SizeConfig
                                                                           .screenHeight,
                                                                       child: ListView.builder(

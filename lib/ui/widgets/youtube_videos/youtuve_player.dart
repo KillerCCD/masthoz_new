@@ -153,12 +153,21 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
 
   @override
   Widget build(BuildContext context) => widget.controller != null
-      ? Container(
-          color: Colors.black.withOpacity(0.9),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          alignment: Alignment.topCenter,
-          child: buildVideo())
+      ? WillPopScope(
+          onWillPop: () async {
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ]);
+            return true;
+          },
+          child: Container(
+              color: Colors.black.withOpacity(0.9),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              alignment: Alignment.topCenter,
+              child: buildVideo()),
+        )
       : Center(child: CircularProgressIndicator());
 
   Widget buildVideo() => OrientationBuilder(

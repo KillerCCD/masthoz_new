@@ -5,11 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mashtoz_flutter/config/palette.dart';
 import 'package:mashtoz_flutter/domens/models/book_data/lessons.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
-import 'package:mashtoz_flutter/domens/models/user_sign_or_not.dart';
 import 'package:mashtoz_flutter/domens/repository/user_data_provider.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/save_show_dialog.dart';
 import 'package:mashtoz_flutter/ui/widgets/youtube_videos/youtuve_player.dart';
-import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../helper_widgets/menuShow.dart';
@@ -54,7 +52,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
             orentation != Orientation.landscape
                 ? SliverAppBar(
                     title: Transform(
-                      transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                      transform: Matrix4.translationValues(-40.0, 0.0, 0.0),
                       child: Text(
                         '${lessons?.number}',
                         style: TextStyle(
@@ -226,7 +224,7 @@ class _ItaliaLessonShowState extends State<ItaliaLessonShow> {
     Users hasId = await userDataProvider.fetchUserInfo();
     bool isSign = await userDataProvider.saveFavorite(data);
 
-    if (!isSign || hasId == null) {
+    if (!isSign) {
       showDialog(
           context: context,
           barrierDismissible: false,
