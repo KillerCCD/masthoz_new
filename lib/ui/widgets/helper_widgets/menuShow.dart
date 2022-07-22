@@ -9,9 +9,7 @@ import 'package:mashtoz_flutter/domens/models/book_data/category_lsit.dart';
 import 'package:mashtoz_flutter/domens/models/user.dart';
 import 'package:mashtoz_flutter/globals.dart';
 import 'package:mashtoz_flutter/ui/widgets/helper_widgets/size_config.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_shadow/simple_shadow.dart';
-import '../../../domens/models/bottom_bar_color_notifire.dart';
 import '../../../domens/repository/book_data_provdier.dart';
 import '../../../domens/repository/user_data_provider.dart';
 import '../main_page/bottom_bars_pages/bottom_bar_menu_pages.dart';
@@ -107,7 +105,7 @@ class _MenuShowState extends State<MenuShow>
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        bottom: 5,
+                        bottom: 60,
                         child: Container(
                           color: Palette.barColor,
                           width: MediaQuery.of(context).size.width,
@@ -227,7 +225,7 @@ class _MenuShowState extends State<MenuShow>
                       ),
                       Positioned.fill(
                         top: 170,
-                        bottom: 5, //
+                        bottom: 60, //
                         child: Container(
                           //padding: EdgeInsets.only(bottom: 130),
                           decoration: BoxDecoration(
